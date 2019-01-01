@@ -73,5 +73,44 @@ class Project extends Controller
 		$res = json_encode($res);
 		return $res;
 	}
+	#项目数据查询controller
+	public function getProjectData(){
+		if (empty($_GET)){
+			return 'no params,no data';
+		}
+		#判断并处理参数
+		$params_arr = $this->transfromGet();
+
+	}
+	#处理参数
+	protected function transfromGet(){
+		# 基础条件字段
+		$basic_arr = ['project_type','project_nature','project_use'];
+		# 招投标条件字段
+		$bid_arr = ['bid_way','bid_money','bid_date_start','bid_date_end'];
+		# 合同备案条件字段
+		$contract_arr = ['contract_type','contract_money','contract_scale','contract_date_start','contract_date_end'];
+		# 竣工验收备案条件字段
+		$finish_arr = ['finish_money','finish_area','finish_realbegin_start','finish_realbegin_end','finish_realfinish_start','finish_realfinish_end'];
+		$params = $_GET;
+		$params['bid'] = 0;
+		$params['contract'] = 0;
+		$params['finish'] = 0;
+		$params_keys = array_keys($params);
+		$params_count = count($params_keys);
+		for ($i=0; $i < $params_count; $i++) { 
+			if (array_search($params_keys[$i], $bid_arr) != false) {
+				$params['bid'] = 1;
+			}
+			if (array_search($params_keys[$i], $contract_arr) != false) {
+				$params['contract'] = 1;
+			}
+			if (array_search($params_keys[$i], $finish_arr) != false) {
+				$params['finish'] = 1;
+			}
+		}
+		var_dump($params);
+		die();
+	}
 }
 ?>

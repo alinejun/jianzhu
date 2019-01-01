@@ -1067,3 +1067,54 @@
   }
 }
 ```
+## 项目数据
+
+**url**: /project/getProjectData
+
+**请求方式**：get
+
+
+**请求参数：**
+
+| 字段名 | 类型 | 说明 |
+| ------ | ---- | ---- |
+| project_type   | string|项目分类 |
+| project_nature | string|建设性质 |
+| project_use   | string|工程用途 |
+| bid_way   | string|招标类型 |
+| bid_money   | int|中标金额 |
+| bid_date_start   | date|中标日期开始 |
+| bid_date_end   | date|中标日期结束 |
+| contract_type   | string|合同类别 |
+| contract_money   | int|合同金额 |
+| contract_scale   | int|建设规模 |
+| contract_date_start   | date|合同签订日期开始 |
+| contract_date_end   | date|合同签订时期结束 |
+| finish_money   | int|实际造价 |
+| finish_area   | int|实际面积 |
+| finish_realbegin_start   | date|实际开工日期开始 |
+| finish_realbegin_end   | date|实际开工日期结束 |
+| finish_realfinish_start   | date|实际竣工验收日期开始 |
+| finish_realfinish_end   | date|实际竣工验收日期结束 |
+| page   | int| 页数：例如1,2,3,4,5 我设置了默认值 1|
+| page_size   | int| 每页数量：例如10,20 我设置了默认值 10  |
+
+**返回参数：**
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | --------------------------|
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       page        | int | 当前页数                     |
+|       page_size        | int | 每页个数                  |
+|       total_page        | int | 总页数                    |
+|       total_num        | int | 总个数                       |
+|       data       | array    | 返回符合筛选条件的项目数据 |
+
+
+**返回示例：**
+
+```
+示例1：
+
+```
