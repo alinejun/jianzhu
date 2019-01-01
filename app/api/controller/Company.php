@@ -34,7 +34,8 @@ class Company extends Controller
         foreach ($company_ids_arr as $key=>$value){
             $company_url = $value['company_url'];
             #处理企业名称、法定代表人、注册属地 (jz_company表)
-            $company = (CompanyModel::getJzCompany($company_url))[0];
+            $company = (CompanyModel::getJzCompany($company_url));
+            $company = $company[0];
             $company_data_list[$key]['company_name'] = $company['company_name'];
             $company_data_list[$key]['company_legalreprst'] = $company['company_legalreprst'];
             $company_data_list[$key]['company_regadd'] = $company['company_regadd'];
