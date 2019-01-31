@@ -6,6 +6,8 @@
  * Time: 23:15
  */
 namespace app\api\controller;
+use app\Code;
+
 class PeopleCondition extends ApiBase{
 
 
@@ -34,14 +36,16 @@ class PeopleCondition extends ApiBase{
             ['register_certnum'=>'00018382',  'register_type'=>'一级临时注册建造师','pid'=>4],
             ['register_certnum'=>'00110147',  'register_type'=>'二级临时注册建造师','pid'=>4],
         ];
-        $refer = $data['first'];
-        foreach( $refer as &$value){
+        foreach( $data['first'] as &$value){
             foreach ($data['second'] as $v){
                 if($v['pid'] == $value['id']){
                     $value['_child'][] = $v;
                 }
             }
         }
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] =  Code::$MSG[$refer['code']];
+        $refer['data'] = $data['first'];
         return $this->apiReturn($refer);
     }
 }
