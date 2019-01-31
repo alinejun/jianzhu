@@ -138,5 +138,89 @@
 }
 ```
 
+## 企业筛选条件
 
+**url**: /companycondition/qualificationType
+
+**请求方式**：get
+
+
+
+**请求参数：**
+
+
+| 字段名 | 类型 | 说明 |
+| ------ | ---- | ---- |
+| code   | string|传code值过来再次请求接口，会返回此code的子级，依次类推|
+
+**返回参数：**
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | --------------------------|
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       data       | array  | 返回数据                   |
+|        id        | int    | 资质ID                     |
+|       code       | string | 对应资质级别的父级          |
+|       name       | string | 当前等级的资质名称          |
+|      is_end      | int    | 是否是最后一级              |
+|       level      | string | 等级                       |
+
+
+
+**返回示例：**
+
+```
+示例1：
+/companycondition/qualificationType?code=A201
+{
+  "code": 1,
+  "msg": "success",
+  "data": [
+    {
+      "id": 419,
+      "code": "A201A",
+      "name": "工程设计煤炭行业甲级",
+      "is_end": 1,
+      "level": "甲级"
+    },
+    {
+      "id": 420,
+      "code": "A201B",
+      "name": "工程设计煤炭行业乙级",
+      "is_end": 1,
+      "level": "乙级"
+    }
+  ]
+}
+示例2：
+/companycondition/qualificationType?code=B
+{
+  "code": 1,
+  "msg": "success",
+  "data": [
+    {
+      "id": 11,
+      "code": "B1",
+      "name": "工程勘察综合资质",
+      "is_end": 0,
+      "level": ""
+    },
+    {
+      "id": 12,
+      "code": "B2",
+      "name": "工程勘察专业资质",
+      "is_end": 0,
+      "level": ""
+    },
+    {
+      "id": 13,
+      "code": "B3",
+      "name": "工程勘察劳务资质",
+      "is_end": 0,
+      "level": ""
+    }
+  ]
+}
+```
 

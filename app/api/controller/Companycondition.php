@@ -14,8 +14,11 @@ class Companycondition extends Controller
 	#资质类别
 	public function qualificationType(){
 		$get = $_GET;
-		$code = $get['code'];
-		$res = CompanyconditionModel::getQualificationType($code);
+		$code = isset($get['code'])?$get['code']:'A';
+		$data_list = CompanyconditionModel::getQualificationType($code);
+		$res['code'] = 1;
+		$res['msg'] = 'success';
+		$res['data'] = $data_list;
 		$res = json_encode($res);
 		return $res;
 	}

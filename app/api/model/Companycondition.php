@@ -12,7 +12,7 @@ class Companycondition extends Model
 	#获取资质类别
 	public static function getQualificationType($code){
 		$sql = "SELECT 
-				    apt_code AS code, apt_scope AS name
+				    id, apt_code AS code, apt_scope AS name, is_end, zhizi_level as level
 				FROM
 				    jz_qualification_type
 				WHERE
