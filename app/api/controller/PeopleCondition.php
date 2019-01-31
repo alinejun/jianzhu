@@ -18,7 +18,7 @@ class PeopleCondition extends ApiBase{
             ['id'=>'4','register_type'=>'注册建造师'],
             ['id'=>'5','register_type'=>'注册造价工程师'],
            ];
-        $data['first']['second'] = [
+        $data['second'] = [
             ['register_certnum'=>'121500249',  'register_type'=>'一级注册建筑师','pid'=>1],
             ['register_certnum'=>'2006100762', 'register_type'=>'二级注册建筑师','pid'=>1],
             ['register_certnum'=>'S174101880',  'register_type'=>'一级注册结构工程师','pid'=>2],
@@ -34,6 +34,14 @@ class PeopleCondition extends ApiBase{
             ['register_certnum'=>'00018382',  'register_type'=>'一级临时注册建造师','pid'=>4],
             ['register_certnum'=>'00110147',  'register_type'=>'二级临时注册建造师','pid'=>4],
         ];
-        return $this->apiReturn($data);
+        $refer = $data['first'];
+        foreach( $refer as &$value){
+            foreach ($data['second'] as $v){
+                if($v['pid'] == $value['id']){
+                    $value['_child'][] = $v;
+                }
+            }
+        }
+        return $this->apiReturn($refer);
     }
 }
