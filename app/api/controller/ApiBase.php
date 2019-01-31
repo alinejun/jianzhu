@@ -28,7 +28,7 @@ class ApiBase extends ControllerBase
         
         parent::__construct();
         
-        $this->logicApiBase->checkParam($this->param);
+       // $this->logicApiBase->checkParam($this->param);
         
         // 接口控制器钩子
         Hook::listen('hook_controller_api_base', $this->request);
