@@ -225,9 +225,9 @@
 ```
 
 
-## 企业数据
+## 企业数据数量
 
-**url**: /company/getData
+**url**: /company/getCompanyDataNumber
 
 **请求方式**：get
 
@@ -238,16 +238,32 @@
 
 | 字段名 | 类型 | 说明 |
 | ------ | ---- | ---- |
-| ids   | string|这个id是包括 多选等级 和 单选等级 两种类型，用不同的标识显示出来，后端好对不同的数据进行or和and的处理|
+| code   | string|这个code是包括 多选等级 和 单选等级 两种类型,比如 ?code=414,352,(322|189)|
 
 **返回参数：**
 
 |      字段名      | 类型   | 说明                       |
 | :--------------: | ------ | --------------------------|
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       data       | int    | 返回符合资质筛选条件的公司数量 |
 
 
 **返回示例：**
 
 ```
-ps:
+示例1：
+/company/getCompanyDataNumber?code=414
+{
+  "code": 1,
+  "msg": "success",
+  "data": 184
+}
+示例2：
+/company/getCompanyDataNumber?code=414,352,(322|189)
+{
+  "code": 1,
+  "msg": "success",
+  "data": 34
+}
 ```
