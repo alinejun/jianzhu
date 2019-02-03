@@ -24,7 +24,7 @@ class Index extends ControllerBase
      */
     public function index()
     {
-        
+        echo '建筑信息查询平台';exit;
         $list = $this->logicDocument->getApiList([], true, 'sort');
         
         $code_list = $this->logicDocument->apiErrorCodeData();
