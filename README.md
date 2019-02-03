@@ -280,19 +280,19 @@
 
 | 字段名 | 类型 | 说明 |
 | ------ | ---- | ---- |
-| code   | string|这个code是包括 多选等级 和 单选等级 两种类型,比如 ?code=414,352,(322|189) |
+| code   | string|这个code是包括 多选等级 和 单选等级 两种类型,比如 ?code=414,352,(322|189),同获取公司数量的格式 |
 | page   | int| 页数：例如1,2,3,4,5 我设置了默认值 1|
 | page_size   | int| 每页数量：例如10,20 我设置了默认值 10  |
 
 **返回参数：**
-
+ 
 |      字段名      | 类型   | 说明                       |
 | :--------------: | ------ | --------------------------|
 |       code       | int    | 错误码                     |
 |       msg        | string | 消息                       |
-|       page        | int | 当前页数                       |
-|       page_size        | int | 每页个数                       |
-|       total_page        | int | 总页数                       |
+|       page        | int | 当前页数                     |
+|       page_size        | int | 每页个数                  |
+|       total_page        | int | 总页数                    |
 |       total_num        | int | 总个数                       |
 |       data       | array    | 返回符合资质筛选条件的公司数据 |
 |       company_name       | sting    | 企业名称 |
