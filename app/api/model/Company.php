@@ -35,7 +35,8 @@ class Company extends Model
 							company_url
 					) x
 				WHERE
-					$where_and_str ";
+					$where_and_str 
+				ORDER BY x.company_url ";
 		$res = Db::query($sql);
 		return $res;
 	}
@@ -61,5 +62,41 @@ class Company extends Model
 		}
 		return $where_and;
 	}
+	#根据company_url获取jz_company表相关数据
+    public static function getJzCompany($company_url){
+	    $sql = "SELECT
+                  company_name,
+                  company_legalreprst,
+                  company_regadd
+                FROM jz_company
+                WHERE company_url = $company_url ";
+	    $res = Db::query($sql);
+	    return $res;
+    }
+    #根据company_url获取jz_qualification表相关数据
+    public static function getJzQualification($company_url){
+        $sql = "SELECT
+                  ion_type_name,
+                  ion_name,
+                  ion_validity
+                FROM jz_qualification
+                WHERE company_url = $company_url ";
+        $res = Db::query($sql);
+        return $res;
+    }
+    #根据company_url获取jz_cpny_change表相关数据
+    public static function getJzCpnyChange($company_url){
+        $sql = "SELECT
+                  change_date,
+                  change_content
+                FROM jz_cpny_change
+                WHERE company_url = $company_url ";
+        $res = Db::query($sql);
+        return $res;
+    }
+    #根据。。。查询表jz_cpny_miscdct
+    public static function getJzCpnyMiscdct($company_url){
+        return [];
+    }
 }
 ?>
