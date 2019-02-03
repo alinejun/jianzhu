@@ -20,7 +20,7 @@ class Index extends IndexBase
     // 首页
     public function index($cid = 0)
     {
-        
+        echo '建筑信息查询平台';exit;
         $where = [];
         
         !empty((int)$cid) && $where['a.category_id'] = $cid;
