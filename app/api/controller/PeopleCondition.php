@@ -6,6 +6,7 @@
  * Time: 23:15
  */
 namespace app\api\controller;
+use app\api\model\PeopleRegister;
 use app\Code;
 
 class PeopleCondition extends ApiBase{
@@ -49,4 +50,24 @@ class PeopleCondition extends ApiBase{
         $refer['data'] = $data['first'];
         return $this->apiReturn($refer);
     }
+
+    //根据证书编号获取专业信息
+    public function getMajor(){
+        $peopleRegister = new PeopleRegister();
+        $register_type = input('post.register_type');
+        $where['register_type'] = $register_type;
+        $typeName = $peopleRegister->getMajorByType($where,'register_major','register_major');
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] =  Code::$MSG[$refer['code']];
+        $major = [];
+        foreach ($typeName as $k=>$value){
+            if(!empty($value['register_major'])){
+                $major[] = $value['register_major'];
+            }
+
+        }
+        $refer['data'] = $major;
+        return $this->apiReturn($refer);
+    }
+
 }
