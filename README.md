@@ -140,7 +140,7 @@
 
 ## 根据注册类型获取专业
 
-**url**: /people_condition/getcondition
+**url**: /people_condition/getMajor
 
 **请求方式**：post
 

@@ -17,7 +17,17 @@ class PeopleRegister extends ApiBase{
     public function getMajorByType($where,$filed="*")
     {
 
-        $list = $this->table('jz_people_register')->where($where)->field($filed)->group('register_major')->select();
+        $list = self::where($where)->field($filed)->group('register_major')->select();
         return $list;
+    }
+
+    public function getPeople($where=1,$filed="*",$pageSize=10,$pageNum=0,$having='')
+    {
+       $sql =  self::where($where)
+                 ->field($filed)
+                 ->limit($pageSize*$pageNum,$pageSize)
+                 ->group('company_url');
+       $list =  !empty($having) ? $sql->having("count('company_url')>$having") ->select() : $sql->select();
+       return $list;
     }
 }
