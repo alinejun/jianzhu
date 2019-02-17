@@ -2,7 +2,7 @@
 namespace app\api\controller;
 
 use think\Controller;
-// use app\api\model\ProjectCondition as ProjectConditionModel;
+use app\api\model\Project as ProjectModel;
 
 /**
  * 项目-相关controller
@@ -73,6 +73,15 @@ class Project extends Controller
 		$res = json_encode($res);
 		return $res;
 	}
+	#项目数据查询数量
+    public function getProjectDataNum(){
+	    $res = $this->getProjectData();
+	    $result['code'] = 1;
+	    $result['msg'] = 'success';
+	    $result['data'] = count($res);
+	    $result = json_encode($result);
+	    return $result;
+    }
 	#项目数据查询controller
 	public function getProjectData(){
 		if (empty($_GET)){
@@ -80,7 +89,9 @@ class Project extends Controller
 		}
 		#判断并处理参数
 		$params_arr = $this->transfromGet();
-
+		#根据参数情况和值，查询出符合条件的数据
+        $res = ProjectModel::getProjectData($params_arr);
+        return $res;
 	}
 	#处理参数
 	protected function transfromGet(){
@@ -98,19 +109,18 @@ class Project extends Controller
 		$params['finish'] = 0;
 		$params_keys = array_keys($params);
 		$params_count = count($params_keys);
-		for ($i=0; $i < $params_count; $i++) { 
-			if (array_search($params_keys[$i], $bid_arr) != false) {
+		for ($i=0; $i < $params_count; $i++) {
+			if (array_search($params_keys[$i], $bid_arr) !== false) {
 				$params['bid'] = 1;
 			}
-			if (array_search($params_keys[$i], $contract_arr) != false) {
+			if (array_search($params_keys[$i], $contract_arr) !== false) {
 				$params['contract'] = 1;
 			}
-			if (array_search($params_keys[$i], $finish_arr) != false) {
+			if (array_search($params_keys[$i], $finish_arr) !== false) {
 				$params['finish'] = 1;
 			}
 		}
-		var_dump($params);
-		die();
+		return $params;
 	}
 }
 ?>

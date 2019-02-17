@@ -1067,9 +1067,9 @@
   }
 }
 ```
-## 项目数据
+## 项目数据数量
 
-**url**: /project/getProjectData
+**url**: /project/getProjectDataNum
 
 **请求方式**：get
 
@@ -1083,19 +1083,19 @@
 | project_use   | string|工程用途 |
 | bid_way   | string|招标类型 |
 | bid_money   | int|中标金额 |
-| bid_date_start   | date|中标日期开始 |
-| bid_date_end   | date|中标日期结束 |
+| bid_date_start   | string|中标日期开始 |
+| bid_date_end   | string|中标日期结束 |
 | contract_type   | string|合同类别 |
 | contract_money   | int|合同金额 |
 | contract_scale   | int|建设规模 |
-| contract_date_start   | date|合同签订日期开始 |
-| contract_date_end   | date|合同签订时期结束 |
+| contract_date_start   | string|合同签订日期开始 |
+| contract_date_end   | string|合同签订时期结束 |
 | finish_money   | int|实际造价 |
 | finish_area   | int|实际面积 |
-| finish_realbegin_start   | date|实际开工日期开始 |
-| finish_realbegin_end   | date|实际开工日期结束 |
-| finish_realfinish_start   | date|实际竣工验收日期开始 |
-| finish_realfinish_end   | date|实际竣工验收日期结束 |
+| finish_realbegin_start   | string|实际开工日期开始 |
+| finish_realbegin_end   | string|实际开工日期结束 |
+| finish_realfinish_start   | string|实际竣工验收日期开始 |
+| finish_realfinish_end   | string|实际竣工验收日期结束 |
 | page   | int| 页数：例如1,2,3,4,5 我设置了默认值 1|
 | page_size   | int| 每页数量：例如10,20 我设置了默认值 10  |
 
@@ -1105,16 +1105,17 @@
 | :--------------: | ------ | --------------------------|
 |       code       | int    | 错误码                     |
 |       msg        | string | 消息                       |
-|       page        | int | 当前页数                     |
-|       page_size        | int | 每页个数                  |
-|       total_page        | int | 总页数                    |
-|       total_num        | int | 总个数                       |
-|       data       | array    | 返回符合筛选条件的项目数据 |
+|       data       | int    | 返回符合筛选条件的项目数量 |
 
 
 **返回示例：**
 
 ```
 示例1：
-
+/project/getProjectDataNum?finish_realbegin_start='2018-01-01'&finish_realbegin_end='2018-02-02'&project_use='其他'&project_nature='改建'
+{
+  "code": 1,
+  "msg": "success",
+  "data": 82
+}
 ```
