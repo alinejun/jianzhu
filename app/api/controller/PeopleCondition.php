@@ -16,6 +16,7 @@ class PeopleCondition extends ApiBase{
     public function __construct()
     {
         $this->people_register = new PeopleRegister();
+        parent::__construct();
     }
     public function getCondition()
     {
@@ -80,12 +81,15 @@ class PeopleCondition extends ApiBase{
      * @request $register_major 专业
      * @request $num  人数
      */
-    public function getData()
+    public function getData1()
     {
 
         $data = input('post.');
-        $this->getCompany($data) ;exit;
-        $list = $data['type']==1 ? $this->getCompany($data) : $this->getPeople($data);
+        $list = $data['type']==1 ?  $this->getCompany($data) : $this->getPeople($data);
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] =  Code::$MSG[$refer['code']];
+        $refer['data'] = $list;
+        return $this->apiReturn($refer);
     }
 
     public function getCompany($data)
@@ -100,15 +104,11 @@ class PeopleCondition extends ApiBase{
         if(!$list){
             return false;
         }
-        echo $this->people_register->getLastSql();exit;
+
         foreach ($list as $k=>&$value){
             $map['company_url'] = $value['company_url'];
             $value['company_info'] = \app\api\model\Company::getComanyInfo($map,'*');
         }
-
-        $refer['code'] = Code::SUCCESS;
-        $refer['msg'] =  Code::$MSG[$refer['code']];
-        $refer['data'] = $list->toArray();
-        return $this->apiReturn($refer);
+        return $list;
     }
 }
