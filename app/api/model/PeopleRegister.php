@@ -51,7 +51,7 @@ class PeopleRegister extends ApiBase{
         $countSql =  "select count(*) as count from ($countSqlString) as a";
         $list = $this->query($sql);
         $countRes= $this->query($countSql);
-        $count = $countRes? $countRes:0;
+        $count = $countRes[0]['count']? $countRes[0]['count']:0;
         return ['list'=>$list,'count'=>$count];
     }
 }

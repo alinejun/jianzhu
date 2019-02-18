@@ -81,7 +81,7 @@ class PeopleCondition extends ApiBase{
      * @request $register_major 专业
      * @request $num  人数
      */
-    public function getData1()
+    public function getCompanyByPeople()
     {
 
         $data = input('post.');
