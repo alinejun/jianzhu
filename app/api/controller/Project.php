@@ -76,13 +76,16 @@ class Project extends Controller
 	#项目数据查询数量
     public function getProjectDataNum(){
 	    $res = $this->getProjectData();
+	    if (empty($_GET)){
+			return 'no params,no data';
+		}
 	    $result['code'] = 1;
 	    $result['msg'] = 'success';
 	    $result['data'] = count($res);
 	    $result = json_encode($result);
 	    return $result;
     }
-	#项目数据查询controller
+	#项目数据查询得到company_url
 	public function getProjectData(){
 		if (empty($_GET)){
 			return 'no params,no data';
