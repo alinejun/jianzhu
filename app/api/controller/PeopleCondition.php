@@ -6,12 +6,18 @@
  * Time: 23:15
  */
 namespace app\api\controller;
+use app\api\model\People;
 use app\api\model\PeopleRegister;
 use app\Code;
 
 class PeopleCondition extends ApiBase{
 
-
+    protected $people_register;
+    public function __construct()
+    {
+        $this->people_register = new PeopleRegister();
+        parent::__construct();
+    }
     public function getCondition()
     {
         $data['first'] = [
@@ -64,10 +70,57 @@ class PeopleCondition extends ApiBase{
             if(!empty($value['register_major'])){
                 $major[] = $value['register_major'];
             }
-
         }
         $refer['data'] = $major;
         return $this->apiReturn($refer);
     }
 
+    /**
+     * @request $type 1:企业 2：人员
+     * @request $register_type 注册类型
+     * @request $register_major 专业
+     * @request $num  人数
+     */
+    public function getCompanyByPeople()
+    {
+
+        $data = input('post.');
+        $list = $this->getCompany($data) ;
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] =  Code::$MSG[$refer['code']];
+        $refer['company_list'] = $list['company_list'];
+        $refer['company_count'] = $list['count'];
+        return $this->apiReturn($refer);
+
+
+    }
+
+    public function getCompany($data)
+    {
+        ini_set('max_execution_time',0);
+        $where['register_type']  =  $data['register_type'];
+        $where['register_major'] =  $data['register_major'];
+        empty($data['pageSize']) and $data['pageSize'] = 10;
+        empty($data['pageNum'])  and $data['pageNum'] = 0;
+        empty($data['num'])      and $data['num'] = 0;
+        //判断是否为多条件
+        if(count(explode(',',trim($data['register_type'])))>1){
+            $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$data['num']);
+            if(!$list){
+            return false;
+            }
+        }else{
+            $filed = "*,count('company_url')";
+            $list = $this->people_register->getPeople($where,$filed,$data['pageSize'],$data['pageNum'],$data['num']);
+            if(!$list){
+                return false;
+            }
+        }
+        $company_list = [];
+        foreach ($list['list'] as $k=>&$value){
+            $map['company_url'] = $value['company_url'];
+            $company_list[] = \app\api\model\Company::getComanyInfo($map,'*');
+        }
+        return ['company_list'=>$company_list,'count'=>$list['count']];
+    }
 }

@@ -98,5 +98,17 @@ class Company extends Model
     public static function getJzCpnyMiscdct($company_url){
         return [];
     }
+
+    /**
+     * 获取公司详情
+     * @param int $where
+     * @param string $filed
+     * @param int $pageSize
+     * @param int $pageNum
+     */
+    public static function getComanyInfo($where=1,$filed="*",$pageSize=10,$pageNum=0)
+    {
+        return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select();
+    }
 }
 ?>
