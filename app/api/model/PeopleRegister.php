@@ -23,11 +23,35 @@ class PeopleRegister extends ApiBase{
 
     public function getPeople($where=1,$filed="*",$pageSize=10,$pageNum=0,$having='')
     {
-       $sql =  self::where($where)
-                 ->field($filed)
-                 ->limit($pageSize*$pageNum,$pageSize)
-                 ->group('company_url');
+       $sql =  self::where($where)->field($filed)
+             ->limit($pageSize*$pageNum,$pageSize)
+             ->group('company_url');
        $list =  !empty($having) ? $sql->having("count('company_url')>$having") ->select() : $sql->select();
-       return $list;
+       $query = "select count(*) as count from (".self::where($where)->distinct(true)->field('company_url')->buildSql().") as a"; //统计总数
+       $count_res = $this->query($query);
+       $count = $count_res[0]['count']?$count_res[0]['count']:0;
+       return ['list'=>$list,'count'=>$count];
+    }
+
+    public function getPeopleMultiple($data,$filed="company_url",$pageSize=10,$pageNum=0)
+    {
+        $register_type = explode(',',$data['register_type']);
+        $register_major = explode(',',$data['register_major']);
+        //判断条件是否相等
+        if(count($register_type)!=count($register_major)){
+            return false;
+        }
+        foreach ($register_type as $k=>$value){
+            $where[] = "( register_type = '$value' and  register_major= '$register_major[$k]' )";
+        }
+        $offset = ($pageNum)*$pageSize;
+        $condition =count($register_type) ;
+        $sql = $countSqlString = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . "GROUP BY company_url HAVING COUNT('company_url')>$condition";
+        $sql .= " LIMIT $offset,$pageSize";
+        $countSql =  "select count(*) as count from ($countSqlString) as a";
+        $list = $this->query($sql);
+        $countRes= $this->query($countSql);
+        $count = $countRes[0]['count']? $countRes[0]['count']:0;
+        return ['list'=>$list,'count'=>$count];
     }
 }
