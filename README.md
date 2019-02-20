@@ -1298,3 +1298,153 @@
 }
 
 ```
+
+## 项目筛选条件
+
+**url**: /project/projectcondition
+
+**请求方式**：get
+
+
+
+**请求参数：**
+
+无
+
+**返回参数：**
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | --------------------------|
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       data       | array  | 返回数据                   |
+|     project_type | array  | 项目分类数组               |
+|   project_nature | array  | 建设性质数组               |
+|   project_use    | array  | 工程用途数组               |
+|      bid_way     | array  | 招标类型数组               |
+|   contract_type  | array  | 合同类别数组               |
+
+
+
+**返回示例：**
+
+```
+示例1：
+/project/projectcondition
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "project_type": [
+      "房屋建筑工程",
+      "市政工程",
+      "其他"
+    ],
+    "project_nature": [
+      "新建",
+      "改建",
+      "其他",
+      "迁建",
+      "扩建",
+      "恢复"
+    ],
+    "project_use": [
+      "道路",
+      "其他",
+      "工业建筑",
+      "居住建筑",
+      "商住楼",
+      "公共建筑",
+      "科教文卫建筑",
+      "桥隧",
+      "交通运输类",
+      "办公建筑",
+      "公共交通",
+      "农业建筑",
+      "商业建筑",
+      "排水",
+      "风景园林",
+      "给水",
+      "居住建筑配套工程",
+      "工业建筑配套工程",
+      "公共建筑配套工程",
+      "燃气",
+      "旅游建筑",
+      "热力",
+      "环境园林",
+      "农业建筑配套工程",
+      "通信建筑"
+    ],
+    "bid_way": [
+      "公开招标",
+      "邀请招标",
+      "直接委托",
+      "其他"
+    ],
+    "contract_type": [
+      "施工总包",
+      "监理",
+      "设计",
+      "勘察",
+      "施工分包",
+      "工程总承包",
+      "专业承包",
+      "施工劳务",
+      "项目管理",
+      "设计施工一体化"
+    ]
+  }
+}
+```
+## 项目数据数量
+
+**url**: /project/getProjectDataNum
+
+**请求方式**：get
+
+
+**请求参数：**
+
+| 字段名 | 类型 | 说明 |
+| ------ | ---- | ---- |
+| project_type   | string|项目分类 |
+| project_nature | string|建设性质 |
+| project_use   | string|工程用途 |
+| bid_way   | string|招标类型 |
+| bid_money   | int|中标金额 |
+| bid_date_start   | string|中标日期开始 |
+| bid_date_end   | string|中标日期结束 |
+| contract_type   | string|合同类别 |
+| contract_money   | int|合同金额 |
+| contract_scale   | int|建设规模 |
+| contract_date_start   | string|合同签订日期开始 |
+| contract_date_end   | string|合同签订时期结束 |
+| finish_money   | int|实际造价 |
+| finish_area   | int|实际面积 |
+| finish_realbegin_start   | string|实际开工日期开始 |
+| finish_realbegin_end   | string|实际开工日期结束 |
+| finish_realfinish_start   | string|实际竣工验收日期开始 |
+| finish_realfinish_end   | string|实际竣工验收日期结束 |
+| page   | int| 页数：例如1,2,3,4,5 我设置了默认值 1|
+| page_size   | int| 每页数量：例如10,20 我设置了默认值 10  |
+
+**返回参数：**
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | --------------------------|
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       data       | int    | 返回符合筛选条件的项目数量 |
+
+
+**返回示例：**
+
+```
+示例1：
+/project/getProjectDataNum?finish_realbegin_start='2018-01-01'&finish_realbegin_end='2018-02-02'&project_use='其他'&project_nature='改建'
+{
+  "code": 1,
+  "msg": "success",
+  "data": 82
+}
+```
