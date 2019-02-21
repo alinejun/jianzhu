@@ -41,12 +41,14 @@ class PeopleRegister extends ApiBase{
         if(count($register_type)!=count($register_major)){
             return false;
         }
+        $map = [];
         foreach ($register_type as $k=>$value){
-            $where[] = "( register_type = '$value' and  register_major= '$register_major[$k]' )";
+            $map[]= " CONCAT_WS('--',register_type,register_major) =  '$value--$register_major[$k]' ";
         }
-        $offset = ($pageNum)*$pageSize;
-        $condition =count($register_type) ;
-        $sql = $countSqlString = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . "GROUP BY company_url HAVING COUNT('company_url')>$condition";
+        $where = array_unique($map);
+        $offset = $pageNum*$pageSize;
+        $condition =count($where);
+        $sql = $countSqlString = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . " GROUP BY company_url HAVING COUNT('company_url')>$condition";
         $sql .= " LIMIT $offset,$pageSize";
         $countSql =  "select count(*) as count from ($countSqlString) as a";
         $list = $this->query($sql);

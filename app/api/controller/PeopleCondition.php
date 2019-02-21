@@ -39,7 +39,6 @@ class PeopleCondition extends ApiBase{
             ['register_certnum'=>'DF173600132',  'register_type'=>'注册电气工程师（发输变电）','pid'=>2],
             ['register_certnum'=>'DG102100226',  'register_type'=>'注册电气工程师（供配电）','pid'=>2],
             ['register_certnum'=>'F103700037',  'register_type'=>'注册化工工程师','pid'=>2],
-            ['register_certnum'=>'建[造]03370015216',  'register_type'=>'注册造价工程师','pid'=>4],
             ['register_certnum'=>'00234634',  'register_type'=>'一级注册建造师','pid'=>4],
             ['register_certnum'=>'2155683',  'register_type'=>'二级注册建造师','pid'=>4],
             ['register_certnum'=>'00018382',  'register_type'=>'一级临时注册建造师','pid'=>4],
@@ -104,18 +103,9 @@ class PeopleCondition extends ApiBase{
         empty($data['pageSize']) and $data['pageSize'] = 10;
         empty($data['pageNum'])  and $data['pageNum'] = 0;
         empty($data['num'])      and $data['num'] = 0;
-        //判断是否为多条件
-        if(count(explode(',',trim($data['register_type'])))>1){
-            $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$data['num']);
-            if(!$list){
+        $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$data['num']);
+        if(!$list){
             return false;
-            }
-        }else{
-            $filed = "*,count('company_url')";
-            $list = $this->people_register->getPeople($where,$filed,$data['pageSize'],$data['pageNum'],$data['num']);
-            if(!$list){
-                return false;
-            }
         }
         $company_list = [];
         foreach ($list['list'] as $k=>&$value){
