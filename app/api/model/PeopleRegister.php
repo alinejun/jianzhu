@@ -47,7 +47,7 @@ class PeopleRegister extends ApiBase{
         }
         $where = array_unique($map);
         $offset = $pageNum*$pageSize;
-        $condition =count($where);
+        $condition =count($where)-1;
         $sql = $countSqlString = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . " GROUP BY company_url HAVING COUNT('company_url')>$condition";
         $sql .= " LIMIT $offset,$pageSize";
         $countSql =  "select count(*) as count from ($countSqlString) as a";
