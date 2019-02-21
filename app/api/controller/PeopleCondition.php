@@ -39,7 +39,6 @@ class PeopleCondition extends ApiBase{
             ['register_certnum'=>'DF173600132',  'register_type'=>'注册电气工程师（发输变电）','pid'=>2],
             ['register_certnum'=>'DG102100226',  'register_type'=>'注册电气工程师（供配电）','pid'=>2],
             ['register_certnum'=>'F103700037',  'register_type'=>'注册化工工程师','pid'=>2],
-            ['register_certnum'=>'建[造]03370015216',  'register_type'=>'注册造价工程师','pid'=>4],
             ['register_certnum'=>'00234634',  'register_type'=>'一级注册建造师','pid'=>4],
             ['register_certnum'=>'2155683',  'register_type'=>'二级注册建造师','pid'=>4],
             ['register_certnum'=>'00018382',  'register_type'=>'一级临时注册建造师','pid'=>4],
