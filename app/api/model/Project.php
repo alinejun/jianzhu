@@ -22,17 +22,17 @@ class Project extends model{
         $where[] = " 1=1 ";
         $count_filter_tables = 0;
         if ($params_arr['bid'] == 1){
-            $join[] = ' left join jz_project_bid pb on pb.project_url = p.project_url ';
+            $join[] = ' join jz_project_bid pb on pb.project_url = p.project_url ';
             $field[] = 'pb.company_url as pb_company_url';
             $count_filter_tables++;
         }
         if ($params_arr['contract'] == 1){
-            $join[] = ' left join jz_project_contract pc on pc.project_url = p.project_url ';
+            $join[] = ' join jz_project_contract pc on pc.project_url = p.project_url ';
             $field[] = 'pc.company_inpurl as pc_company_url';
             $count_filter_tables++;
         }
         if ($params_arr['finish'] == 1){
-            $join[] = ' left join jz_project_finish pf on pf.project_url = p.project_url ';
+            $join[] = ' join jz_project_finish pf on pf.project_url = p.project_url ';
             $field[] = 'pf.company_dsnurl as pf_company_url0';
             $field[] = 'pf.company_spvurl as pf_company_url1';
             $field[] = 'pf.company_csturl as pf_company_url2';
@@ -45,7 +45,7 @@ class Project extends model{
         $field_str = implode(',',$field);
         $where_str = implode(' and ',$where);
         #sql
-        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 1000";
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 1500";
         #do-sql
         $res = Db::query($sql);
         #process
@@ -83,28 +83,31 @@ class Project extends model{
             #没有选择项目子表的筛选项，只选择了基础筛选字段
             if ($count_res > 0){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[] = $res[$i]['project_url'];
+                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
         }elseif ($count_filter_tables == 1){
             #如果只选了招投标一个
             if ($params_arr['bid'] == 1){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[] = $res[$i]['pb_company_url'];
+                    $result[$i]['company_url'] = $res[$i]['pb_company_url'];
+                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
             #如果只选了合同备案一个
             if ($params_arr['contract'] == 1){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[] = $res[$i]['pc_company_url'];
+                    $result[$i]['company_url'] = $res[$i]['pc_company_url'];
+                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
             #如果只选了竣工验收一个
             if ($params_arr['finish'] == 1){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[] = $res[$i]['pf_company_url0'];
-                    $result[] = $res[$i]['pf_company_url1'];
-                    $result[] = $res[$i]['pf_company_url2'];
+                    $result[$i]['company_url'] = $res[$i]['pf_company_url0'];
+                    $result[$i]['company_url'] = $res[$i]['pf_company_url1'];
+                    $result[$i]['company_url'] = $res[$i]['pf_company_url2'];
+                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
         }elseif ($count_filter_tables == 2){
@@ -112,7 +115,8 @@ class Project extends model{
             if ($params_arr['bid'] == 1 && $params_arr['contract'] == 1) {
                 for ($i = 0; $i < $count_res; $i++) { 
                     if ($res[$i]['pb_company_url'] == $res[$i]['pc_company_url']) {
-                        $result[] = $res[$i]['pb_company_url'];
+                        $result[$i]['company_url'] = $res[$i]['pb_company_url'];
+                        $result[$i]['project_url'] = $res[$i]['project_url'];
                     }
                 }
             }
@@ -120,7 +124,8 @@ class Project extends model{
             if ($params_arr['bid'] == 1 && $params_arr['finish'] == 1) {
                 for ($i = 0; $i < $count_res; $i++) { 
                     if ($res[$i]['pb_company_url'] == $res[$i]['pf_company_url0'] || $res[$i]['pb_company_url'] == $res[$i]['pf_company_url1'] || $res[$i]['pb_company_url'] == $res[$i]['pf_company_url2']) {
-                        $result[] = $res[$i]['pb_company_url'];
+                        $result[$i]['company_url'] = $res[$i]['pb_company_url'];
+                        $result[$i]['project_url'] = $res[$i]['project_url'];
                     }
                 }
             }
@@ -128,7 +133,8 @@ class Project extends model{
             if ($params_arr['contract'] == 1 && $params_arr['finish'] ==1) {
                 for ($i = 0; $i < $count_res; $i++) { 
                     if ($res[$i]['pc_company_url'] == $res[$i]['pf_company_url0'] || $res[$i]['pc_company_url'] == $res[$i]['pf_company_url1'] || $res[$i]['pc_company_url'] == $res[$i]['pf_company_url2']) {
-                        $result[] = $res[$i]['pc_company_url'];
+                        $result[$i]['company_url'] = $res[$i]['pc_company_url'];
+                        $result[$i]['project_url'] = $res[$i]['project_url'];
                     }
                 }
             }
@@ -136,12 +142,13 @@ class Project extends model{
             #同时选中了招投标、合同备案、竣工验收
             for ($i = 0; $i < $count_res; $i++) { 
                 if (($res[$i]['pb_company_url'] == $res[$i]['pc_company_url'] && $res[$i]['pc_company_url'] == $res[$i]['pf_company_url0']) || ($res[$i]['pb_company_url'] == $res[$i]['pc_company_url'] && $res[$i]['pc_company_url'] == $res[$i]['pf_company_url1']) || ($res[$i]['pb_company_url'] == $res[$i]['pc_company_url'] && $res[$i]['pc_company_url'] == $res[$i]['pf_company_url2'])) {
-                    $result[] = $res[$i]['pb_company_url'];
+                    $result[$i]['company_url'] = $res[$i]['pb_company_url'];
+                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
         }
-        #company_url去重
-        $result = array_unique($result);
+//        $result = array_unique($result);
+//        $result = array_values($result);
         return $result;
     }
 }
