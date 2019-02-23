@@ -33,7 +33,7 @@ class Index extends ApiBase
     {
         $requset =file_get_contents('php://input');
         $requsetData = json_decode($requset,true);
-        $arr =$this->get_arr($requsetData['request']); //判断是否存在多个不为空的条件
+        $arr =$this->getArr($requsetData['request']);   //判断是否存在多个不为空的条件
         $return = $this->apiReturn(CodeBase::$requestNotData);
         count($arr) >1   and  $return = $this->multipleApi($arr);
         count($arr) == 1 and  $return = $this->aloneApi($arr);
@@ -75,7 +75,7 @@ class Index extends ApiBase
         exit;
     }
 
-    function get_arr($arr)
+    function getArr($arr)
     {
         foreach ($arr as $k=>$v)
         {
