@@ -58,9 +58,9 @@ class PeopleCondition extends ApiBase{
     }
 
     //根据证书编号获取专业信息
-    public function getMajor(){
+    public function getMajor($data){
         $peopleRegister = new PeopleRegister();
-        $register_type = input('post.register_type');
+        $register_type =$data['register_type'];
         $where['register_type'] = $register_type;
         $typeName = $peopleRegister->getMajorByType($where,'register_major','register_major');
         $refer['code'] = Code::SUCCESS;
@@ -81,18 +81,14 @@ class PeopleCondition extends ApiBase{
      * @request $register_major 专业
      * @request $num  人数
      */
-    public function getCompanyByPeople()
+    public function getCompanyByPeople($data=[])
     {
-
-        $data = input('post.');
         $list = $this->getCompany($data) ;
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] =  Code::$MSG[$refer['code']];
         $refer['company_list'] = $list['company_list'];
         $refer['company_count'] = $list['count'];
         return $this->apiReturn($refer);
-
-
     }
 
     public function getCompany($data)
