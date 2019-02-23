@@ -25,5 +25,8 @@ class CodeBase
     public static $dataSignError        = [API_CODE_NAME => 1000004,   API_MSG_NAME => '数据签名错误'];
     
     public static $userTokenError       = [API_CODE_NAME => 1000005,   API_MSG_NAME => '用户Toekn解析错误'];
+
+
+    public static $requestNotData      = [API_CODE_NAME => 2000001,   API_MSG_NAME => '请求参数不能为空'];
     
 }
