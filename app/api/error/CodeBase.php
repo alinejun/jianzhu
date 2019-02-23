@@ -28,5 +28,5 @@ class CodeBase
 
 
     public static $requestNotData      = [API_CODE_NAME => 2000001,   API_MSG_NAME => '请求参数不能为空'];
-    
+    public static $requestNotAPI      = [API_CODE_NAME => 2000002,   API_MSG_NAME => '未分配接口'];
 }
