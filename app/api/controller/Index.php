@@ -26,7 +26,7 @@ class Index extends ApiBase
      */
     public function index()
     {
-        echo '11';exit;
+        echo '建筑信息查询平台';exit;
     }
 
     public function getData()
