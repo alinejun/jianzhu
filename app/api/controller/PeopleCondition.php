@@ -120,18 +120,26 @@ class PeopleCondition extends ApiBase{
 
     public function getPeopleDetails()
     {
-        $where['register_type']  = input('get.register_type');
-        $where['register_major'] =  input('get.register_major');
-        $company_url    =  input('get.company_url');
-        $res = (new PeopleRegister())->getPeopleID($where,$company_url,'people_id,register_type,register_major,register_unit');
+        $where['register_type'] = input('get.register_type');
+        $where['register_major'] = input('get.register_major');
+        $company_url = input('get.company_url');
+        $res = (new PeopleRegister())->getPeopleID($where, $company_url, 'people_id,register_type,register_major,register_unit');
         //$peopleInfo = [];
-
-        foreach ($res as &$value){
-            $map['people_id'] =$value['people_id'];
-            $value['project'] = (new PeopleProject())->getData($map,"project_name",0,1000);
-            $value['people_miscdct'] = (new PeopleMiscdct())->getData($map,"miscdct_name,miscdct_content,miscdct_dept,miscdct_date",0,1000);
-            $value['people_change'] = (new PeopleChange())->getData($map,"change_type,change_record",0,1000);
+        if ($res) {
+            $refer['code'] = Code::ERROR;
+            $refer['msg'] = Code::$MSG[$refer['code']];
+            $this->apiReturn($refer);
         }
-        dump($res);exit;
+        foreach ($res as &$value) {
+            $map['people_id'] = $value['people_id'];
+            $value['project'] = (new PeopleProject())->getData($map, "project_name", 0, 1000);
+            $value['people_miscdct'] = (new PeopleMiscdct())->getData($map, "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
+            $value['people_change'] = (new PeopleChange())->getData($map, "change_type,change_record", 0, 1000);
+        }
+
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] = Code::$MSG[$refer['code']];
+        $refer['people_info'] = $res;
+        $this->apiReturn($refer);
     }
 }

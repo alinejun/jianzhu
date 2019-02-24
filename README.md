@@ -519,7 +519,324 @@
 }
 ```
 
+## 人员详情
 
+**url**: /people_condition/getPeopleDetail
+
+**请求方式**：post
+
+
+
+**请求参数：**
+
+
+| 字段名 | 类型 | 说明 |
+| ------ | ---- | ---- |
+| register_type   | string|多条件以逗号隔开，如：一级注册建造师，二级注册建造师|
+| register_major   | string|多条件以逗号隔开，如：建筑工程，机电工程|
+| company_url   | int|公司url|
+
+**返回参数（后面补）：**
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       company_list       | array  | 返回公司数据                   |
+|        id        | int    | id                       |
+
+**返回示例：**
+
+```
+{
+    "code": 1,
+    "msg": "成功",
+    "company_list": [
+        [
+            {
+                "id": 232679,
+                "company_url": "001607220057194462",
+                "company_name": "苏州市新源建设工程有限公司",
+                "company_creditnum": "91320594780268314T",
+                "company_legalreprst": "蔡苏建",
+                "company_regtype": "有限责任公司（自然人投资或控股）",
+                "company_regadd": "江苏省",
+                "company_manageadd": "江苏省苏州市苏州工业园区星海国际商务广场1幢808室",
+                "create_time": "2019-01-22 09:31:21",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 5899,
+                "company_url": "001607220057194463",
+                "company_name": "江苏强安工程建设有限公司",
+                "company_creditnum": "91320583674907784J",
+                "company_legalreprst": "李丽",
+                "company_regtype": "有限责任公司（自然人独资）",
+                "company_regadd": "江苏省",
+                "company_manageadd": "江苏省苏州市昆山市开发区华敏世家花园6号楼27室",
+                "create_time": "2019-01-21 16:46:58",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 9553,
+                "company_url": "001607220057194464",
+                "company_name": "上海首正幕墙装饰工程有限公司",
+                "company_creditnum": "91310117769414851X",
+                "company_legalreprst": "李红云",
+                "company_regtype": "有限责任公司（国内合资）",
+                "company_regadd": "上海市",
+                "company_manageadd": "新浜镇赵王一字路71号",
+                "create_time": "2019-01-21 16:56:26",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232735,
+                "company_url": "001607220057194465",
+                "company_name": "江苏棵棵树装饰工程有限公司",
+                "company_creditnum": "91321181595623636J",
+                "company_legalreprst": "张冬青",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "江苏省",
+                "company_manageadd": "江苏省镇江市丹阳市司徒镇张寺村122省道北侧",
+                "create_time": "2019-01-22 09:31:28",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 9547,
+                "company_url": "001607220057194468",
+                "company_name": "浙江千秋装饰工程有限公司",
+                "company_creditnum": "91330782677204726D",
+                "company_legalreprst": "朱晓林",
+                "company_regtype": "私营有限责任公司(自然人控股或私营性质企业控股)",
+                "company_regadd": "浙江省",
+                "company_manageadd": "浙江省义乌市北苑街道望道路337号3号楼6楼",
+                "create_time": "2019-01-21 16:56:23",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232717,
+                "company_url": "001607220057194470",
+                "company_name": "江苏恒维建设工程有限公司",
+                "company_creditnum": "913208000535020631",
+                "company_legalreprst": "陈建",
+                "company_regtype": "有限责任公司（自然人独资）",
+                "company_regadd": "江苏省",
+                "company_manageadd": "江苏省淮安市经济技术开发区南京北路6号6幢6室",
+                "create_time": "2019-01-22 09:31:27",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232656,
+                "company_url": "001607220057194471",
+                "company_name": "福建腾晖环境建设集团有限公司",
+                "company_creditnum": "913506007173745365",
+                "company_legalreprst": "黄恩怀",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "福建省",
+                "company_manageadd": "福建省漳州高新区九湖镇长福村花卉交易中心大楼",
+                "create_time": "2019-01-22 09:31:18",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 235284,
+                "company_url": "001607220057194472",
+                "company_name": "江苏广宁建设有限公司",
+                "company_creditnum": "913208917539242830",
+                "company_legalreprst": "赵广成",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "江苏省",
+                "company_manageadd": "淮安经济开发区开发大道158号",
+                "create_time": "2019-01-22 09:35:51",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 2944,
+                "company_url": "001607220057194474",
+                "company_name": "北京雷森建筑工程有限公司",
+                "company_creditnum": "911101021015966406",
+                "company_legalreprst": "雷雨强",
+                "company_regtype": "有限责任公司（自然人投资或控股）",
+                "company_regadd": "北京市",
+                "company_manageadd": "北京市西城区报国寺夹道1号西院报国寺招待所017室",
+                "create_time": "2019-01-21 16:31:32",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 3038,
+                "company_url": "001607220057194481",
+                "company_name": "四川米兰建筑装饰设计工程有限公司",
+                "company_creditnum": "30934873-4 / 510000000391563",
+                "company_legalreprst": "黄莉",
+                "company_regtype": "有限责任公司（自然人投资或控股）",
+                "company_regadd": "四川省",
+                "company_manageadd": "成都市锦江区三色路163号1栋14层1402号",
+                "create_time": "2019-01-21 16:31:35",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 3236,
+                "company_url": "001607220057194483",
+                "company_name": "北京华清博雅环保工程有限公司",
+                "company_creditnum": "911101085923492217",
+                "company_legalreprst": "陈金光",
+                "company_regtype": "其他有限责任公司",
+                "company_regadd": "北京市",
+                "company_manageadd": "北京市海淀区上地西路8号院1-4号楼1层4102",
+                "create_time": "2019-01-21 16:31:43",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 30146,
+                "company_url": "001607220057194485",
+                "company_name": "北京利通顺达建筑工程有限公司",
+                "company_creditnum": "91110115358992497A",
+                "company_legalreprst": "崔书芳",
+                "company_regtype": "有限责任公司（自然人投资或控股）",
+                "company_regadd": "北京市",
+                "company_manageadd": "北京市大兴区三合北巷7号院5号1层",
+                "create_time": "2019-01-21 17:29:51",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232638,
+                "company_url": "001607220057194494",
+                "company_name": "灵寿县第三建筑公司",
+                "company_creditnum": "91130126721662290C",
+                "company_legalreprst": "候小三",
+                "company_regtype": "集体所有制",
+                "company_regadd": "河北省",
+                "company_manageadd": "灵寿县城北街",
+                "create_time": "2019-01-22 09:31:15",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232637,
+                "company_url": "001607220057194498",
+                "company_name": "河北建研科技有限公司",
+                "company_creditnum": "911301007373910341",
+                "company_legalreprst": "叶金成",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "河北省",
+                "company_manageadd": "石家庄市裕华区槐中路244号",
+                "create_time": "2019-01-22 09:31:15",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 3161,
+                "company_url": "001607220057194499",
+                "company_name": "北京富丰市政工程建设有限公司",
+                "company_creditnum": "911101068022233616",
+                "company_legalreprst": "徐军",
+                "company_regtype": "有限责任公司（法人独资）",
+                "company_regadd": "北京市",
+                "company_manageadd": "北京市丰台区科学城海鹰路9号2号楼(园区)",
+                "create_time": "2019-01-21 16:31:40",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 3204,
+                "company_url": "001607220057194500",
+                "company_name": "石家庄市延东电力工程有限公司",
+                "company_creditnum": "911301007454005196",
+                "company_legalreprst": "施龙宝",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "河北省",
+                "company_manageadd": "石家庄市桥西区中华南大街585号华府园银座4-1603室",
+                "create_time": "2019-01-21 16:31:42",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 5924,
+                "company_url": "001607220057194502",
+                "company_name": "河北省魏县第五建筑安装有限公司",
+                "company_creditnum": "91130434106870661A",
+                "company_legalreprst": "王振华",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "河北省",
+                "company_manageadd": "魏县陵园街8号",
+                "create_time": "2019-01-21 16:47:04",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232660,
+                "company_url": "001607220057194507",
+                "company_name": "任丘市华兴建筑安装有限公司",
+                "company_creditnum": "91130982700770049M",
+                "company_legalreprst": "刘德朋",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "河北省",
+                "company_manageadd": "任丘市北关村",
+                "create_time": "2019-01-22 09:31:19",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232672,
+                "company_url": "001607220057194508",
+                "company_name": "河北中冶润丰建设股份有限公司",
+                "company_creditnum": "911302001049134454",
+                "company_legalreprst": "王小平",
+                "company_regtype": "股份有限公司（非上市）",
+                "company_regadd": "河北省",
+                "company_manageadd": "唐山市丰润区银城铺二十二冶工业园区",
+                "create_time": "2019-01-22 09:31:21",
+                "is_end_quali": 1
+            }
+        ],
+        [
+            {
+                "id": 232642,
+                "company_url": "001607220057194509",
+                "company_name": "秦皇岛中科富斯信息科技有限公司",
+                "company_creditnum": "91130301063146322R",
+                "company_legalreprst": "高建中",
+                "company_regtype": "有限责任公司",
+                "company_regadd": "河北省",
+                "company_manageadd": "秦皇岛市经济技术开发区天马湖路4号恒热控股大厦四层",
+                "create_time": "2019-01-22 09:31:15",
+                "is_end_quali": 1
+            }
+        ]
+    ],
+    "company_count": 146893,
+    "exe_time": "70.835348"
+}
+```
 ## 企业筛选条件
 
 **url**: /companycondition/qualificationType
