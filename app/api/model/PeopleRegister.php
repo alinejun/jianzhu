@@ -56,4 +56,23 @@ class PeopleRegister extends ApiBase{
         $count = $countRes[0]['count']? $countRes[0]['count']:0;
         return ['list'=>$list,'count'=>$count];
     }
+
+    public function getPeopleID($data,$company_url,$filed)
+    {
+        $register_type = explode(',',$data['register_type']);
+        $register_major = explode(',',$data['register_major']);
+        //判断条件是否相等
+        if(count($register_type)!=count($register_major)){
+            return false;
+        }
+        $map = [];
+        foreach ($register_type as $k=>$value){
+            $map[]= " CONCAT_WS('--',register_type,register_major) =  '$value--$register_major[$k]' ";
+        }
+        $where = array_unique($map);
+        $sql = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . "and company_url=$company_url";
+        //dump($sql);exit;
+        $list = $this->query($sql);
+        return $list;
+    }
 }

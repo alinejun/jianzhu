@@ -151,4 +151,12 @@ class Project extends model{
 //        $result = array_values($result);
         return $result;
     }
+
+    /**
+     * @return mixed|void
+     */
+    public function getData($where=1,$field="*",$page=10,$num=0)
+    {
+        return $this->where($where)->field($field)->limit($num*$page,$page)->select();
+    }
 }

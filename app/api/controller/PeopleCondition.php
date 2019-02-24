@@ -7,7 +7,9 @@
  */
 namespace app\api\controller;
 use app\api\error\CodeBase;
-use app\api\model\People;
+use app\api\model\PeopleProject;
+use app\api\model\PeopleChange;
+use app\api\model\PeopleMiscdct;
 use app\api\model\PeopleRegister;
 use app\Code;
 
@@ -114,5 +116,22 @@ class PeopleCondition extends ApiBase{
             $company_list[] = \app\api\model\Company::getComanyInfo($map,'*');
         }
         return ['company_list'=>$company_list,'count'=>$list['count']];
+    }
+
+    public function getPeopleDetails()
+    {
+        $where['register_type']  = input('get.register_type');
+        $where['register_major'] =  input('get.register_major');
+        $company_url    =  input('get.company_url');
+        $res = (new PeopleRegister())->getPeopleID($where,$company_url,'people_id,register_type,register_major,register_unit');
+        //$peopleInfo = [];
+
+        foreach ($res as &$value){
+            $map['people_id'] =$value['people_id'];
+            $value['project'] = (new PeopleProject())->getData($map,"project_name",0,1000);
+            $value['people_miscdct'] = (new PeopleMiscdct())->getData($map,"miscdct_name,miscdct_content,miscdct_dept,miscdct_date",0,1000);
+            $value['people_change'] = (new PeopleChange())->getData($map,"change_type,change_record",0,1000);
+        }
+        dump($res);exit;
     }
 }
