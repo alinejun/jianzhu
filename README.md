@@ -1425,8 +1425,6 @@
 | finish_realbegin_end   | string|实际开工日期结束 |
 | finish_realfinish_start   | string|实际竣工验收日期开始 |
 | finish_realfinish_end   | string|实际竣工验收日期结束 |
-| page   | int| 页数：例如1,2,3,4,5 我设置了默认值 1|
-| page_size   | int| 每页数量：例如10,20 我设置了默认值 10  |
 
 **返回参数：**
 
@@ -1438,7 +1436,7 @@
 
 
 **返回示例：**
-
+ps:说明注释:所有返回数量的都是公司的数量
 ```
 示例1：
 /project/getProjectDataNum?finish_realbegin_start='2018-01-01'&finish_realbegin_end='2018-02-02'&project_use='其他'&project_nature='改建'
@@ -1446,5 +1444,346 @@
   "code": 1,
   "msg": "success",
   "data": 82
+}
+```
+
+## 项目数据详情
+
+**url**: /project/getProjectDataDetail
+
+**请求方式**：get
+
+**注意事项**
+1.page 和 page_size
+由于数据量庞大，所有就不统计 page_total 以及 total_num 了，前端只给下一页和上一页的按钮和自定义页面显示条数即可
+2.根据筛选项的不同会以不同的方式连接表来查询符合条件的项目
+**请求参数：**
+
+| 字段名 | 类型 | 说明 |
+| ------ | ---- | ---- |
+| project_type   | string|项目分类 |
+| project_nature | string|建设性质 |
+| project_use   | string|工程用途 |
+| bid_way   | string|招标类型 |
+| bid_money   | int|中标金额 |
+| bid_date_start   | string|中标日期开始 |
+| bid_date_end   | string|中标日期结束 |
+| contract_type   | string|合同类别 |
+| contract_money   | int|合同金额 |
+| contract_scale   | int|建设规模 |
+| contract_date_start   | string|合同签订日期开始 |
+| contract_date_end   | string|合同签订时期结束 |
+| finish_money   | int|实际造价 |
+| finish_area   | int|实际面积 |
+| finish_realbegin_start   | string|实际开工日期开始 |
+| finish_realbegin_end   | string|实际开工日期结束 |
+| finish_realfinish_start   | string|实际竣工验收日期开始 |
+| finish_realfinish_end   | string|实际竣工验收日期结束 |
+| page   | int| 页数：例如1,2,3,4,5 我设置了默认值 1|
+| page_size   | int| 每页数量：例如10,20 我设置了默认值 10  |
+
+**返回参数：**
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | --------------------------|
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       data       | int    | 返回符合筛选条件的项目数量     |
+|   project_name      |string|项目名称                      |
+|   project_type      |string|项目分类                      |
+|   project_nature    |string|建设性质                      |
+|   project_use       |string|工程用途                      |
+|   project_allmoney  |string|总投资                        |
+|   project_acreage   |string|总面积                        |
+|   bid_date          |date  |中标日期(y-m-d)               |
+|   bid_money         |string|中标金额(万元)                 |
+|   bid_pname         |string|项目经理／总监理工程师姓名       |
+|   bid_pnum          |string|项目经理／总监理工程师身份证号码  |
+|   bid_url           |string|网站招投标-详情页面             |
+|   contract_type     |string|合同类别                      |
+|   contract_money    |string|合同金额(万元)                 |
+|   contract_signtime |date  |合同签订日期                   |
+|   contract_scale    |string|建设规模                      |
+|   contract_add_url  |string|网站合同备案-详情页面          |
+|   finish_money      |string|实际造价(万元)                 |
+|   finish_area       |string|实际面积(平方米)               |
+|   finish_realbegin  |date  |实际开工日期                   |
+|   finish_realfinish |date  |实际竣工验收日期               |
+|   finish_unitdsn    |string|设计单位                      |
+|   finish_unitspv    |string|监理单位                      |
+|   finish_unitcst    |string|施工单位                      |
+|   finish_add_url    |string|网站竣工验收备案-详情页面      |
+
+
+**返回示例：**
+ps:说明注释:所有返回数量的都是公司的数量
+```
+示例1：
+/project/getProjectDataDetail?project_use='其他'&project_nature='改建'
+{
+  "code": 1,
+  "msg": "success",
+  "data": [
+    {
+      "project_name": "巴彦北路道路、雨水管道及路灯工程",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "3429（万元）",
+      "project_acreage": "-",
+      "bid_date": "2017-12-25",
+      "bid_money": "3429",
+      "bid_pname": "庞保军",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707063",
+      "contract_type": "施工总包",
+      "contract_money": "3429",
+      "contract_signtime": "2007-09-10",
+      "contract_scale": "新建道路全长2412米，雨水管道工程4109米，路灯工程4824米",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2052699",
+      "finish_money": "6291.72",
+      "finish_area": "-",
+      "finish_realbegin": "2007-09-22",
+      "finish_realfinish": "2015-01-27",
+      "finish_unitdsn": "呼和浩特市市政工程设计研究院",
+      "finish_unitspv": "呼和浩特市宏祥市政工程咨询监理有限责任公司",
+      "finish_unitcst": "呼和浩特市政公路工程有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/403775"
+    },
+    {
+      "project_name": "附院地下通道",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "2811（万元）",
+      "project_acreage": "-",
+      "bid_date": "2017-12-25",
+      "bid_money": "2811",
+      "bid_pname": "庞保军",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707234",
+      "contract_type": "施工总包",
+      "contract_money": "2811",
+      "contract_signtime": "2010-06-29",
+      "contract_scale": "红线宽度12米，长度50米,共2407平米。",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2052704",
+      "finish_money": "3600",
+      "finish_area": "-",
+      "finish_realbegin": "2010-06-29",
+      "finish_realfinish": "2011-01-10",
+      "finish_unitdsn": "呼和浩特市同心德市政工程设计研究有限公司",
+      "finish_unitspv": "呼和浩特市宏祥市政工程咨询监理有限责任公司",
+      "finish_unitcst": "呼和浩特市政公路工程有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/403881"
+    },
+    {
+      "project_name": "世纪六路（锡林路-金一路）道路及雨污水管道工程",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "1710（万元）",
+      "project_acreage": "-",
+      "bid_date": "2010-10-30",
+      "bid_money": "1710",
+      "bid_pname": "刘志平",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707102",
+      "contract_type": "施工总包",
+      "contract_money": "1710",
+      "contract_signtime": "2010-11-01",
+      "contract_scale": "长：1424.83米，宽：40米",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2052807",
+      "finish_money": "1632.92",
+      "finish_area": "-",
+      "finish_realbegin": "2010-10-30",
+      "finish_realfinish": "2012-09-20",
+      "finish_unitdsn": "呼和浩特市同心德市政工程设计研究院有限公司",
+      "finish_unitspv": "呼和浩特市宏祥市政工程咨询监理有限责任公司",
+      "finish_unitcst": "呼和浩特市政公路工程有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/403822"
+    },
+    {
+      "project_name": "达旗民族中学教学楼改造与抗震加固工程",
+      "project_type": "房屋建筑工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "357.39（万元）",
+      "project_acreage": "4021（平方米）",
+      "bid_date": "2012-07-17",
+      "bid_money": "357.39",
+      "bid_pname": "张俊剑",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707418",
+      "contract_type": "施工总包",
+      "contract_money": "357.39",
+      "contract_signtime": "2012-07-20",
+      "contract_scale": "建筑面积为4021平米。",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053185",
+      "finish_money": "357.39",
+      "finish_area": "4201.00",
+      "finish_realbegin": "2012-07-20",
+      "finish_realfinish": "2012-08-25",
+      "finish_unitdsn": "达拉特旗宏阳建筑设计有限责任公司",
+      "finish_unitspv": "达旗方圆建设监理服务有限责任公司",
+      "finish_unitcst": "鄂尔多斯市明阳建筑有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/404012"
+    },
+    {
+      "project_name": "鄂前旗敖勒召其镇2012市政项目改造工程-第五标段-敖镇污水处理厂、附属工程及尾水工程",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "1918.73（万元）",
+      "project_acreage": "-",
+      "bid_date": "2012-05-18",
+      "bid_money": "1918.73",
+      "bid_pname": "燕伟",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707016",
+      "contract_type": "工程总承包",
+      "contract_money": "1918.73",
+      "contract_signtime": "2012-05-20",
+      "contract_scale": "污水处理厂建筑面积3000平方米，单层门式钢架结；尾水工程（再生水）共长9860.55m，中水厂（人工湖、环湖路）道路长度共2773.301m，宽4.5米。",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053229",
+      "finish_money": "1918.74",
+      "finish_area": "-",
+      "finish_realbegin": "2012-05-17",
+      "finish_realfinish": "2012-07-14",
+      "finish_unitdsn": "泛华建设集团有限公司",
+      "finish_unitspv": "陕西永明项目管理有限公司",
+      "finish_unitcst": "内蒙古兴源水务集团有限公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/403733"
+    },
+    {
+      "project_name": "杭锦旗锡尼镇旧城区道路、管网改造工程五标",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "1774.69（万元）",
+      "project_acreage": "-",
+      "bid_date": "2010-08-19",
+      "bid_money": "1774.69",
+      "bid_pname": "岳守荣",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707554",
+      "contract_type": "施工总包",
+      "contract_money": "1774.69",
+      "contract_signtime": "2010-08-20",
+      "contract_scale": "草原路，长度约1468米，宽约24米",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053322",
+      "finish_money": "1774.69",
+      "finish_area": "1487.22",
+      "finish_realbegin": "2010-08-20",
+      "finish_realfinish": "2011-06-30",
+      "finish_unitdsn": "中国中轻国际工程有限公司",
+      "finish_unitspv": "内蒙古广誉建设监理有限责任公司",
+      "finish_unitcst": "内蒙古巨达路桥有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/404198"
+    },
+    {
+      "project_name": "杭锦旗锡尼镇旧城区道路、管网改造工程十标",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "220.39（万元）",
+      "project_acreage": "-",
+      "bid_date": "2010-08-19",
+      "bid_money": "220.39",
+      "bid_pname": "岳守荣",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707555",
+      "contract_type": "施工总包",
+      "contract_money": "220.39",
+      "contract_signtime": "2010-08-20",
+      "contract_scale": "胜利路，698米",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053324",
+      "finish_money": "220.39",
+      "finish_area": "0.00",
+      "finish_realbegin": "2010-08-20",
+      "finish_realfinish": "2011-06-30",
+      "finish_unitdsn": "中国中轻国际工程有限公司",
+      "finish_unitspv": "内蒙古广誉建设监理有限责任公司",
+      "finish_unitcst": "内蒙古巨达路桥有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/404199"
+    },
+    {
+      "project_name": "杭锦旗锡尼镇旧城区道路、管网改造工程七标",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "418.5（万元）",
+      "project_acreage": "-",
+      "bid_date": "2010-08-19",
+      "bid_money": "418.5",
+      "bid_pname": "岳守荣",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707556",
+      "contract_type": "施工总包",
+      "contract_money": "418.5",
+      "contract_signtime": "2010-08-20",
+      "contract_scale": "光明东路，410米，宽24米",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053325",
+      "finish_money": "418.5",
+      "finish_area": "0.00",
+      "finish_realbegin": "2010-08-20",
+      "finish_realfinish": "2011-06-30",
+      "finish_unitdsn": "中国中轻国际工程有限公司",
+      "finish_unitspv": "内蒙古广誉建设监理有限责任公司",
+      "finish_unitcst": "内蒙古巨达路桥有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/404200"
+    },
+    {
+      "project_name": "杭锦旗锡尼镇旧城道路管网建设工程-穿沙公路、北外环路、东环路管网及附属工程二标段",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "1524.36（万元）",
+      "project_acreage": "-",
+      "bid_date": "2011-04-25",
+      "bid_money": "779.56",
+      "bid_pname": "岳守荣",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3707557",
+      "contract_type": "施工总包",
+      "contract_money": "779.56",
+      "contract_signtime": "2011-05-04",
+      "contract_scale": "光明东路（宜锡路到东环路）道路及管网，全长约390米；胜利路道路，全长约770米",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053326",
+      "finish_money": "779.56",
+      "finish_area": "0.00",
+      "finish_realbegin": "2011-05-01",
+      "finish_realfinish": "2011-10-31",
+      "finish_unitdsn": "中国中轻国际工程有限公司",
+      "finish_unitspv": "榆林市大成建设监理有限公司",
+      "finish_unitcst": "内蒙古巨达路桥有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/404201"
+    },
+    {
+      "project_name": "杭锦旗锡尼镇林荫路道路俩侧铺装维修改造工程",
+      "project_type": "市政工程",
+      "project_nature": "改建",
+      "project_use": "其他",
+      "project_allmoney": "944.66（万元）",
+      "project_acreage": "-",
+      "bid_date": "2016-08-16",
+      "bid_money": "944.66",
+      "bid_pname": "王振刚",
+      "bid_pnum": "None",
+      "bid_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/3706838",
+      "contract_type": "施工总包",
+      "contract_money": "944.66",
+      "contract_signtime": "2016-08-22",
+      "contract_scale": "全长5040.822米，包括铺装，路缘石，树穴石，景观等。",
+      "contract_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/2053328",
+      "finish_money": "944.66",
+      "finish_area": "-",
+      "finish_realbegin": "2016-08-22",
+      "finish_realfinish": "2016-09-20",
+      "finish_unitdsn": "中国市政工程华北设计院",
+      "finish_unitspv": "内蒙古首信建设监理有限公司",
+      "finish_unitcst": "杭锦旗恒升房屋建筑工程有限责任公司",
+      "finish_add_url": "http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/404160"
+    }
+  ]
 }
 ```

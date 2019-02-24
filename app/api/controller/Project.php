@@ -73,6 +73,16 @@ class Project extends Controller
 		$res = json_encode($res);
 		return $res;
 	}
+	#项目数据查询详细
+    public function getProjectDataDetail(){
+        $params_arr = $this->transfromGet();
+        $res = ProjectModel::getProjectDataDetail($params_arr);
+        $result['code'] = 1;
+        $result['msg'] = 'success';
+        $result['data'] = $res;
+        $result = json_encode($result);
+        return $result;
+    }
 	#项目数据查询数量
     public function getProjectDataNum(){
 	    $res = $this->getProjectData();

@@ -7,6 +7,7 @@
  */
 namespace app\api\model;
 
+use think\db\Query;
 use think\model;
 use think\Db;
 
@@ -45,7 +46,7 @@ class Project extends model{
         $field_str = implode(',',$field);
         $where_str = implode(' and ',$where);
         #sql
-        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 1500";
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 1000";
         #do-sql
         $res = Db::query($sql);
         #process
@@ -83,31 +84,39 @@ class Project extends model{
             #没有选择项目子表的筛选项，只选择了基础筛选字段
             if ($count_res > 0){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[$i]['project_url'] = $res[$i]['project_url'];
+//                    $result[$i]['project_url'] = $res[$i]['project_url'];
+                    $result[] = $res[$i]['project_url'];
+                }
+                # 去连表里面查对应的 公司
+                $result_str = implode(',',$result);
+                $sql_com_pro = "select distinct(company_url) from jz_com_pro where project_url in (".$result_str.")";
+                $res_com = Db::query($sql_com_pro);
+                foreach ($res_com as $key=>$value){
+                    $result[] = $value['company_url'];
                 }
             }
         }elseif ($count_filter_tables == 1){
             #如果只选了招投标一个
             if ($params_arr['bid'] == 1){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[$i]['company_url'] = $res[$i]['pb_company_url'];
-                    $result[$i]['project_url'] = $res[$i]['project_url'];
+                    $result[] = $res[$i]['pb_company_url'];
+//                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
             #如果只选了合同备案一个
             if ($params_arr['contract'] == 1){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[$i]['company_url'] = $res[$i]['pc_company_url'];
-                    $result[$i]['project_url'] = $res[$i]['project_url'];
+                    $result[] = $res[$i]['pc_company_url'];
+//                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
             #如果只选了竣工验收一个
             if ($params_arr['finish'] == 1){
                 for ($i = 0;$i < $count_res;$i++){
-                    $result[$i]['company_url'] = $res[$i]['pf_company_url0'];
-                    $result[$i]['company_url'] = $res[$i]['pf_company_url1'];
-                    $result[$i]['company_url'] = $res[$i]['pf_company_url2'];
-                    $result[$i]['project_url'] = $res[$i]['project_url'];
+                    $result[] = $res[$i]['pf_company_url0'];
+                    $result[] = $res[$i]['pf_company_url1'];
+                    $result[] = $res[$i]['pf_company_url2'];
+//                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
         }elseif ($count_filter_tables == 2){
@@ -115,8 +124,8 @@ class Project extends model{
             if ($params_arr['bid'] == 1 && $params_arr['contract'] == 1) {
                 for ($i = 0; $i < $count_res; $i++) { 
                     if ($res[$i]['pb_company_url'] == $res[$i]['pc_company_url']) {
-                        $result[$i]['company_url'] = $res[$i]['pb_company_url'];
-                        $result[$i]['project_url'] = $res[$i]['project_url'];
+                        $result[] = $res[$i]['pb_company_url'];
+//                        $result[$i]['project_url'] = $res[$i]['project_url'];
                     }
                 }
             }
@@ -124,8 +133,8 @@ class Project extends model{
             if ($params_arr['bid'] == 1 && $params_arr['finish'] == 1) {
                 for ($i = 0; $i < $count_res; $i++) { 
                     if ($res[$i]['pb_company_url'] == $res[$i]['pf_company_url0'] || $res[$i]['pb_company_url'] == $res[$i]['pf_company_url1'] || $res[$i]['pb_company_url'] == $res[$i]['pf_company_url2']) {
-                        $result[$i]['company_url'] = $res[$i]['pb_company_url'];
-                        $result[$i]['project_url'] = $res[$i]['project_url'];
+                        $result[] = $res[$i]['pb_company_url'];
+//                        $result[$i]['project_url'] = $res[$i]['project_url'];
                     }
                 }
             }
@@ -133,8 +142,8 @@ class Project extends model{
             if ($params_arr['contract'] == 1 && $params_arr['finish'] ==1) {
                 for ($i = 0; $i < $count_res; $i++) { 
                     if ($res[$i]['pc_company_url'] == $res[$i]['pf_company_url0'] || $res[$i]['pc_company_url'] == $res[$i]['pf_company_url1'] || $res[$i]['pc_company_url'] == $res[$i]['pf_company_url2']) {
-                        $result[$i]['company_url'] = $res[$i]['pc_company_url'];
-                        $result[$i]['project_url'] = $res[$i]['project_url'];
+                        $result[] = $res[$i]['pc_company_url'];
+//                        $result[$i]['project_url'] = $res[$i]['project_url'];
                     }
                 }
             }
@@ -142,21 +151,90 @@ class Project extends model{
             #同时选中了招投标、合同备案、竣工验收
             for ($i = 0; $i < $count_res; $i++) { 
                 if (($res[$i]['pb_company_url'] == $res[$i]['pc_company_url'] && $res[$i]['pc_company_url'] == $res[$i]['pf_company_url0']) || ($res[$i]['pb_company_url'] == $res[$i]['pc_company_url'] && $res[$i]['pc_company_url'] == $res[$i]['pf_company_url1']) || ($res[$i]['pb_company_url'] == $res[$i]['pc_company_url'] && $res[$i]['pc_company_url'] == $res[$i]['pf_company_url2'])) {
-                    $result[$i]['company_url'] = $res[$i]['pb_company_url'];
-                    $result[$i]['project_url'] = $res[$i]['project_url'];
+                    $result[] = $res[$i]['pb_company_url'];
+//                    $result[$i]['project_url'] = $res[$i]['project_url'];
                 }
             }
         }
-//        $result = array_unique($result);
-//        $result = array_values($result);
+        #去重
+        $result = array_unique($result);
+        #重新排序
+        $result = array_values($result);
         return $result;
     }
+
 
     /**
      * @return mixed|void
      */
     public function getData($where=1,$field="*",$page=10,$num=0)
     {
-        return $this->where($where)->field($field)->limit($num*$page,$page)->select();
+        return $this->where($where)->field($field)->limit($num * $page, $page)->select();
+    }
+    #查询项目详情数据
+    public static function getProjectDataDetail($params_arr){
+        # init
+        # 由于数据量庞大，所有就不统计 page_total 以及 total_num 了，前端只给下一页和上一页的按钮和自定义页面显示条数即可
+        $page = 1;
+        $page_size = 10;
+        $field = [
+        'p.project_name','p.project_type','p.project_nature','p.project_use','p.project_allmoney','p.project_acreage',
+        'pb.bid_date','pb.bid_money','pb.bid_pname','pb.bid_pnum','pb.bid_url',
+        'pc.contract_type','pc.contract_money','pc.contract_signtime','pc.contract_scale','pc.contract_add_url',
+        'pf.finish_money','pf.finish_area','pf.finish_realbegin','pf.finish_realfinish','pf.finish_unitdsn','pf.finish_unitspv','pf.finish_unitcst','pf.finish_add_url'
+        ];
+        $where = [];
+        $join = [];
+        # 转换page page_size 等
+        if (isset($params_arr['page']) && is_numeric($params_arr['page'])){
+            $page = $params_arr['page'];
+        }
+        if (isset($params_arr['page_size']) && is_numeric($params_arr['page_size'])){
+            $page_size = $params_arr['page_size'];
+        }
+        # 判断连表
+        # 有筛选项则用 join 没有选的就用left join 这样可以保证没有选的 不会被连表条件所影响
+        if ($params_arr['bid'] == 1){
+            #只选择了招投标
+            $join[] = " join jz_project_bid pb on p.project_url = pb.project_url ";
+            $join[] = " left join jz_project_contract pc on (p.project_url = pc.project_url and pb.company_url = pc.company_inpurl) ";
+            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
+        }elseif ($params_arr['contract'] == 1){
+            #只选择了合同备案
+            $join[] = " join jz_project_contract pc on p.project_url = pc.project_url ";
+            $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl ";
+            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
+        }elseif ($params_arr['bid'] == 1 && $params_arr['contract'] == 1){
+            #选了招投标 和 合同备案
+            $join[] = " join jz_project_bid pb on p.project_url = pb.project_url";
+            $join[] = " join jz_project_contract pc on p.project_url = pc.project_url and pb.company_url = pc.company_inpurl ";
+            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
+        }elseif ($params_arr['bid'] == 1 && $params_arr['finish'] == 1){
+            #选了招投标 和 竣工验收
+            $join[] = " join jz_project_bid pb on p.project_url = pb.project_url";
+            $join[] = " join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
+            $join[] = " left join jz_project_contract pc on p.project_url = pc.project_url and pb.company_url = pc.company_inpurl ";
+        }elseif ($params_arr['contract'] == 1 && $params_arr['finish'] == 1){
+            #选了合同备案 和 竣工验收
+        }elseif (
+                    ($params_arr['bid'] == 1 && $params_arr['contract'] == 1 && $params_arr['finish'] == 1) || //子表三个全选
+                    ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 0) || //子表三个全不选
+                    ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 1)    //子表只选了竣工验收
+                ){
+            $join[] = " join jz_project_bid pb on p.project_url = pb.project_url ";
+            $join[] = " join jz_project_contract pc on (p.project_url = pc.project_url and pb.company_url = pc.company_inpurl) ";
+            $join[] = " join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
+        }
+        # 处理转换where条件的参数
+        $where = Project::transformWhere($params_arr);
+        # change
+        $field_str = implode(',',$field);
+        $join_str = implode(' ',$join);
+        $where_str = implode(' and ',$where);
+        # sql
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." group by p.project_url limit ".($page-1)*$page_size.",".$page_size;
+        $res = Db::query($sql);
+        return $res;
+
     }
 }
