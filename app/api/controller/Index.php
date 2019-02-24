@@ -31,8 +31,14 @@ class Index extends ApiBase
 
     public function getData()
     {
-        $requset = file_get_contents('php://input');
-        $requsetData = json_decode($requset, true);
+        
+	   if($_SERVER['REQUEST_METHOD']=='OPTIONS'){
+               $this->apiReturn(100);exit;
+             }
+
+        $requset = $_POST;
+
+        $requsetData = $requset;
         $arr = $this->getArr($requsetData['request']);   //判断是否存在多个不为空的条件
         $return = $this->apiReturn(CodeBase::$requestNotData);
         count($arr) >  1 and $return = $this->multipleApi($arr);

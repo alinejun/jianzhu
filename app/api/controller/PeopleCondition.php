@@ -128,7 +128,7 @@ class PeopleCondition extends ApiBase{
         if ($res) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
-            $this->apiReturn($refer);
+            return $this->apiReturn($refer);
         }
         foreach ($res as &$value) {
             $map['people_id'] = $value['people_id'];
@@ -140,6 +140,6 @@ class PeopleCondition extends ApiBase{
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['people_info'] = $res;
-        $this->apiReturn($refer);
+        return  $this->apiReturn($refer);
     }
 }
