@@ -125,7 +125,7 @@ class PeopleCondition extends ApiBase{
         $company_url = input('get.company_url');
         $res = (new PeopleRegister())->getPeopleID($where, $company_url, 'people_id,register_type,register_major,register_unit');
         //$peopleInfo = [];
-        if ($res) {
+        if (!$res) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
             return $this->apiReturn($refer);
