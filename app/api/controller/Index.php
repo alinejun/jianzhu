@@ -14,7 +14,7 @@ namespace app\api\controller;
 use app\api\apiRoute\ApiRoute;
 use app\api\error\CodeBase;
 use app\common\controller\ControllerBase;
-use app\api\controller\PeopleCondition;
+use app\api\controller\UnionQuery;
 /**
  * 首页控制器
  */
@@ -61,8 +61,7 @@ class Index extends ApiBase
     public function multipleApi($arr)
     {
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
-            echo '企业-人员联查';
-            exit;
+           return  (new UnionQuery())->getCompanyUnionPeople($arr);
         }
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
             echo '企业-项目联查';

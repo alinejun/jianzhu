@@ -7,10 +7,12 @@
  */
 
 namespace app\api\model;
+use think\Db;
+
 class PeopleChange extends ApiBase
 {
     public function getData($where=1,$field="*",$page=10,$num=0)
     {
-        return $this->where($where)->field($field)->limit($num*$page,$page)->select();
+        return  Db::name('people_change')->where($where)->field($field)->limit($num*$page,$page)->select();
     }
 }

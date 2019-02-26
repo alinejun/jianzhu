@@ -6,6 +6,8 @@
  * Time: 23:16
  */
 namespace app\api\model;
+use think\Db;
+
 class People extends ApiBase{
 
     /**
@@ -13,7 +15,7 @@ class People extends ApiBase{
      */
     public function getInfoByPeopleid($where=1,$filed="*")
     {
-        $list = self::where($where)->field($filed)->select();
+        $list = Db::name('people')->where($where)->field($filed)->select();
         return $list;
     }
 }

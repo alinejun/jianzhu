@@ -7,6 +7,7 @@
  */
 namespace app\api\controller;
 use app\api\error\CodeBase;
+use app\api\model\People;
 use app\api\model\PeopleProject;
 use app\api\model\PeopleChange;
 use app\api\model\PeopleMiscdct;
@@ -105,8 +106,8 @@ class PeopleCondition extends ApiBase{
         $where['register_major'] =  $data['register_major'];
         empty($data['pageSize']) and $data['pageSize'] = 10;
         empty($data['pageNum'])  and $data['pageNum'] = 0;
-        empty($data['num'])      and $data['num'] = 0;
-        $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$data['num']);
+        $whereIn = isset($data['company_url_list']) ?  $data['company_url_list'] : '';
+        $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn);
         if(!$list){
             return false;
         }
@@ -118,28 +119,51 @@ class PeopleCondition extends ApiBase{
         return ['company_list'=>$company_list,'count'=>$list['count']];
     }
 
-    public function getPeopleDetails()
+    public function getPeopleLists()
     {
+        $people = new People();
         $where['register_type'] = input('get.register_type');
         $where['register_major'] = input('get.register_major');
+        $page_num  = input('get.page_num');
+        $page_size  = input('get.page_size');
+        empty($page_num) and $page_num =0;
+        empty($page_size) and $page_size =10;
         $company_url = input('get.company_url');
-        $res = (new PeopleRegister())->getPeopleID($where, $company_url, 'people_id,register_type,register_major,register_unit');
+        $res = (new PeopleRegister())->getPeopleID($where, $company_url, 'people_id,register_type,register_major,register_unit',$page_num,$page_size);
         //$peopleInfo = [];
-        if ($res) {
+        if (!$res) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
-            $this->apiReturn($refer);
+            return $this->apiReturn($refer);
         }
-        foreach ($res as &$value) {
-            $map['people_id'] = $value['people_id'];
-            $value['project'] = (new PeopleProject())->getData($map, "project_name", 0, 1000);
-            $value['people_miscdct'] = (new PeopleMiscdct())->getData($map, "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
-            $value['people_change'] = (new PeopleChange())->getData($map, "change_type,change_record", 0, 1000);
+        $list = [];
+        foreach ($res as $k=>$value) {
+            $map['id'] = $value['people_id'];
+            $list[$k] = $people->getInfoByPeopleid($map,'id,people_name,people_sex');
         }
-
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['people_info'] = $res;
-        $this->apiReturn($refer);
+        $refer['people_list'] = $list;
+        return $this->apiReturn($refer);
+    }
+
+    public function getPeoPleDetail()
+    {
+        $people_id = input('get.people_id');
+        if(!$people_id){
+            $refer['code'] = Code::ERROR;
+            $refer['msg'] = Code::$MSG[$refer['code']];
+            return $this->apiReturn($refer);
+        }
+        $map['people_id'] = $people_id;
+        //（受不鸟）人员相关数据暂时限制1000条数据。
+        $data['register'] = (new PeopleRegister())->getDataByPeopleId($map, "register_type,register_major,register_date,register_unit");
+        $data['project'] = array_column((new PeopleProject())->getData($map, "project_name", 0, 1000),'project_name');
+        $data['miscdct'] = (new PeopleMiscdct())->getData($map, "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
+        $data['change'] = (new PeopleChange())->getData($map, "change_type,change_record", 0, 1000);
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] = Code::$MSG[$refer['code']];
+        $refer['people_list'] = $data;
+        return $this->apiReturn($refer);
     }
 }

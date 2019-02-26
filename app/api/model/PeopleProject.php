@@ -6,10 +6,13 @@
  * Time: 1:38
  */
 namespace app\api\model;
-class PeopleProject extends ApiBase
+use app\common\model\ModelBase;
+use think\Db;
+
+class PeopleProject extends ModelBase
 {
     public function getData($where=1,$field="*",$page=10,$num=0)
     {
-        return $this->where($where)->field($field)->limit($num*$page,$page)->select();
+        return Db::name('people_project')->where($where)->field($field)->limit($num*$page,$page)->select();
     }
 }
