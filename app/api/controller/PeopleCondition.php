@@ -163,7 +163,7 @@ class PeopleCondition extends ApiBase{
         $data['change'] = (new PeopleChange())->getData($map, "change_type,change_record", 0, 1000);
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['people_list'] = $data;
+        $refer['people_info'] = $data;
         return $this->apiReturn($refer);
 
     }
