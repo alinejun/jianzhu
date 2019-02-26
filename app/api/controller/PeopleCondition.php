@@ -165,5 +165,6 @@ class PeopleCondition extends ApiBase{
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['people_list'] = $data;
         return $this->apiReturn($refer);
+
     }
 }

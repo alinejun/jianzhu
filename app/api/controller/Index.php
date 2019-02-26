@@ -31,8 +31,8 @@ class Index extends ApiBase
 
     public function getData()
     {
-        $requset = file_get_contents('php://input');
-        $requsetData = json_decode($requset, true);
+
+        $requsetData = input('post.');
         $arr = $this->getArr($requsetData['request']);   //判断是否存在多个不为空的条件
         $return = $this->apiReturn(CodeBase::$requestNotData);
         count($arr) >  1 and $return = $this->multipleApi($arr);
@@ -61,7 +61,7 @@ class Index extends ApiBase
     public function multipleApi($arr)
     {
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
-           return  (new UnionQuery())->getCompanyUnionPeople($arr);
+           return  (new UnionQuery())->getCompanyUnionPeople($arr);  //企业-人员联查
         }
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
             echo '企业-项目联查';
