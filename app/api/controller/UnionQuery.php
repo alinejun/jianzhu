@@ -9,6 +9,7 @@ namespace app\api\controller;
 use app\api\model\Company as CompanyModel;
 use app\api\controller\Company;
 use app\api\controller\PeopleCondition;
+use app\api\controller\Project;
 use app\Code;
 
 class UnionQuery extends ApiBase{
@@ -28,5 +29,32 @@ class UnionQuery extends ApiBase{
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['count']= $company_url['count'];
         return $this->apiReturn($refer);
+    }
+
+    # 企业项目联合查询
+    public function getCompanyUnionProject($request){
+        #先查企业的符合的公司company_url
+        $params_company = explode(',', $request['company_condition']['code']);
+        $params_company = (new Company)->transformGet($params_company);
+        $company_ids_arr = CompanyModel::getCompanyIds($params_company);
+        $company_ids_arr = array_column($company_ids_arr,'company_url');
+        #再查项目符合的company_url
+        $params_project = $request['project_condition'];
+        $project_ids_arr = (new Project())->getProjectData($params_project);
+        #取交集
+        $company_url = array_intersect($company_ids_arr,$project_ids_arr);
+        $res['code'] = 1;
+        $res['msg'] = 'success';
+        $res['count'] = count($company_url);
+        $res = json_encode($res);
+        return $res;
+    }
+
+    # 人员项目联合查询
+    public function getPeopleUnionProject($request){
+        #先查人员的符合公司的company_url
+        $people_ids_arr = (new PeopleCondition())->getCompany($request['people_condition']);
+//        $people_ids_arr = array_column($people_ids_arr,'company_url');
+        var_dump($people_ids_arr);die();
     }
 }

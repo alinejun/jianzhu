@@ -57,12 +57,13 @@ class Company extends Controller
 		$res = json_encode($res);
 		return $res;
 	}
+
 	#获取企业数据条数
-	public function getCompanyDataNumber(){
-		if (!isset($_GET['code']) or empty($_GET)) {
+	public function getCompanyDataNumber($params){
+		if (!isset($params['code']) or empty($params)) {
 			return 'require code!';
 		}
-		$get = $_GET['code'];
+		$get = $params['code'];
 		$ids_arr = explode(',', $get);
 		$ids_arr = $this->transformGet($ids_arr);
 		#得到符合资质查询条件的公司id
@@ -70,7 +71,7 @@ class Company extends Controller
 		$nums = count($company_ids_arr);
 		$res['code'] = 1;
 		$res['msg'] = 'success';
-		$res['data'] = $nums;
+		$res['count'] = $nums;
 		$res = json_encode($res);
 		return $res;
 	}

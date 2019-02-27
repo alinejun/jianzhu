@@ -84,30 +84,30 @@ class Project extends Controller
         return $result;
     }
 	#项目数据查询数量
-    public function getProjectDataNum(){
-	    $res = $this->getProjectData();
-	    if (empty($_GET)){
+    public function getProjectDataNum($params){
+	    $res = $this->getProjectData($params);
+	    if (empty($params)){
 			return 'no params,no data';
 		}
 	    $result['code'] = 1;
 	    $result['msg'] = 'success';
-	    $result['data'] = count($res);
+	    $result['count'] = count($res);
 	    $result = json_encode($result);
 	    return $result;
     }
 	#项目数据查询得到company_url
-	public function getProjectData(){
-		if (empty($_GET)){
+	public function getProjectData($params){
+		if (empty($params)){
 			return 'no params,no data';
 		}
 		#判断并处理参数
-		$params_arr = $this->transfromGet();
+		$params_arr = $this->transfromGet($params);
 		#根据参数情况和值，查询出符合条件的数据
         $res = ProjectModel::getProjectData($params_arr);
         return $res;
 	}
 	#处理参数
-	protected function transfromGet(){
+	protected function transfromGet($params){
 		# 基础条件字段
 		$basic_arr = ['project_type','project_nature','project_use'];
 		# 招投标条件字段
@@ -116,7 +116,6 @@ class Project extends Controller
 		$contract_arr = ['contract_type','contract_money','contract_scale','contract_date_start','contract_date_end'];
 		# 竣工验收备案条件字段
 		$finish_arr = ['finish_money','finish_area','finish_realbegin_start','finish_realbegin_end','finish_realfinish_start','finish_realfinish_end'];
-		$params = $_GET;
 		$params['bid'] = 0;
 		$params['contract'] = 0;
 		$params['finish'] = 0;
