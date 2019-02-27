@@ -39,10 +39,11 @@ class PeopleRegister extends ApiBase{
        return ['list'=>$list,'count'=>$count];
     }
 
-    public function getPeopleMultiple($data,$filed="company_url",$pageSize=10,$pageNum=0,$whereIn='')
+    public function getPeopleMultiple($data,$filed="company_url",$pageSize=10,$pageNum=0,$whereIn='',$is_limit)
     {
         $register_type = explode(',',$data['register_type']);
         $register_major = explode(',',$data['register_major']);
+
         //判断条件是否相等
         if(count($register_type)!=count($register_major)){
             return false;
@@ -56,7 +57,7 @@ class PeopleRegister extends ApiBase{
         $condition =count($where)-1;
         $sql = $countSqlString = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . " GROUP BY company_url HAVING COUNT('company_url')>$condition";
         empty($whereIn) or $sql = $countSqlString = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . " and (company_url in ($whereIn)) GROUP BY company_url HAVING COUNT('company_url')>$condition";
-        $sql .= " LIMIT $offset,$pageSize";
+        $is_limit === "1" or $sql .= " LIMIT $offset,$pageSize";
         $countSql =  "select count(*) as count from ($countSqlString) as a";
         $list = $this->query($sql);
         $countRes= $this->query($countSql);

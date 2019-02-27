@@ -107,7 +107,8 @@ class PeopleCondition extends ApiBase{
         empty($data['pageSize']) and $data['pageSize'] = 10;
         empty($data['pageNum'])  and $data['pageNum'] = 0;
         $whereIn = isset($data['company_url_list']) ?  $data['company_url_list'] : '';
-        $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn);
+        $is_limit =  isset($data['is_limit']) ? $data['is_limit'] : 0;
+        $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn,$is_limit);
         if(!$list){
             return false;
         }
