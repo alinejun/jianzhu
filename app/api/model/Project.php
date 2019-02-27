@@ -57,8 +57,8 @@ class Project extends model{
     public static function transformWhere($where){
         $where_finish=[];
         if (isset($where['project_type'])){$where_finish[] = "p.project_type=".$where['project_type'];}
-        if (isset($where['project_nature'])){$where_finish[] = "p.project_nature=".$where['project_nature'];}
-        if (isset($where['project_use'])){$where_finish[] = "p.project_use=".$where['project_use'];}
+        if (isset($where['project_nature'])){$where_finish[] = "p.project_nature='".$where['project_nature']."'";}
+        if (isset($where['project_use'])){$where_finish[] = "p.project_use='".$where['project_use']."'";}
         if (isset($where['bid_way'])){$where_finish[] = "pb.bid_way=".$where['bid_way'];}
         if (isset($where['bid_money'])){$where_finish[] = "pb.bid_money>=".$where['bid_money'];}
         if (isset($where['bid_date_start'])){$where_finish[] = "pb.bid_date>=".$where['bid_date_start'];}
@@ -70,8 +70,8 @@ class Project extends model{
         if (isset($where['contract_date_end'])){$where_finish[] = "pc.contract_date<=".$where['contract_date_end'];}
         if (isset($where['finish_money'])){$where_finish[] = "pf.finish_money>=".$where['finish_money'];}
         if (isset($where['finish_area'])){$where_finish[] = "pf.finish_area>=".$where['finish_area'];}
-        if (isset($where['finish_realbegin_start'])){$where_finish[] = "pf.finish_realbegin>=".$where['finish_realbegin_start'];}
-        if (isset($where['finish_realbegin_end'])){$where_finish[] = "pf.finish_realbegin<=".$where['finish_realbegin_end'];}
+        if (isset($where['finish_realbegin_start'])){$where_finish[] = "pf.finish_realbegin>='".$where['finish_realbegin_start']."'";}
+        if (isset($where['finish_realbegin_end'])){$where_finish[] = "pf.finish_realbegin<='".$where['finish_realbegin_end']."'";}
         if (isset($where['finish_realfinish_start'])){$where_finish[] = "pf.finish_realfinish>=".$where['finish_realfinish_start'];}
         if (isset($where['finish_realfinish_end'])){$where_finish[] = "pf.finish_realfinish<=".$where['finish_realfinish_end'];}
         return $where_finish;

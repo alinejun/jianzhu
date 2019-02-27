@@ -47,10 +47,10 @@ class Index extends ApiBase
                 return ((new PeopleCondition())->getCompanyByPeople($value));
             }
             if ($key == ApiRoute::COMPANY_CONDITION && !empty($value)) {
-                return $this->apiReturn(CodeBase::$requestNotAPI);
+                return ((new Company())->getCompanyDataNumber($value));
             }
             if ($key == ApiRoute::PROJECT_CONDITION && !empty($value)) {
-                return $this->apiReturn(CodeBase::$requestNotAPI);
+                return ((new Project())->getProjectDataNum($value));
             }
             if ($key == ApiRoute::GET_MAJOR && !empty($value)) {
                 return (new PeopleCondition())->getMajor($value);
@@ -61,15 +61,15 @@ class Index extends ApiBase
     public function multipleApi($arr)
     {
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
-           return  (new UnionQuery())->getCompanyUnionPeople($arr);  //企业-人员联查
+            return  (new UnionQuery())->getCompanyUnionPeople($arr);  //企业-人员联查
         }
-        if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
-            echo '企业-项目联查';
-            exit;
+        if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PROJECT_CONDITION) {
+            return  (new UnionQuery())->getCompanyUnionProject($arr); //企业-项目联查
         }
         if (implode(',', array_keys($arr)) == ApiRoute::PEOPLE_PROJECT_CONDITION) {
-            echo '人员-项目联查';
-            exit;
+            echo 'peopleUnionProject';
+            exit();
+            return  (new UnionQuery())->getPeopleUnionProject($arr);  //人员-项目联查
         }
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_PROJECT_CONDITION) {
             echo '企业-人员-项目联查';
