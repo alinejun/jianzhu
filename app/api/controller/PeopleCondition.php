@@ -95,7 +95,7 @@ class PeopleCondition extends ApiBase{
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] =  Code::$MSG[$refer['code']];
         $refer['company_list'] = $list['company_list'];
-        $refer['company_count'] = $list['count'];
+        $refer['count'] = $list['count'];
         return $this->apiReturn($refer);
     }
 
