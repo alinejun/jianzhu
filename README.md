@@ -2098,3 +2098,50 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 0
       }
    ```
+   
+   
+   
+## 人员项目联合查询（符合条件的企业数量）
+   
+   **url**: /index/getData
+   
+   **请求方式**：post
+   
+   **请求参数（示例）：**
+   
+  ```
+{
+  	"request":{
+  		"people_condition":{
+  	     	"register_type":"二级注册建造师,二级注册建造师",
+      		"register_major":"建筑工程,建筑工程"
+  	     },
+  	      "project_condition":{
+    	     	"finish_realbegin_start":"2018-01-01",
+    	     	"finish_realbegin_end":"2018-02-02",
+    	     	"project_use":"其他",
+    	     	"project_nature":"改建"
+         }
+  	}
+  }
+```
+   
+   **返回参数：**
+   
+   |      字段名      | 类型   | 说明                       |
+   | :--------------: | ------ | -------------------------- |
+   |       code       | int    | 错误码                     |
+   |       msg        | string | 消息                       |
+   |       count       | array  | 符合条件的企业数量       |
+  
+  
+   
+   **返回示例：**
+   
+   ```
+    {
+          "code": 1,
+          "msg": "success",
+          "count": 35
+      }
+   ```

@@ -104,6 +104,7 @@ class Project extends Controller
 		$params_arr = $this->transfromGet($params);
 		#根据参数情况和值，查询出符合条件的数据
         $res = ProjectModel::getProjectData($params_arr);
+        $res = $this->delByValue($res,'None');
         return $res;
 	}
 	#处理参数
@@ -134,5 +135,18 @@ class Project extends Controller
 		}
 		return $params;
 	}
+
+	# 删除数组中指定value
+    function delByValue($arr, $value){
+        if(!is_array($arr)){
+            return $arr;
+        }
+        foreach($arr as $k=>$v){
+            if($v == $value){
+                unset($arr[$k]);
+            }
+        }
+        return $arr;
+    }
 }
 ?>

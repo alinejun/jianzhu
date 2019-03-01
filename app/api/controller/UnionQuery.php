@@ -52,9 +52,19 @@ class UnionQuery extends ApiBase{
 
     # 人员项目联合查询
     public function getPeopleUnionProject($request){
-        #先查人员的符合公司的company_url
-        $people_ids_arr = (new PeopleCondition())->getCompany($request['people_condition']);
-//        $people_ids_arr = array_column($people_ids_arr,'company_url');
-        var_dump($people_ids_arr);die();
+        # 项目符合的company_url
+        $params_project = $request['project_condition'];
+        $project_ids_arr = (new Project())->getProjectData($params_project);
+        $project_ids_str = implode(',',$project_ids_arr);
+        # 将获取到的符合项目的company_url传入人员中做为条件
+        $request['people_condition']['company_url_list'] = $project_ids_str;
+        # is_limit 为1 则不分页
+        $request['people_condition']['is_limit'] = 1;
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
+        $res['code'] = 1;
+        $res['msg'] = 'success';
+        $res['count']= $company_url['count'];
+        $res = json_encode($res);
+        return $res;
     }
 }

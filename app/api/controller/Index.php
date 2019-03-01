@@ -67,8 +67,6 @@ class Index extends ApiBase
             return  (new UnionQuery())->getCompanyUnionProject($arr); //企业-项目联查
         }
         if (implode(',', array_keys($arr)) == ApiRoute::PEOPLE_PROJECT_CONDITION) {
-            echo 'peopleUnionProject';
-            exit();
             return  (new UnionQuery())->getPeopleUnionProject($arr);  //人员-项目联查
         }
         if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_PROJECT_CONDITION) {
