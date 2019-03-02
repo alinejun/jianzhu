@@ -33,15 +33,15 @@ class UnionQuery extends ApiBase{
 
     # 企业项目联合查询
     public function getCompanyUnionProject($request){
-        #先查企业的符合的公司company_url
+        # 先查企业的符合的公司company_url
         $params_company = explode(',', $request['company_condition']['code']);
         $params_company = (new Company)->transformGet($params_company);
         $company_ids_arr = CompanyModel::getCompanyIds($params_company);
         $company_ids_arr = array_column($company_ids_arr,'company_url');
-        #再查项目符合的company_url
+        # 再查项目符合的company_url
         $params_project = $request['project_condition'];
         $project_ids_arr = (new Project())->getProjectData($params_project);
-        #取交集
+        # 取交集
         $company_url = array_intersect($company_ids_arr,$project_ids_arr);
         $res['code'] = 1;
         $res['msg'] = 'success';
@@ -64,6 +64,31 @@ class UnionQuery extends ApiBase{
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $company_url['count'];
+        $res = json_encode($res);
+        return $res;
+    }
+
+    # 项目人员企业三个一起联合查询
+    public function getAllUnion($request){
+        # 先查企业的符合的公司company_url
+        $params_company = explode(',', $request['company_condition']['code']);
+        $params_company = (new Company)->transformGet($params_company);
+        $company_ids_arr = CompanyModel::getCompanyIds($params_company);
+        $company_ids_arr = array_column($company_ids_arr,'company_url');
+        # 再查项目符合的company_url
+        $params_project = $request['project_condition'];
+        $project_ids_arr = (new Project())->getProjectData($params_project);
+        # 企业和项目的 company_url 取交集
+        $company_url = array_intersect($company_ids_arr,$project_ids_arr);
+        $company_url = implode(',',$company_url);
+        # 将获取到的符合项目的company_url传入人员中做为条件
+        $request['people_condition']['company_url_list'] = $company_url;
+        # is_limit 为1 则不分页
+        $request['people_condition']['is_limit'] = 1;
+        $result = (new PeopleCondition())->getCompany($request['people_condition']);
+        $res['code'] = 1;
+        $res['msg'] = 'success';
+        $res['count']= $result['count'];
         $res = json_encode($res);
         return $res;
     }
