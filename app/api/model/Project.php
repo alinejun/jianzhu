@@ -46,7 +46,7 @@ class Project extends model{
         $field_str = implode(',',$field);
         $where_str = implode(' and ',$where);
         #sql
-        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 1000";
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 2000";
         #do-sql
         $res = Db::query($sql);
         #process
@@ -73,8 +73,8 @@ class Project extends model{
         if (isset($where['contract_type'])){$where_finish[] = "pc.contract_type=".$where['contract_type'];}
         if (isset($where['contract_money'])){$where_finish[] = "pc.contract_money>=".$where['contract_money'];}
         if (isset($where['contract_scale'])){$where_finish[] = "pc.contract_scale>=".$where['contract_scale'];}
-        if (isset($where['contract_date_start'])){$where_finish[] = "pc.contract_date>=".$where['contract_date_start'];}
-        if (isset($where['contract_date_end'])){$where_finish[] = "pc.contract_date<=".$where['contract_date_end'];}
+        if (isset($where['contract_date_start'])){$where_finish[] = "pc.contract_signtime>=".$where['contract_date_start'];}
+        if (isset($where['contract_date_end'])){$where_finish[] = "pc.contract_signtime<=".$where['contract_date_end'];}
         if (isset($where['finish_money'])){$where_finish[] = "pf.finish_money>=".$where['finish_money'];}
         if (isset($where['finish_area'])){$where_finish[] = "pf.finish_area>=".$where['finish_area'];}
         if (isset($where['finish_realbegin_start'])){$where_finish[] = "pf.finish_realbegin>=".$where['finish_realbegin_start'];}
@@ -186,8 +186,8 @@ class Project extends model{
         $page_size = 10;
         $field = [
         'p.project_name','p.project_type','p.project_nature','p.project_use','p.project_allmoney','p.project_acreage',
-        'pb.bid_date','pb.bid_money','pb.bid_pname','pb.bid_pnum','pb.bid_url',
-        'pc.contract_type','pc.contract_money','pc.contract_signtime','pc.contract_scale','pc.contract_add_url',
+        'pb.bid_type','pb.bid_way','pb.bid_unitname','pb.bid_date','pb.bid_money','pb.bid_area','pb.bid_unitagency','pb.bid_url',
+        'pc.contract_type','pc.contract_money','pc.contract_signtime','pc.contract_scale','pc.contract_unitname','pc.contract_add_url',
         'pf.finish_money','pf.finish_area','pf.finish_realbegin','pf.finish_realfinish','pf.finish_unitdsn','pf.finish_unitspv','pf.finish_unitcst','pf.finish_add_url'
         ];
         $where = [];

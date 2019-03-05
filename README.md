@@ -2195,3 +2195,287 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 3
       }
    ```
+   
+## 项目详情查询
+   
+   **url**: /index/getData
+   
+   **请求方式**：post
+   
+   **请求参数（示例）：**
+   
+ ```
+ 注意请求参数参考/project/getProjectDataDetail
+ page 默认为1 page_size默认为10 
+{
+  	"request":{
+  	      "project_condition_detail":{
+  	      		"contract_date_start":"2018-05-01",
+    	     	"finish_realbegin_start":"2018-05-01",
+    	     	"finish_realbegin_end":"2018-06-02",
+    	     	"project_use":"其他",
+    	     	"project_nature":"改建"
+    	     }
+  	}
+}
+```
+   
+   **返回参数：**
+   
+   |      字段名      | 类型   | 说明                       |
+   | :--------------: | ------ | -------------------------- |
+   |       key       | string    | 返回的主要数据属于                    |
+   |       code       | int    | 错误码                     |
+   |       msg        | string | 消息                       |
+   |       data       | array  | 符合条件的项目详情（具体参见示例）       |
+  
+      p.project_name,		-- 项目名称
+      p.project_type,		-- 项目分类
+      p.project_nature,	-- 建设性质
+      p.project_use,		-- 工程用途
+      p.project_allmoney,	-- 总投资
+      p.project_acreage,	-- 总面积
+      pb.bid_type,		-- 招标类型
+      pb.bid_way,			-- 招标方式
+      pb.bid_unitname,	-- 中标单位
+      pb.bid_date,		-- 中标日期
+      pb.bid_money,		-- 中标金额
+      pb.bid_area,		-- (中标)面积
+      pb.bid_unitagency,	-- 招标代理单位名称
+      pb.bid_url,			-- 网站招标详情页面
+      pc.contract_type,	-- 合同类别
+      pc.contract_money,	-- 合同金额
+      pc.contract_signtime,-- 合同签订日期
+      pc.contract_scale,	-- 建设规模
+      pc.contract_unitname,-- 承包单位
+      pc.contract_add_url	-- 网站合同备案详情页
+      pf.finish_money -- 实际造价
+      pf.finish_area	-- 实际面积
+      pf.finish_realbegin -- 实际开工日期
+      pf.finish_realfinish -- 实际竣工日期
+      pf.finish_unitdsn -- 设计单位
+      pf.finish_unitspv -- 监理单位
+      pf.finish_unitcst -- 施工单位
+      pf.finish_add_url -- 网站竣工验收备案详情页
+   
+   **返回示例：**
+   
+   ```
+    {
+        "key":"project",
+        "code":1,
+        "msg":"success",
+        "data":[
+            {
+                "project_name":"中国人民银行衢州市中心支行主楼北面及发行库外立面维修工程",
+                "project_type":"房屋建筑工程",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"50（万元）",
+                "project_acreage":"2900（平方米）",
+                "bid_type":"施工",
+                "bid_way":"其他",
+                "bid_unitname":"衢州众和幕墙工程有限公司",
+                "bid_date":"2018-04-28",
+                "bid_money":"42.37",
+                "bid_area":"-",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/5995771",
+                "contract_type":"施工总包",
+                "contract_money":"42.37",
+                "contract_signtime":"2018-05-07",
+                "contract_scale":"投资额约50万元，总建筑面积约10389.53㎡",
+                "contract_unitname":"衢州众和幕墙工程有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3085762",
+                "finish_money":"42.37",
+                "finish_area":"2900.00",
+                "finish_realbegin":"2018-05-21",
+                "finish_realfinish":"2018-07-26",
+                "finish_unitdsn":"浙江华邦建筑设计有限公司",
+                "finish_unitspv":"-",
+                "finish_unitcst":"衢州众和幕墙工程有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/761762"
+            },
+            {
+                "project_name":"宜丰县耶溪大道照明综合改造工程",
+                "project_type":"其他",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"550（万元）",
+                "project_acreage":"-",
+                "bid_type":"施工",
+                "bid_way":"其他",
+                "bid_unitname":"上海五零盛同信息科技有限公司",
+                "bid_date":"2018-05-11",
+                "bid_money":"533.24",
+                "bid_area":"0",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/6082047",
+                "contract_type":"施工总包",
+                "contract_money":"533.24",
+                "contract_signtime":"2018-05-15",
+                "contract_scale":"185KVA箱式变压器及照明远成监控系统的线路改造、路灯及亮化灯改造等",
+                "contract_unitname":"上海五零盛同信息科技有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3418559",
+                "finish_money":"539.82",
+                "finish_area":"0.00",
+                "finish_realbegin":"2018-05-28",
+                "finish_realfinish":"2018-09-17",
+                "finish_unitdsn":"江西省建筑设计研究总院",
+                "finish_unitspv":"江西省赣建工程建设监理有限公司",
+                "finish_unitcst":"上海五零盛同信息科技有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/813133"
+            },
+            {
+                "project_name":"食品集团厂区市政综合工程",
+                "project_type":"市政工程",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"2036.3（万元）",
+                "project_acreage":"-",
+                "bid_type":"施工",
+                "bid_way":"公开招标",
+                "bid_unitname":"广东濠港建设有限公司",
+                "bid_date":"2018-05-04",
+                "bid_money":"2036.3",
+                "bid_area":"0",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/6081677",
+                "contract_type":"施工总包",
+                "contract_money":"2036.3",
+                "contract_signtime":"2018-05-15",
+                "contract_scale":"食品集团厂区市政综合工程，主要内容为拆除原有管道、新建DN800给水管道、DN1000排水管道、雨水井及污水井砌筑、路面、路灯、电力管道预埋等。",
+                "contract_unitname":"广东濠港建设有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3418215",
+                "finish_money":"2036.3",
+                "finish_area":"0.00",
+                "finish_realbegin":"2018-05-25",
+                "finish_realfinish":"2018-11-12",
+                "finish_unitdsn":"广东智铭设计有限公司",
+                "finish_unitspv":"-",
+                "finish_unitcst":"广东濠港建设有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/812363"
+            },
+            {
+                "project_name":"剑阁县开封镇剑盐路市政综合改造工程",
+                "project_type":"市政工程",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"2340（万元）",
+                "project_acreage":"-",
+                "bid_type":"施工",
+                "bid_way":"其他",
+                "bid_unitname":"四川中兴达建设工程有限公司",
+                "bid_date":"2018-05-04",
+                "bid_money":"2337.15",
+                "bid_area":"0",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/6115205",
+                "contract_type":"施工总包",
+                "contract_money":"2337.15",
+                "contract_signtime":"2018-05-10",
+                "contract_scale":"长约1.89千米，红线宽度15.25米，时速40km/h。",
+                "contract_unitname":"四川中兴达建设工程有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3472981",
+                "finish_money":"2336.02",
+                "finish_area":"0.00",
+                "finish_realbegin":"2018-05-28",
+                "finish_realfinish":"2018-10-15",
+                "finish_unitdsn":"-",
+                "finish_unitspv":"-",
+                "finish_unitcst":"四川中兴达建设工程有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/850421"
+            },
+            {
+                "project_name":"小金县沃日镇生活垃圾处理厂改扩建工程",
+                "project_type":"市政工程",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"2068.58（万元）",
+                "project_acreage":"-",
+                "bid_type":"施工",
+                "bid_way":"其他",
+                "bid_unitname":"四川融钰建筑工程有限公司",
+                "bid_date":"2018-04-27",
+                "bid_money":"2068.58",
+                "bid_area":"0",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/6092190",
+                "contract_type":"施工总包",
+                "contract_money":"2068.58",
+                "contract_signtime":"2018-05-04",
+                "contract_scale":"改扩建后垃圾处理能力为210吨/日，工程内容包括主体工程、公用工程、辅助配套设施、办公及生活设施。",
+                "contract_unitname":"四川融钰建筑工程有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3436631",
+                "finish_money":"2068.58",
+                "finish_area":"0.00",
+                "finish_realbegin":"2018-05-22",
+                "finish_realfinish":"2018-12-17",
+                "finish_unitdsn":"-",
+                "finish_unitspv":"-",
+                "finish_unitcst":"四川融钰建筑工程有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/825653"
+            },
+            {
+                "project_name":"黑水县色尔古镇生活垃圾处理厂改扩建工程",
+                "project_type":"市政工程",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"2189.85（万元）",
+                "project_acreage":"-",
+                "bid_type":"施工",
+                "bid_way":"其他",
+                "bid_unitname":"四川融钰建筑工程有限公司",
+                "bid_date":"2018-04-25",
+                "bid_money":"2189.85",
+                "bid_area":"0",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/6094253",
+                "contract_type":"施工总包",
+                "contract_money":"2189.85",
+                "contract_signtime":"2018-05-02",
+                "contract_scale":"改扩建后垃圾处理能力每天220吨，填埋地使用周期20年。工程主要包括垃圾填埋库区、渗滤液收集、导排及处理系统、配套同步建设进场道路、供排水。",
+                "contract_unitname":"四川融钰建筑工程有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3440986",
+                "finish_money":"2189.85",
+                "finish_area":"0.00",
+                "finish_realbegin":"2018-05-16",
+                "finish_realfinish":"2018-12-21",
+                "finish_unitdsn":"-",
+                "finish_unitspv":"-",
+                "finish_unitcst":"四川融钰建筑工程有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/829130"
+            },
+            {
+                "project_name":"凯乐南路市政综合建设工程三标段",
+                "project_type":"市政工程",
+                "project_nature":"改建",
+                "project_use":"其他",
+                "project_allmoney":"2396.71（万元）",
+                "project_acreage":"-",
+                "bid_type":"施工",
+                "bid_way":"其他",
+                "bid_unitname":"广东建泽工程建设有限公司",
+                "bid_date":"2018-05-03",
+                "bid_money":"2389.47",
+                "bid_area":"0",
+                "bid_unitagency":"-",
+                "bid_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/tenderInfo/6101038",
+                "contract_type":"施工总包",
+                "contract_money":"2389.47",
+                "contract_signtime":"2018-05-07",
+                "contract_scale":"市政道路全长3248.9米",
+                "contract_unitname":"广东建泽工程建设有限公司",
+                "contract_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/contractInfo/3451896",
+                "finish_money":"2396.71",
+                "finish_area":"0.00",
+                "finish_realbegin":"2018-05-31",
+                "finish_realfinish":"2018-12-07",
+                "finish_unitdsn":"-",
+                "finish_unitspv":"-",
+                "finish_unitcst":"广东建泽工程建设有限公司",
+                "finish_add_url":"http://jzsc.mohurd.gov.cn/dataservice/query/project/bafinishInfo/836813"
+            }
+        ]
+    }
+   ```

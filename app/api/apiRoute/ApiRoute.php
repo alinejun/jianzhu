@@ -17,6 +17,8 @@ class ApiRoute {
         PEOPLE_PROJECT_CONDITION                            = 'people_condition,project_condition', //人员项目联查
         COMPANY_PEOPLE_PROJECT_CONDITION                    = 'company_condition,people_condition,project_condition', //企业人员项目联查
 
+        # 详情
+        PROJECT_CONDITION_DETAIL                            = 'project_condition_detail',    //企业详情查询
 
         //根据专业类型获取专业接口
         GET_MAJOR                                           = 'get_major'

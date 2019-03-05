@@ -55,6 +55,9 @@ class Index extends ApiBase
             if ($key == ApiRoute::GET_MAJOR && !empty($value)) {
                 return (new PeopleCondition())->getMajor($value);
             }
+            if ($key == ApiRoute::PROJECT_CONDITION_DETAIL && !empty($value)){
+                return (new Project())->getProjectDataDetail($value);
+            }
         }
     }
 
