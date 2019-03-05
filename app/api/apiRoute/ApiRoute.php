@@ -19,6 +19,9 @@ class ApiRoute {
 
 
         //根据专业类型获取专业接口
-        GET_MAJOR                                           = 'get_major'
+        GET_MAJOR                                           = 'get_major',
+
+        //详情查询
+        PEOPLE_CONDITION_DETAIL                                = 'people_condition_detail' //人员详情
     ;
 }
