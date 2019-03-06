@@ -11,6 +11,7 @@ use app\api\controller\Company;
 use app\api\controller\PeopleCondition;
 use app\api\controller\Project;
 use app\Code;
+use think\Db;
 
 class UnionQuery extends ApiBase{
 
@@ -91,5 +92,29 @@ class UnionQuery extends ApiBase{
         $res['count']= $result['count'];
         $res = json_encode($res);
         return $res;
+    }
+    /*
+     * =================================================================================================================
+     * 上面是联合查询中符合条件的 公司数量
+     * 下面是联合查询中符合条件的 数据详情
+     * =================================================================================================================
+     * */
+
+    # 企业项目联合查询
+    public function getCompanyUnionProjectDetail($request){
+        # 先查企业的符合的公司company_url
+        $params_company = explode(',', $request['company_condition_detail']['code']);
+        $params_company = (new Company)->transformGet($params_company);
+        $company_ids_arr = CompanyModel::getCompanyIds($params_company);
+        $company_ids_arr = array_column($company_ids_arr,'company_url');
+        $company_ids_str = implode(',',$company_ids_arr);
+        # 查com_pro表通过公司URL查询到project_url, 为了效率 limit 5000
+        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.") limit 5000";
+        $res = Db::query($sql);
+        $project_url_str = implode(',',array_column($res,'project_url'));
+        $request['project_condition_detail']['project_url_str'] = $project_url_str;
+        $params = $request['project_condition_detail'];
+        $result = (new Project())->getProjectDataDetail($params);
+        return $result;
     }
 }
