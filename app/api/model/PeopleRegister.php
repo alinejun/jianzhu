@@ -65,7 +65,7 @@ class PeopleRegister extends ApiBase{
         return ['list'=>$list,'count'=>$count];
     }
 
-    public function getPeopleID($data,$company_url,$filed,$page=0,$page_size=100000)
+    public function getPeopleID($data,$filed,$page=0,$page_size=100000)
     {
         $register_type = explode(',',$data['register_type']);
         $register_major = explode(',',$data['register_major']);
@@ -77,9 +77,10 @@ class PeopleRegister extends ApiBase{
         foreach ($register_type as $k=>$value){
             $map[]= " CONCAT_WS('--',register_type,register_major) =  '$value--$register_major[$k]' ";
         }
+        $count = count($register_type);
         $where = array_unique($map);
-        $sql = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . "and company_url=$company_url limit ". $page*$page_size . ", $page_size";
-        //dump($sql);exit;
+        $sql = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . "group by people_id  having count(people_id)>=$count limit ". $page*$page_size . ", $page_size";
+        //echo  ($sql);exit;
         $list = $this->query($sql);
         return $list;
     }

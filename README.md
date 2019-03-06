@@ -189,7 +189,7 @@
 }
 ```
 
-## 人员筛选
+## 人员筛选(请求参数修改)
 
 **url**: /people_condition/getCompanyByPeople
 
@@ -519,157 +519,16 @@
 }
 ```
 
-## 人员筛选-->企业详情-->人员列表
-   
-   **url**: /people_condition/getPeopleLists
-   
-   **请求方式**：get
-   
-   **请求参数：**
-   
-   | 字段名 | 类型 | 说明 |
-   | ------ | ---- | ---- |
-   | register_type   | string|多条件以逗号隔开，如：一级注册建造师，二级注册建造师|
-   | register_major   | string|多条件以逗号隔开，如：建筑工程，机电工程|
-   | company_url   | int|公司url|
-   | page_num   | int|页码，从零开始，默认为0|
-   | page_size   | int|每页返回条数，默认为10|
-   
-   **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       people_list       | array  | 返回人员列表       |
-   |        id        | int    | id                       |
-   |        people_name        | string    | 人员姓名                      |
-   |        people_sex        | string    | 性别                      |
-   
-   
-   **返回示例：**
-   
-   ```
-   {
-       "code": 1,
-       "msg": "成功",
-       "people_list": [
-           [
-               {
-                   "id": 69293,
-                   "people_name": "杨亮",
-                   "people_sex": "男"
-               }
-           ],
-           [
-               {
-                   "id": 69051,
-                   "people_name": "李政道",
-                   "people_sex": "男"
-               }
-           ],
-           [
-               {
-                   "id": 69373,
-                   "people_name": "鄂伟",
-                   "people_sex": "男"
-               }
-           ],
-           [
-               {
-                   "id": 69028,
-                   "people_name": "程朦",
-                   "people_sex": "女"
-               }
-           ]
-       ],
-       "exe_time": "3.045781"
-   }
-   ```
-   
- ## 人员筛选-->企业详情-->人员详情
- 
- **url**: /people_condition/getPeopleDetail
- 
- **请求方式**：get
- 
- **请求参数：**
- 
- | 字段名 | 类型 | 说明 |
- | ------ | ---- | ---- |
- | peopel_id   | int | 人员id|
- **返回参数：**
- 
- |      字段名      | 类型   | 说明                       |
- | :--------------: | ------ | -------------------------- |
- |       code       | int    | 错误码                     |
- |       msg        | string | 消息                       |
-  |       people_info       | array  | 人员信息       |
- |       register       | array  | 注册信息       |
- |        register_type        | int    | 注册类别                       |
- |        register_major        | string    | 注册专业                      |
- |        register_date        | string    | 有效期                      |
-  |        register_unit        | string    | 注册单位                      |、
-   |        project        | array    | 项目名称集合                      |
-     |        miscdct        | array    | 诚信集合                      |
-         |        miscdct_name        | sting    | 诚信记录主体                      |
-             |        miscdct_content        | sting    | 决定内容                      |
-                 |        miscdct_dept        | sting    | 实施部门                      |
-                     |        miscdct_date        | array    | 发布有效期                      |change
-  |        change        | array    | 变更记录集合                      |
-    |        change_type        | string    | 变更类别                      |
-      |        change_record        | string    | 变更记录                      |
-      
-    
- 
- **返回示例：**
- 
- ```
-{
-    "code": 1,
-    "msg": "成功",
-    "people_list": {
-        "register": {
-            "register_type": "一级注册建造师",
-            "register_major": "建筑工程",
-            "register_date": "2010年11月19日",
-            "register_unit": "山东寿光第一建筑有限公司"
-        },
-        "project": [
-            "潍坊中学科技图书楼",
-            "寿光静山花园10#-18#楼及幼儿园",
-            "寿光城投·五星大厦工程",
-            "寿光市历史文化中心"
-        ],
-        "miscdct": [
-            {
-                "miscdct_name": "2",
-                "miscdct_content": "3asdf",
-                "miscdct_dept": "请我",
-                "miscdct_date": "请我"
-            }
-        ],
-        "change": [
-            {
-                "change_type": "12",
-                "change_record": "12"
-            }
-        ]
-    },
-    "exe_time": "1.173139"
-}
- ```  
-   
-   
-   
+
+
 ## 企业人员联查（符合条件的企业数量）
-   
+
    **url**: /index/getData
-   
+
    **请求方式**：post
-   
+
    **请求参数（示例）：**
-   
+
   ```
   {
   	"request":{
@@ -682,20 +541,20 @@
   	     }
   	}
   }
-```
-   
+  ```
+
    **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       count       | array  | 符合条件的企业数量       |
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       count       | array  | 符合条件的企业数量       |
+
   
-  
-   
+
    **返回示例：**
-   
+
    ```
     {
           "code": 1,
@@ -704,7 +563,7 @@
           "exe_time": "16.591045"
       }
    ```
- 
+
 ## 企业筛选条件
 
 **url**: /companycondition/qualificationType
@@ -1973,15 +1832,15 @@ ps:说明注释:所有返回数量的都是公司的数量
 }
 ```
 
- 
+
 ## 企业单查（符合条件的企业数量）
-   
+
    **url**: /index/getData
-   
+
    **请求方式**：post
-   
+
    **请求参数（示例）：**
-   
+
   ```
   {
   	"request":{
@@ -1990,20 +1849,20 @@ ps:说明注释:所有返回数量的都是公司的数量
   	     }
   	}
   }
-```
-   
+  ```
+
    **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       count       | array  | 符合条件的企业数量       |
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       count       | array  | 符合条件的企业数量       |
+
   
-  
-   
+
    **返回示例：**
-   
+
    ```
     {
           "code": 1,
@@ -2011,16 +1870,16 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 37
       }
    ```
-   
-    
+
+
 ## 项目单查（符合条件的企业数量）
-   
+
    **url**: /index/getData
-   
+
    **请求方式**：post
-   
+
    **请求参数（示例）：**
-   
+
   ```
   {
     	"request":{
@@ -2032,20 +1891,20 @@ ps:说明注释:所有返回数量的都是公司的数量
     	     }
     	}
     }
-```
-   
+  ```
+
    **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       count       | array  | 符合条件的企业数量       |
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       count       | array  | 符合条件的企业数量       |
+
   
-  
-   
+
    **返回示例：**
-   
+
    ```
     {
           "code": 1,
@@ -2053,16 +1912,16 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 87
       }
    ```
-   
-       
+
+
 ## 企业项目联合查询（符合条件的企业数量）
-   
+
    **url**: /index/getData
-   
+
    **请求方式**：post
-   
+
    **请求参数（示例）：**
-   
+
   ```
  {
    	"request":{
@@ -2077,20 +1936,20 @@ ps:说明注释:所有返回数量的都是公司的数量
    	     }
    	}
    }
-```
-   
+  ```
+
    **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       count       | array  | 符合条件的企业数量       |
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       count       | array  | 符合条件的企业数量       |
+
   
-  
-   
+
    **返回示例：**
-   
+
    ```
     {
           "code": 1,
@@ -2098,17 +1957,17 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 0
       }
    ```
+
    
-   
-   
+
 ## 人员项目联合查询（符合条件的企业数量）
-   
+
    **url**: /index/getData
-   
+
    **请求方式**：post
-   
+
    **请求参数（示例）：**
-   
+
   ```
 {
   	"request":{
@@ -2124,20 +1983,20 @@ ps:说明注释:所有返回数量的都是公司的数量
          }
   	}
   }
-```
-   
+  ```
+
    **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       count       | array  | 符合条件的企业数量       |
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       count       | array  | 符合条件的企业数量       |
+
   
-  
-   
+
    **返回示例：**
-   
+
    ```
     {
           "code": 1,
@@ -2145,17 +2004,17 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 35
       }
    ```
+
    
-   
-   
+
 ## 人员企业项目 三个 联合查询（符合条件的企业数量）
-   
+
    **url**: /index/getData
-   
+
    **请求方式**：post
-   
+
    **请求参数（示例）：**
-   
+
   ```
 {
   	"request":{
@@ -2174,20 +2033,20 @@ ps:说明注释:所有返回数量的都是公司的数量
     	     }
   	}
 }
-```
-   
+  ```
+
    **返回参数：**
-   
-   |      字段名      | 类型   | 说明                       |
-   | :--------------: | ------ | -------------------------- |
-   |       code       | int    | 错误码                     |
-   |       msg        | string | 消息                       |
-   |       count       | array  | 符合条件的企业数量       |
+
+|      字段名      | 类型   | 说明                       |
+| :--------------: | ------ | -------------------------- |
+|       code       | int    | 错误码                     |
+|       msg        | string | 消息                       |
+|       count       | array  | 符合条件的企业数量       |
+
   
-  
-   
+
    **返回示例：**
-   
+
    ```
     {
           "code": 1,
@@ -2195,6 +2054,7 @@ ps:说明注释:所有返回数量的都是公司的数量
           "count": 3
       }
    ```
+
    
 ## 项目详情查询
    
@@ -2509,3 +2369,288 @@ ps:说明注释:所有返回数量的都是公司的数量
    
 ```
  **返回参数 和 返回示例 参考（上一个）项目详情查询**
+
+
+## 人员详情
+
+   **url**: /index/getData
+
+   **请求方式**：post
+
+   **请求参数（示例）：**
+
+```
+  {
+  	"request":{
+  	     "people_condition_detail":{
+  	     	"register_type":"一级注册建造师,一级注册建造师",
+      		"register_major":"机电工程,建筑工程",
+      		"page_size":10,
+      		"page_num":0
+  	     }
+  	}
+  }
+```
+
+   **返回参数：**
+
+|     字段名      | 类型   | 说明               |
+| :-------------: | ------ | ------------------ |
+|      code       | int    | 错误码             |
+|       msg       | string | 消息               |
+|   people_list   | array  | 符合条件的人员信息 |
+|    people_id    | int    | 人员id             |
+|  register_type  | array  | 注册类型           |
+| register_major  | array  | 注册专业           |
+|  register_unit  | array  | 注册单位           |
+|  register_date  | array  | 注册日期           |
+|   people_name   | string | 人员姓名           |
+|   people_sex    | string | 人员性别           |
+| people_cardtype | string | 证件类型           |
+| people_cardnum  | string | 证件号码           |
+
+  
+
+   **返回示例：**
+
+```
+{
+    "code": 1,
+    "msg": "成功",
+    "people_list": [
+        {
+            "people_id": 2177,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "机电工程",
+                "建筑工程"
+            ],
+            "register_unit": [
+                "江苏天亿建设工程有限公司",
+                "江苏天亿建设工程有限公司"
+            ],
+            "register_date": [
+                "2016年11月04日",
+                "2016年11月04日"
+            ],
+            "people_name": "陈明",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "3209111979******18"
+        },
+        {
+            "people_id": 2344,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "机电工程",
+                "建筑工程"
+            ],
+            "register_unit": [
+                "许昌腾飞建设工程集团有限公司",
+                "许昌腾飞建设工程集团有限公司"
+            ],
+            "register_date": [
+                "2020年08月21日",
+                "2021年09月19日"
+            ],
+            "people_name": "刘汉强",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "4110231985******1X"
+        },
+        {
+            "people_id": 2361,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "建筑工程",
+                "机电工程"
+            ],
+            "register_unit": [
+                "许昌腾飞建设工程集团有限公司",
+                "许昌腾飞建设工程集团有限公司"
+            ],
+            "register_date": [
+                "2021年09月19日",
+                "2019年08月30日"
+            ],
+            "people_name": "姚俊德",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "4110241988******9X"
+        },
+        {
+            "people_id": 2723,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "建筑工程",
+                "机电工程"
+            ],
+            "register_unit": [
+                "中建五局安装工程有限公司",
+                "中建五局安装工程有限公司"
+            ],
+            "register_date": [
+                "2015年11月12日",
+                "2012年04月13日"
+            ],
+            "people_name": "刘苑",
+            "people_sex": "女",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "4301031969******48"
+        },
+        {
+            "people_id": 2778,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "建筑工程",
+                "机电工程"
+            ],
+            "register_unit": [
+                "七冶建设集团有限责任公司",
+                "七冶建设集团有限责任公司"
+            ],
+            "register_date": [
+                "2020年09月26日",
+                "2010年11月19日"
+            ],
+            "people_name": "杨轶",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "2201041975******3X"
+        },
+        {
+            "people_id": 2864,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "机电工程",
+                "建筑工程"
+            ],
+            "register_unit": [
+                "中建五局安装工程有限公司",
+                "中建五局安装工程有限公司"
+            ],
+            "register_date": [
+                "2011年04月28日",
+                "2011年04月28日"
+            ],
+            "people_name": "陈铭峰",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "4301031973******39"
+        },
+        {
+            "people_id": 2869,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "机电工程",
+                "建筑工程"
+            ],
+            "register_unit": [
+                "中建五局安装工程有限公司",
+                "中建五局安装工程有限公司"
+            ],
+            "register_date": [
+                "2011年04月28日",
+                "2011年04月28日"
+            ],
+            "people_name": "姜小敏",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "4301031966******77"
+        },
+        {
+            "people_id": 2944,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "机电工程",
+                "建筑工程"
+            ],
+            "register_unit": [
+                "七冶建设集团有限责任公司",
+                "七冶建设集团有限责任公司"
+            ],
+            "register_date": [
+                "2013年04月29日",
+                "2014年09月28日"
+            ],
+            "people_name": "李峰",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "5225021969******14"
+        },
+        {
+            "people_id": 3148,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "建筑工程",
+                "机电工程"
+            ],
+            "register_unit": [
+                "七冶建设集团有限责任公司",
+                "七冶建设集团有限责任公司"
+            ],
+            "register_date": [
+                "2021年11月21日",
+                "2021年11月21日"
+            ],
+            "people_name": "杨锴",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "5201131977******30"
+        },
+        {
+            "people_id": 3218,
+            "register_type": [
+                "一级注册建造师",
+                "一级注册建造师"
+            ],
+            "register_major": [
+                "机电工程",
+                "建筑工程"
+            ],
+            "register_unit": [
+                "山东寿光第一建筑有限公司",
+                "山东寿光第一建筑有限公司"
+            ],
+            "register_date": [
+                "2010年11月19日",
+                "2015年09月25日"
+            ],
+            "people_name": "高承峰",
+            "people_sex": "男",
+            "people_cardtype": "居民身份证",
+            "people_cardnum": "3723301973******7X"
+        }
+    ],
+    "exe_time": "2.532941"
+}
+```
+
+

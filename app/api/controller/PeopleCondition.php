@@ -120,31 +120,36 @@ class PeopleCondition extends ApiBase{
         return ['company_list'=>$company_list,'count'=>$list['count']];
     }
 
-    public function getPeopleLists()
+    public function getPeopleLists($data)
     {
         $people = new People();
-        $where['register_type'] = input('get.register_type');
-        $where['register_major'] = input('get.register_major');
-        $page_num  = input('get.page_num');
-        $page_size  = input('get.page_size');
-        empty($page_num) and $page_num =0;
-        empty($page_size) and $page_size =10;
-        $company_url = input('get.company_url');
-        $res = (new PeopleRegister())->getPeopleID($where, $company_url, 'people_id,register_type,register_major,register_unit',$page_num,$page_size);
-        //$peopleInfo = [];
+        $where['register_type'] =$data['register_type'];
+        $where['register_major'] = $data['register_major'];
+        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 0;
+        $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
+
+        $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
+        $res = (new PeopleRegister())->getPeopleID($where,$field,$page_num,$page_size);
+
         if (!$res) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
             return $this->apiReturn($refer);
         }
-        $list = [];
-        foreach ($res as $k=>$value) {
+        foreach ($res as $k=>&$value) {
             $map['id'] = $value['people_id'];
-            $list[$k] = $people->getInfoByPeopleid($map,'id,people_name,people_sex');
+            $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum');
+            if($people_info){
+                $value = array_merge($value,$people_info);
+            }
+            $value['register_type'] = explode(',',$value['register_type']);
+            $value['register_major'] = explode(',',$value['register_major']);
+            $value['register_unit'] = explode(',',$value['register_unit']);
+            $value['register_date'] = explode(',',$value['register_date']);
         }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['people_list'] = $list;
+        $refer['people_list'] = $res;
         return $this->apiReturn($refer);
     }
 
