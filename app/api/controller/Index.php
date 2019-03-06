@@ -21,6 +21,13 @@ use app\api\controller\UnionQuery;
 class Index extends ApiBase
 {
     
+    private $union_query ;
+ 
+    public function __construct()
+    {
+        $this->union_query = new UnionQuery();
+    }
+    
     /**
      * 首页方法
      */
@@ -63,17 +70,19 @@ class Index extends ApiBase
 
     public function multipleApi($arr)
     {
-        if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_CONDITION) {
-            return  (new UnionQuery())->getCompanyUnionPeople($arr);  //企业-人员联查
+        $keys = array_keys($arr);
+
+        if (!array_diff($keys,explode(',',ApiRoute::COMPANY_PEOPLE_CONDITION))) {
+            return  $this->union_query->getCompanyUnionPeople($arr);  //企业-人员联查
         }
-        if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PROJECT_CONDITION) {
-            return  (new UnionQuery())->getCompanyUnionProject($arr); //企业-项目联查
+        if (!array_diff($keys, explode(',',ApiRoute::COMPANY_PROJECT_CONDITION))) {
+            return  $this->union_query->getCompanyUnionProject($arr); //企业-项目联查
         }
-        if (implode(',', array_keys($arr)) == ApiRoute::PEOPLE_PROJECT_CONDITION) {
-            return  (new UnionQuery())->getPeopleUnionProject($arr);  //人员-项目联查
+        if (!array_diff($keys,  explode(',',ApiRoute::PEOPLE_PROJECT_CONDITION))) {
+            return  $this->union_query->getPeopleUnionProject($arr);  //人员-项目联查
         }
-        if (implode(',', array_keys($arr)) == ApiRoute::COMPANY_PEOPLE_PROJECT_CONDITION) {
-            return  (new UnionQuery())->getAllUnion($arr);  //人员-企业-项目 联查
+        if (!array_diff($keys,  explode(',',ApiRoute::COMPANY_PEOPLE_PROJECT_CONDITION))){
+            return  $this->union_query->getAllUnion($arr);  //人员-企业-项目 联查
         }
         exit;
     }
