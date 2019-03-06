@@ -2479,3 +2479,33 @@ ps:说明注释:所有返回数量的都是公司的数量
         ]
     }
    ```
+   
+     
+## 企业项目联合查询详情
+   
+   **url**: /index/getData
+   
+   **请求方式**：post
+   
+   **请求参数（示例）：**
+   
+ ```
+ 注意请求参数参考/project/getProjectDataDetail
+ page 默认为1 page_size默认为10 
+{
+  	"request":{
+  	      "company_condition_detail":{
+       	     	"code":"414,352,(322|189)"
+       	     },
+  	      "project_condition_detail":{
+  	      		"contract_date_start":"2018-05-01",
+    	     	"finish_realbegin_start":"2018-05-01",
+    	     	"finish_realbegin_end":"2018-06-02",
+    	     	"project_use":"其他",
+    	     	"project_nature":"改建"
+    	     }
+  	}
+}
+   
+```
+ **返回参数 和 返回示例 参考（上一个）项目详情查询**
