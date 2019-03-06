@@ -189,7 +189,7 @@
 }
 ```
 
-## 人员筛选
+## 人员筛选(请求参数修改)
 
 **url**: /people_condition/getCompanyByPeople
 
@@ -519,148 +519,7 @@
 }
 ```
 
-## 人员筛选-->企业详情-->人员列表
 
-   **url**: /people_condition/getPeopleLists
-
-   **请求方式**：get
-
-   **请求参数：**
-
-| 字段名 | 类型 | 说明 |
-| ------ | ---- | ---- |
-| register_type   | string|多条件以逗号隔开，如：一级注册建造师，二级注册建造师|
-| register_major   | string|多条件以逗号隔开，如：建筑工程，机电工程|
-| company_url   | int|公司url|
-| page_num   | int|页码，从零开始，默认为0|
-| page_size   | int|每页返回条数，默认为10|
-
-   **返回参数：**
-
-|      字段名      | 类型   | 说明                       |
-| :--------------: | ------ | -------------------------- |
-|       code       | int    | 错误码                     |
-|       msg        | string | 消息                       |
-|       people_list       | array  | 返回人员列表       |
-|        id        | int    | id                       |
-|        people_name        | string    | 人员姓名                      |
-|        people_sex        | string    | 性别                      |
-
-
-   **返回示例：**
-
-   ```
-   {
-       "code": 1,
-       "msg": "成功",
-       "people_list": [
-           [
-               {
-                   "id": 69293,
-                   "people_name": "杨亮",
-                   "people_sex": "男"
-               }
-           ],
-           [
-               {
-                   "id": 69051,
-                   "people_name": "李政道",
-                   "people_sex": "男"
-               }
-           ],
-           [
-               {
-                   "id": 69373,
-                   "people_name": "鄂伟",
-                   "people_sex": "男"
-               }
-           ],
-           [
-               {
-                   "id": 69028,
-                   "people_name": "程朦",
-                   "people_sex": "女"
-               }
-           ]
-       ],
-       "exe_time": "3.045781"
-   }
-   ```
-
- ## 人员筛选-->企业详情-->人员详情
-
- **url**: /people_condition/getPeopleDetail
-
- **请求方式**：get
-
- **请求参数：**
-
-| 字段名 | 类型 | 说明 |
-| ------ | ---- | ---- |
-| peopel_id   | int | 人员id|
- **返回参数：**
-
-|      字段名      | 类型   | 说明                       |
-| :--------------: | ------ | -------------------------- |
-|       code       | int    | 错误码                     |
-|       msg        | string | 消息                       |
-|       people_info       | array  | 人员信息       |
-|       register       | array  | 注册信息       |
-|        register_type        | int    | 注册类别                       |
-|        register_major        | string    | 注册专业                      |
-|        register_date        | string    | 有效期                      |
-  |        register_unit        | string    | 注册单位                      |、
-   |        project        | array    | 项目名称集合                      |
-     |        miscdct        | array    | 诚信集合                      |
-         |        miscdct_name        | sting    | 诚信记录主体                      |
-             |        miscdct_content        | sting    | 决定内容                      |
-                 |        miscdct_dept        | sting    | 实施部门                      |
-                     |        miscdct_date        | array    | 发布有效期                      |change
-  |        change        | array    | 变更记录集合                      |
-    |        change_type        | string    | 变更类别                      |
-      |        change_record        | string    | 变更记录                      |
-      
-    
-
- **返回示例：**
-
- ```
-{
-    "code": 1,
-    "msg": "成功",
-    "people_list": {
-        "register": {
-            "register_type": "一级注册建造师",
-            "register_major": "建筑工程",
-            "register_date": "2010年11月19日",
-            "register_unit": "山东寿光第一建筑有限公司"
-        },
-        "project": [
-            "潍坊中学科技图书楼",
-            "寿光静山花园10#-18#楼及幼儿园",
-            "寿光城投·五星大厦工程",
-            "寿光市历史文化中心"
-        ],
-        "miscdct": [
-            {
-                "miscdct_name": "2",
-                "miscdct_content": "3asdf",
-                "miscdct_dept": "请我",
-                "miscdct_date": "请我"
-            }
-        ],
-        "change": [
-            {
-                "change_type": "12",
-                "change_record": "12"
-            }
-        ]
-    },
-    "exe_time": "1.173139"
-}
- ```
-
-   
 
 ## 企业人员联查（符合条件的企业数量）
 
@@ -2205,22 +2064,34 @@ ps:说明注释:所有返回数量的都是公司的数量
    **请求参数（示例）：**
 
 ```
-{
+  {
   	"request":{
-  		"people_condition":{
-   	     	"code":"431"
-   	     }
+  	     "people_condition_detail":{
+  	     	"register_type":"一级注册建造师,一级注册建造师",
+      		"register_major":"机电工程,建筑工程",
+      		"page_size":10,
+      		"page_num":0
+  	     }
   	}
-}
+  }
 ```
 
    **返回参数：**
 
-| 字段名 | 类型   | 说明               |
-| :----: | ------ | ------------------ |
-|  code  | int    | 错误码             |
-|  msg   | string | 消息               |
-| count  | array  | 符合条件的企业数量 |
+|     字段名      | 类型   | 说明               |
+| :-------------: | ------ | ------------------ |
+|      code       | int    | 错误码             |
+|       msg       | string | 消息               |
+|   people_list   | array  | 符合条件的人员信息 |
+|    people_id    | int    | 人员id             |
+|  register_type  | array  | 注册类型           |
+| register_major  | array  | 注册专业           |
+|  register_unit  | array  | 注册单位           |
+|  register_date  | array  | 注册日期           |
+|   people_name   | string | 人员姓名           |
+|   people_sex    | string | 人员性别           |
+| people_cardtype | string | 证件类型           |
+| people_cardnum  | string | 证件号码           |
 
   
 
