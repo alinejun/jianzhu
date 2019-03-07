@@ -108,7 +108,7 @@ class Company extends Model
      */
     public static function getComanyInfo($where=1,$filed="*",$pageSize=10,$pageNum=0)
     {
-        return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select();
+        return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
     }
 }
 ?>

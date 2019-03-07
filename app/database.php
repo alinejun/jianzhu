@@ -34,7 +34,7 @@ return [
     // 是否严格检查字段是否存在
     'fields_strict'   => true,
     // 数据集返回类型
-    'resultset_type'  => 'array',
+    'resultset_type'  => '\think\Collection',
     // 自动写入时间戳字段
     'auto_timestamp'  => true,
     // 时间字段取出后的默认时间格式

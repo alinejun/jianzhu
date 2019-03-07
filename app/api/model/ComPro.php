@@ -11,6 +11,7 @@ use think\Db;
 class ComPro extends ApiBase{
     public function getProByCom($where,$field='*')
     {
-        return $this->where(['company_url','in',$where])->where(['status'=>1])->field($field)->select();
+        $res =  $this->where('company_url','in',$where)->where('status',1)->field($field)->select()->toArray();
+        return $res;
    }
 }

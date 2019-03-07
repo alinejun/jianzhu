@@ -102,8 +102,9 @@ class UnionQuery extends ApiBase{
 
 
     #企业人员获取project_url
-    public function getProjectUrlByCP($request)
+    public function getProjectUrlByCP()
     {
+        $request = input('post.')['request'];
         $ids_arr = explode(',', $request['company_condition']['code']);
         $ids_arr = (new Company)->transformGet($ids_arr);
         #得到符合资质查询条件的公司id
@@ -112,9 +113,9 @@ class UnionQuery extends ApiBase{
         empty($company_url_list) or $request['people_condition']['company_url_list'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
         $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
-        $project_url = $this->com_pro->getProByCom($company_url['company_list']);
-        dump($project_url);
-        exit;
+        $company_list = array_column($company_url['company_list'],'company_url');
+        $project_url = $this->com_pro->getProByCom($company_list);
+        return $project_url;
     }
     /*
      * =================================================================================================================

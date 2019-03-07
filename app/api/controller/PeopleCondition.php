@@ -115,7 +115,7 @@ class PeopleCondition extends ApiBase{
         $company_list = [];
         foreach ($list['list'] as $k=>&$value){
             $map['company_url'] = $value['company_url'];
-            $company_list[] = \app\api\model\Company::getComanyInfo($map,'*');
+            $company_list[] = \app\api\model\Company::getComanyInfo($map,'*')[0];
         }
         return ['company_list'=>$company_list,'count'=>$list['count']];
     }
