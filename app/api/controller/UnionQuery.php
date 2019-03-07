@@ -115,7 +115,7 @@ class UnionQuery extends ApiBase{
         $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
         $company_list = array_column($company_url['company_list'],'company_url');
         $project_url = $this->com_pro->getProByCom($company_list);
-        return $project_url;
+        return array_column($project_url,'project_url');
     }
     /*
      * =================================================================================================================
