@@ -55,6 +55,9 @@ class Project extends model{
     }
     #转换where条件
     public static function transformWhere($where){
+        $where_finish=[];
+        # 针对联查得出的project_url_str做一个in
+        if (isset($where['project_url_str'])){$where_finish[] = "p.project_url in ( ".$where['project_url_str']." )";}
         if (!empty($where)){
             # 遍历-加上引号
             $toQuotation = function($param) {
@@ -62,7 +65,6 @@ class Project extends model{
             };
             $where = array_map($toQuotation,$where);
         }
-        $where_finish=[];
         if (isset($where['project_type'])){$where_finish[] = "p.project_type=".$where['project_type'];}
         if (isset($where['project_nature'])){$where_finish[] = "p.project_nature=".$where['project_nature'];}
         if (isset($where['project_use'])){$where_finish[] = "p.project_use=".$where['project_use'];}

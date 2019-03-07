@@ -59,8 +59,8 @@ class Index extends ApiBase
             if ($key == ApiRoute::PROJECT_CONDITION && !empty($value)) {
                 return ((new Project())->getProjectDataNum($value));
             }
-            if ($key == ApiRoute::GET_MAJOR && !empty($value)) {
-                return (new PeopleCondition())->getMajor($value);
+            if ($key == ApiRoute::PEOPLE_CONDITION_DETAIL && !empty($value)) {
+                return ((new PeopleCondition())->getPeopleLists($value));  //人员详情入口
             }
             if ($key == ApiRoute::PROJECT_CONDITION_DETAIL && !empty($value)){
                 return (new Project())->getProjectDataDetail($value);
@@ -72,6 +72,7 @@ class Index extends ApiBase
     {
         $keys = array_keys($arr);
 
+        # 符合条件的公司数量
         if (!array_diff($keys,explode(',',ApiRoute::COMPANY_PEOPLE_CONDITION))) {
             return  $this->union_query->getCompanyUnionPeople($arr);  //企业-人员联查
         }
@@ -83,6 +84,11 @@ class Index extends ApiBase
         }
         if (!array_diff($keys,  explode(',',ApiRoute::COMPANY_PEOPLE_PROJECT_CONDITION))){
             return  $this->union_query->getAllUnion($arr);  //人员-企业-项目 联查
+        }
+
+        # 详情
+        if (!array_diff($keys,  explode(',',ApiRoute::COMPANY_PROJECT_CONDITION_DETAIL))){
+            return $this->union_query->getCompanyUnionProjectDetail($arr);  //企业-项目联查 详情
         }
         exit;
     }
