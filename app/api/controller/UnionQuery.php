@@ -10,9 +10,15 @@ use app\api\model\Company as CompanyModel;
 use app\api\controller\Company;
 use app\api\controller\PeopleCondition;
 use app\api\controller\Project;
+use app\api\model\ComPro;
 use app\Code;
 
 class UnionQuery extends ApiBase{
+    private  $com_pro ;
+    public function __construct()
+    {
+        $this->com_pro = new ComPro();
+    }
 
     //企业人员联合查询
     public function getCompanyUnionPeople($request)
@@ -91,5 +97,20 @@ class UnionQuery extends ApiBase{
         $res['count']= $result['count'];
         $res = json_encode($res);
         return $res;
+    }
+
+    #企业人员获取project_url
+    public function getProjectUrlByCP($request)
+    {
+        $ids_arr = explode(',', $request['company_condition']['code']);
+        $ids_arr = (new Company)->transformGet($ids_arr);
+        #得到符合资质查询条件的公司id
+        $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
+        $company_url_list = implode(',',array_column($company_ids_arr,'company_url'));
+        empty($company_url_list) or $request['people_condition']['company_url_list'] = $company_url_list;
+        #将获取到的符合资质的company_url传入人员中做为条件
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
+        $project_url = $this->com_pro->getProByCom($company_url['company_list']);
+        dump($project_url);exit;
     }
 }
