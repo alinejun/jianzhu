@@ -41,7 +41,7 @@ class Index extends ApiBase
 
         $requsetData = input('post.');
         $arr = $this->getArr($requsetData['request']);   //判断是否存在多个不为空的条件
-        $return = $this->apiReturn(CodeBase::$requestNotData);
+//        $return = $this->apiReturn(CodeBase::$requestNotData);
         count($arr) >  1 and $return = $this->multipleApi($arr);
         count($arr) == 1 and $return = $this->aloneApi($arr);
         return $return;
