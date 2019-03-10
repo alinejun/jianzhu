@@ -2653,4 +2653,26 @@ ps:说明注释:所有返回数量的都是公司的数量
 }
 ```
 
-
+## 项目详情查询
+   
+   **url**: /index/getData
+   
+   **请求方式**：post
+   
+   **请求参数（示例）：**
+   
+ ```
+{
+  	"request":{
+  	      "project_condition_down":{
+    	     	"finish_realbegin_start":"2018-05-01",
+    	     	"finish_realbegin_end":"2018-06-02",
+    	     	"project_use":"其他",
+    	     	"project_nature":"改建"
+         }
+  	}
+}
+```
+   
+   **返回参数：**
+   ### 导出项目相关详情到excel

@@ -73,9 +73,9 @@ function get_excel_obj($file_name = '导出文件')
     header("Content-Type:application/vnd.ms-execl");
     header("Content-Type:application/octet-stream");
     header("Content-Type:application/download");
-    header('Content-Disposition:attachment;filename='.iconv("utf-8", "gb2312", $file_name).'.xlsx');
+    header('Content-Disposition:attachment;filename='.iconv("utf-8", "gb2312", $file_name).'.xls');
     header("Content-Transfer-Encoding:binary");
-    
+
     return new PHPExcel();
 }
 

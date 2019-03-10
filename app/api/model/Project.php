@@ -58,6 +58,11 @@ class Project extends model{
         $where_finish=[];
         # 针对联查得出的project_url_str做一个in
         if (isset($where['project_url_str'])){$where_finish[] = "p.project_url in ( ".$where['project_url_str']." )";}
+        if (isset($where['bid_money'])){$where_finish[] = "pb.bid_money>=".$where['bid_money'];}
+        if (isset($where['contract_money'])){$where_finish[] = "pc.contract_money>=".$where['contract_money'];}
+        if (isset($where['finish_money'])){$where_finish[] = "pf.finish_money>=".$where['finish_money'];}
+        if (isset($where['contract_scale'])){$where_finish[] = "pc.contract_scale>=".$where['contract_scale'];}
+        if (isset($where['finish_area'])){$where_finish[] = "pf.finish_area>=".$where['finish_area'];}
         if (!empty($where)){
             # 遍历-加上引号
             $toQuotation = function($param) {
@@ -69,16 +74,11 @@ class Project extends model{
         if (isset($where['project_nature'])){$where_finish[] = "p.project_nature=".$where['project_nature'];}
         if (isset($where['project_use'])){$where_finish[] = "p.project_use=".$where['project_use'];}
         if (isset($where['bid_way'])){$where_finish[] = "pb.bid_way=".$where['bid_way'];}
-        if (isset($where['bid_money'])){$where_finish[] = "pb.bid_money>=".$where['bid_money'];}
         if (isset($where['bid_date_start'])){$where_finish[] = "pb.bid_date>=".$where['bid_date_start'];}
         if (isset($where['bid_date_end'])){$where_finish[] = "pb.bid_date<=".$where['bid_date_end'];}
         if (isset($where['contract_type'])){$where_finish[] = "pc.contract_type=".$where['contract_type'];}
-        if (isset($where['contract_money'])){$where_finish[] = "pc.contract_money>=".$where['contract_money'];}
-        if (isset($where['contract_scale'])){$where_finish[] = "pc.contract_scale>=".$where['contract_scale'];}
         if (isset($where['contract_date_start'])){$where_finish[] = "pc.contract_signtime>=".$where['contract_date_start'];}
         if (isset($where['contract_date_end'])){$where_finish[] = "pc.contract_signtime<=".$where['contract_date_end'];}
-        if (isset($where['finish_money'])){$where_finish[] = "pf.finish_money>=".$where['finish_money'];}
-        if (isset($where['finish_area'])){$where_finish[] = "pf.finish_area>=".$where['finish_area'];}
         if (isset($where['finish_realbegin_start'])){$where_finish[] = "pf.finish_realbegin>=".$where['finish_realbegin_start'];}
         if (isset($where['finish_realbegin_end'])){$where_finish[] = "pf.finish_realbegin<=".$where['finish_realbegin_end'];}
         if (isset($where['finish_realfinish_start'])){$where_finish[] = "pf.finish_realfinish>=".$where['finish_realfinish_start'];}
@@ -225,6 +225,9 @@ class Project extends model{
             $join[] = " left join jz_project_contract pc on p.project_url = pc.project_url and pb.company_url = pc.company_inpurl ";
         }elseif ($params_arr['contract'] == 1 && $params_arr['finish'] == 1){
             #选了合同备案 和 竣工验收
+            $join[] = " join jz_project_contract pc on p.project_url = pc.project_url ";
+            $join[] = " join jz_project_finish pf on p.project_url = pf.project_url and (pc.company_inpurl = pf.company_dsnurl or pc.company_inpurl = pf.company_spvurl or pc.company_inpurl = pf.company_csturl)) ";
+            $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl";
         }elseif (
                     ($params_arr['bid'] == 1 && $params_arr['contract'] == 1 && $params_arr['finish'] == 1) || //子表三个全选
                     ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 0) || //子表三个全不选
@@ -242,8 +245,11 @@ class Project extends model{
         $where_str = implode(' and ',$where);
         # sql
         $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." group by p.project_url limit ".($page-1)*$page_size.",".$page_size;
+        if (isset($params_arr['is_limit']) && $params_arr['is_limit'] == false){
+            # 因为导出所以重写sql
+            $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." group by p.project_url";
+        }
         $res = Db::query($sql);
         return $res;
-
     }
 }

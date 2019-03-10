@@ -17,14 +17,15 @@ class ApiRoute {
         PEOPLE_PROJECT_CONDITION                            = 'people_condition,project_condition', //人员项目联查
         COMPANY_PEOPLE_PROJECT_CONDITION                    = 'company_condition,people_condition,project_condition', //企业人员项目联查
 
-        # 详情
-        PROJECT_CONDITION_DETAIL                            = 'project_condition_detail',    //企业详情查询
-        COMPANY_PROJECT_CONDITION_DETAIL                    = 'company_condition_detail,project_condition_detail',
-
         //根据专业类型获取专业接口
         GET_MAJOR                                           = 'get_major',
 
         //详情查询
-        PEOPLE_CONDITION_DETAIL                                = 'people_condition_detail' //人员详情
+        PEOPLE_CONDITION_DETAIL                             = 'people_condition_detail',    //人员详情
+        PROJECT_CONDITION_DETAIL                            = 'project_condition_detail',    //企业详情查询
+        COMPANY_PROJECT_CONDITION_DETAIL                    = 'company_condition_detail,project_condition_detail',  //企业项目联查详情
+
+        //下载导出excel
+        PROJECT_CONDITION_DOWN                              = 'project_condition_down'  //项目下载
     ;
 }
