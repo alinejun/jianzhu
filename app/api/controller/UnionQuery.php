@@ -105,14 +105,14 @@ class UnionQuery extends ApiBase{
     public function getProjectUrlByCP()
     {
         $request = input('post.')['request'];
-        $ids_arr = explode(',', $request['company_condition']['code']);
+        $ids_arr = explode(',', $request['company_condition_detail']['code']);
         $ids_arr = (new Company)->transformGet($ids_arr);
         #得到符合资质查询条件的公司id
         $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
         $company_url_list = implode(',', array_column($company_ids_arr, 'company_url'));
-        empty($company_url_list) or $request['people_condition']['company_url_list'] = $company_url_list;
+        empty($company_url_list) or $request['people_condition_detail']['company_url_list'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
-        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition_detail']);
         $company_list = array_column($company_url['company_list'],'company_url');
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');
@@ -141,5 +141,15 @@ class UnionQuery extends ApiBase{
         $result = (new Project())->getProjectDataDetail($params);
         return $result;
 
+    }
+
+    # 企业人员项目三个联查详情
+    public function getAllUnionDetail($request){
+        $project_url = $this->getProjectUrlByCP();
+        $project_url_str = implode(',', $project_url);
+        $request['project_condition_detail']['project_url_str'] = $project_url_str;
+        $params = $request['project_condition_detail'];
+        $result = (new Project())->getProjectDataDetail($params);
+        return $result;
     }
 }

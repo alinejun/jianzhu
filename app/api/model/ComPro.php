@@ -9,7 +9,7 @@ namespace app\api\model;
 use think\Db;
 
 class ComPro extends ApiBase{
-    public function getProByCom($where,$field='*')
+    public function getProByCom($where,$field='project_url')
     {
         $res =  $this->where('company_url','in',$where)->where('status',1)->field($field)->select()->toArray();
         return $res;

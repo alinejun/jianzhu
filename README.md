@@ -2370,6 +2370,35 @@ ps:说明注释:所有返回数量的都是公司的数量
 ```
  **返回参数 和 返回示例 参考（上一个）项目详情查询**
 
+ ## 企业人员项目三个联合查询详情
+   
+   **url**: /index/getData
+   
+   **请求方式**：post
+   
+   **请求参数（示例）：**
+   
+ ```
+ 注意请求参数参考/project/getProjectDataDetail
+ page 默认为1 page_size默认为10 
+{
+    "request":{
+          "company_condition_detail":{
+                "code":"414,352,(322|189)"
+             },
+            "people_condition_detail":{
+            "register_type":"二级注册建造师,二级注册建造师",
+            "register_major":"建筑工程,建筑工程"
+            }，
+          "project_condition_detail":{
+                "bid_money":"100"
+             }
+    }
+}
+   
+```
+ **返回参数 和 返回示例 参考（上一个）项目详情查询**
+
 
 ## 人员详情
 
