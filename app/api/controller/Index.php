@@ -40,12 +40,7 @@ class Index extends ApiBase
     public function getData()
     {
 
-        if($this->request->isPost()){
-            $requsetData = input('post.');
-        }elseif($this->request->isGet()){
-           $getData= input('get.params');
-           $requsetData = json_decode($getData,true);
-        }
+        $requsetData = input('post.');
         $arr = $this->getArr($requsetData['request']);   //判断是否存在多个不为空的条件
 //        $return = $this->apiReturn(CodeBase::$requestNotData);
         count($arr) >  1 and $return = $this->multipleApi($arr);

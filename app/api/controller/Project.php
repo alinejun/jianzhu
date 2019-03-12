@@ -8,7 +8,7 @@ use think\Db;
 /**
  * 项目-相关controller
  */
-class Project extends Controller
+class Project extends ApiBase
 {
 	/*
 	*由于项目相关的筛选项都是在数据量极大的表里面,所以在此不单独列筛选项的controller，且把相应的筛选项直接写死在程序里面
@@ -167,7 +167,8 @@ class Project extends Controller
             bid_type,bid_way,bid_unitname,bid_date,bid_money,bid_area,bid_unitagency,bid_url,
             contract_type,contract_money,contract_signtime,contract_scale,contract_unitname,contract_add_url,
             finish_money,finish_area,finish_realbegin,finish_realfinish,finish_unitdsn,finish_unitspv,finish_unitcst,finish_add_url";
-        export_excel($titles, $keys, $list, '项目');
+        $path = export_excel($titles, $keys, $list, '项目');
+        return $this->apiReturn(['path'=>$path]);
     }
 }
 ?>

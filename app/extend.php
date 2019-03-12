@@ -52,8 +52,11 @@ function export_excel($titles = '', $keys = '', $data = [], $file_name = '导出
     }
 
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-    
-    $objWriter->save('php://output'); exit;
+    $url = $_SERVER['DOCUMENT_ROOT'].'/upload/file/';
+    $filename = date("YmdHis").'.xls';
+    $filename = (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($filename,'gbk','UTF-8') : $filename;
+    $objWriter->save($url.$filename);
+    return $filename;
 }
 
 /**
@@ -66,7 +69,7 @@ function get_excel_obj($file_name = '导出文件')
 
     vendor('phpoffice/phpexcel/Classes/PHPExcel');
 
-    header("Pragma: public");
+    /*header("Pragma: public");
     header("Expires: 0");
     header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
     header("Content-Type:application/force-download");
@@ -74,7 +77,7 @@ function get_excel_obj($file_name = '导出文件')
     header("Content-Type:application/octet-stream");
     header("Content-Type:application/download");
     header('Content-Disposition:attachment;filename='.iconv("utf-8", "gb2312", $file_name).'.xls');
-    header("Content-Transfer-Encoding:binary");
+    header("Content-Transfer-Encoding:binary");*/
 
     return new PHPExcel();
 }
