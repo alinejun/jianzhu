@@ -39,17 +39,7 @@ class Index extends ApiBase
 
     public function getData()
     {
-
-        if($this->request->isPost()){
-            $requsetData = input('post.');
-        }elseif($this->request->isGet()){
-           $getData = input('get.params');
-           // $getData = '{"request":{"project_condition_down":{"bid_money":"10000","bid_date_start":"2019-03-01","bid_date_end":"2019-03-31"}}}';
-           if (strstr($getData, "&quot;")){
-                $getData = str_replace("&quot;", "\"", $getData);
-           }
-           $requsetData = json_decode($getData,true);
-        }
+        $requsetData = input('post.');
         $arr = $this->getArr($requsetData['request']);   //判断是否存在多个不为空的条件
 //        $return = $this->apiReturn(CodeBase::$requestNotData);
         count($arr) >  1 and $return = $this->multipleApi($arr);
