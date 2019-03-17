@@ -152,4 +152,30 @@ class UnionQuery extends ApiBase{
         $result = (new Project())->getProjectDataDetail($params);
         return $result;
     }
+
+    /*
+     * =================================================================================================================
+     * 上面是联合查询中符合条件的 数据详情
+     * 下面是联合查询中符合条件的 excel导出
+     * =================================================================================================================
+     * */
+
+    # 企业项目联合导出
+    public function exportCompanyUnionProject($request){
+        # 先查企业的符合的公司company_url
+        $params_company = explode(',', $request['company_condition_down']['code']);
+        $params_company = (new Company)->transformGet($params_company);
+        $company_ids_arr = CompanyModel::getCompanyIds($params_company);
+        $company_ids_arr = array_column($company_ids_arr,'company_url');
+        $company_ids_str = implode(',',$company_ids_arr);
+        # 查com_pro表通过公司URL查询到project_url, 为了效率 limit 5000
+        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.") limit 5000";
+        $res = Db::query($sql);
+        $project_url_str = implode(',',array_column($res,'project_url'));
+        $request['project_condition_down']['project_url_str'] = $project_url_str;
+        $params = $request['project_condition_down'];
+        $result = (new Project())->exportPeoject($params);
+        return $result;
+    }
+
 }

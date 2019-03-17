@@ -66,7 +66,7 @@ class Index extends ApiBase
                 return (new Project())->getProjectDataDetail($value);
             }
             if ($key == ApiRoute::PROJECT_CONDITION_DOWN && !empty($value)){
-                return (new Project())->exportPeoject($value);
+                return (new Project())->exportPeoject($value); //项目导出
             }
         }
     }
@@ -95,6 +95,11 @@ class Index extends ApiBase
         }
         if (!array_diff($keys, explode(',', ApiRoute::COMPANY_PEOPLE_PROJECT_CONDITION_DETAIL))) {
             return $this->union_query->getAllUnionDetail($arr); //企业-人员-项目 三个联查详情
+        }
+
+        # 导出
+        if (!array_diff($keys,  explode(',',ApiRoute::COMPANY_PROJECT_CONDITION_DOWN))){
+            return $this->union_query->exportCompanyUnionProject($arr);  //企业项目联查 导出
         }
         exit;
     }

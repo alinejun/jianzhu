@@ -183,7 +183,6 @@ class Project extends model{
     #查询项目详情数据
     public static function getProjectDataDetail($params_arr){
         # init
-        # 由于数据量庞大，所有就不统计 page_total 以及 total_num 了，前端只给下一页和上一页的按钮和自定义页面显示条数即可
         $page = 1;
         $page_size = 10;
         $field = [
@@ -203,35 +202,39 @@ class Project extends model{
         }
         # 判断连表
         # 有筛选项则用 join 没有选的就用left join 这样可以保证没有选的 不会被连表条件所影响
-        if ($params_arr['bid'] == 1){
+        if ($params_arr['bid'] == 1 && $params_arr['contract'] == 0 && $params_arr['finish'] == 0){
             #只选择了招投标
             $join[] = " join jz_project_bid pb on p.project_url = pb.project_url ";
             $join[] = " left join jz_project_contract pc on (p.project_url = pc.project_url and pb.company_url = pc.company_inpurl) ";
             $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
-        }elseif ($params_arr['contract'] == 1){
+        }elseif ($params_arr['bid'] == 0 && $params_arr['contract'] == 1 && $params_arr['finish'] == 0){
             #只选择了合同备案
             $join[] = " join jz_project_contract pc on p.project_url = pc.project_url ";
             $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl ";
-            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
-        }elseif ($params_arr['bid'] == 1 && $params_arr['contract'] == 1){
+            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pc.company_url = pf.company_dsnurl or pc.company_url = pf.company_spvurl or pc.company_url = pf.company_csturl)) ";
+        }elseif ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 1){
+            # 子表只选了竣工验收
+            $join[] = " join jz_project_finish pf on p.project_url = pf.project_url ";
+            $join[] = " left join jz_project_bid pb on (p.project_url = pb.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
+            $join[] = " left join jz_project_contract pc on (p.project_url = pc.project_url and pb.company_url = pc.company_inpurl) ";
+        }elseif ($params_arr['bid'] == 1 && $params_arr['contract'] == 1 && $params_arr['finish'] == 0 ){
             #选了招投标 和 合同备案
             $join[] = " join jz_project_bid pb on p.project_url = pb.project_url";
             $join[] = " join jz_project_contract pc on p.project_url = pc.project_url and pb.company_url = pc.company_inpurl ";
             $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
-        }elseif ($params_arr['bid'] == 1 && $params_arr['finish'] == 1){
+        }elseif ($params_arr['bid'] == 1 && $params_arr['contract'] == 0 && $params_arr['finish'] == 1){
             #选了招投标 和 竣工验收
             $join[] = " join jz_project_bid pb on p.project_url = pb.project_url";
             $join[] = " join jz_project_finish pf on (p.project_url = pf.project_url and (pb.company_url = pf.company_dsnurl or pb.company_url = pf.company_spvurl or pb.company_url = pf.company_csturl)) ";
             $join[] = " left join jz_project_contract pc on p.project_url = pc.project_url and pb.company_url = pc.company_inpurl ";
-        }elseif ($params_arr['contract'] == 1 && $params_arr['finish'] == 1){
+        }elseif ($params_arr['bid'] == 0 && $params_arr['contract'] == 1 && $params_arr['finish'] == 1){
             #选了合同备案 和 竣工验收
             $join[] = " join jz_project_contract pc on p.project_url = pc.project_url ";
-            $join[] = " join jz_project_finish pf on p.project_url = pf.project_url and (pc.company_inpurl = pf.company_dsnurl or pc.company_inpurl = pf.company_spvurl or pc.company_inpurl = pf.company_csturl)) ";
-            $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl";
+            $join[] = " join jz_project_finish pf on (p.project_url = pf.project_url and (pc.company_inpurl = pf.company_dsnurl or pc.company_inpurl = pf.company_spvurl or pc.company_inpurl = pf.company_csturl)) ";
+            $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl ";
         }elseif (
                     ($params_arr['bid'] == 1 && $params_arr['contract'] == 1 && $params_arr['finish'] == 1) || //子表三个全选
-                    ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 0) || //子表三个全不选
-                    ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 1)    //子表只选了竣工验收
+                    ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 0)    //子表三个全不选
                 ){
             $join[] = " join jz_project_bid pb on p.project_url = pb.project_url ";
             $join[] = " join jz_project_contract pc on (p.project_url = pc.project_url and pb.company_url = pc.company_inpurl) ";
@@ -243,13 +246,24 @@ class Project extends model{
         $field_str = implode(',',$field);
         $join_str = implode(' ',$join);
         $where_str = implode(' and ',$where);
+
         # sql
-        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." group by p.project_url limit ".($page-1)*$page_size.",".$page_size;
         if (isset($params_arr['is_limit']) && $params_arr['is_limit'] == false){
             # 因为导出所以重写sql
-            $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." group by p.project_url";
+            $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str;
+            $res = Db::query($sql);
+        }else{
+            $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit ".($page-1)*$page_size.",".$page_size;
+            $res_data = Db::query($sql);
+            $res['data_list'] = $res_data;
+            # sql count 针对详情的时候给出一个 总页数和总数量
+            $res['total_num'] = 0;
+            $res['total_page'] = 1;
+            $sql_count = "select count(*) as total_num  from jz_project p ".$join_str." where ".$where_str;
+            $res_count = Db::query($sql_count);
+            $res['total_num'] = $res_count['total_num'];
+            $res['total_page'] = ceil($res['total_num']/$page_size);
         }
-        $res = Db::query($sql);
         return $res;
     }
 }

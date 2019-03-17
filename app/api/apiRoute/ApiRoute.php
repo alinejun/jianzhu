@@ -27,6 +27,7 @@ class ApiRoute {
         COMPANY_PEOPLE_PROJECT_CONDITION_DETAIL             = 'company_condition_detail,people_condition_detail,project_condition_detail',  //企业人员项目三个联查详情
 
         //下载导出excel
-        PROJECT_CONDITION_DOWN                              = 'project_condition_down'  //项目下载
+        PROJECT_CONDITION_DOWN                              = 'project_condition_down',  //项目下载
+        COMPANY_PROJECT_CONDITION_DOWN                      = 'company_condition_down,project_condition_down'   //企业项目联查导出
     ;
 }
