@@ -53,10 +53,10 @@ function export_excel($titles = '', $keys = '', $data = [], $file_name = '导出
 
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
     $url = $_SERVER['DOCUMENT_ROOT'].'/upload/file/';
-    $filename = date("YmdHis").'.xls';
-    $filename = (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($filename,'gbk','UTF-8') : $filename;
-    $objWriter->save($url.$filename);
-    return $filename;
+    $file_name .= date("YmdHis").'.xls';
+   // $filename = (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($file_name,'gbk','UTF-8') : $file_name;
+    $objWriter->save($url.$file_name);
+    return $file_name;
 }
 
 /**

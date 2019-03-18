@@ -68,6 +68,9 @@ class Index extends ApiBase
             if ($key == ApiRoute::PROJECT_CONDITION_DOWN && !empty($value)){
                 return (new Project())->exportPeoject($value); //项目导出
             }
+            if ($key == ApiRoute::PEOPLE_CONDITION_DOWN && !empty($value)){
+                return (new PeopleCondition())->exportPeople($value); //人员导出
+            }
         }
     }
 

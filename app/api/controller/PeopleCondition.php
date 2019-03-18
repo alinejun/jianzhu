@@ -173,4 +173,50 @@ class PeopleCondition extends ApiBase{
         return $this->apiReturn($refer);
 
     }
+
+    public function exportPeople($data)
+    {
+        ini_set('max_execution_time', 0);
+        $people = new People();
+        $where['register_type'] =$data['register_type'];
+        $where['register_major'] = $data['register_major'];
+        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 0;
+        $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
+
+        $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
+        $res = (new PeopleRegister())->getPeopleID($where,$field,$page_num,10);
+
+        if (!$res) {
+            $refer['code'] = Code::ERROR;
+            $refer['msg'] = Code::$MSG[$refer['code']];
+            return $this->apiReturn($refer);
+        }
+        $dataList = [];
+        $list = [];
+        foreach ($res as $k=>&$value) {
+            $map['id'] = $value['people_id'];
+            $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum');
+            if($people_info){
+                $value = array_merge($value,$people_info);
+            }
+            $value['register_type'] = explode(',',$value['register_type']);
+            $value['register_major'] = explode(',',$value['register_major']);
+            $value['register_unit'] = explode(',',$value['register_unit']);
+            $value['register_date'] = explode(',',$value['register_date']);
+            foreach (  $value['register_type'] as $k=>$v ){
+                $dataList['people_id'] = $value['people_id'];
+                $dataList['register_type'] = $v;
+                $dataList['register_major'] =  $value['register_major'][$k] ;
+                $dataList['register_unit'] =  $value['register_unit'][$k] ;
+                $dataList['register_date'] =  $value['register_date'][$k] ;
+                $list[count($list)] = array_merge($dataList,$people_info);
+            }
+        }
+        $titles =
+            "人员id,人员姓名,'人员性别','证件类型','证件号码',注册类型,注册专业,注册单位,注册日期";
+        $keys   =
+            "people_id,people_name,people_sex,people_cardtype,people_cardnum,register_type,register_major,register_unit,register_date";
+        $path = export_excel($titles, $keys, $list, '人员');
+        return $this->apiReturn(['path'=>$path]);
+    }
 }
