@@ -262,7 +262,7 @@ class Project extends model{
             $sql_count = "select count(*) as total_num  from jz_project p ".$join_str." where ".$where_str;
             $res_count = Db::query($sql_count);
             $res['total_num'] = $res_count[0]['total_num'];
-            $res['total_page'] = ceil($res[0]['total_num']/$page_size);
+            $res['total_page'] = ceil($res['total_num']/$page_size);
         }
         return $res;
     }
