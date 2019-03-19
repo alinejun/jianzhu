@@ -117,6 +117,21 @@ class UnionQuery extends ApiBase{
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');
     }
+    public function getProjectUrlByCPforDown()
+    {
+        $request = input('post.')['request'];
+        $ids_arr = explode(',', $request['company_condition_down']['code']);
+        $ids_arr = (new Company)->transformGet($ids_arr);
+        #得到符合资质查询条件的公司id
+        $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
+        $company_url_list = implode(',', array_column($company_ids_arr, 'company_url'));
+        empty($company_url_list) or $request['people_condition_down']['company_url_list'] = $company_url_list;
+        #将获取到的符合资质的company_url传入人员中做为条件
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition_down']);
+        $company_list = array_column($company_url['company_list'],'company_url');
+        $project_url = $this->com_pro->getProByCom($company_list);
+        return array_column($project_url,'project_url');
+    }
     /*
      * =================================================================================================================
      * 上面是联合查询中符合条件的 公司数量
@@ -172,6 +187,16 @@ class UnionQuery extends ApiBase{
         $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.") limit 5000";
         $res = Db::query($sql);
         $project_url_str = implode(',',array_column($res,'project_url'));
+        $request['project_condition_down']['project_url_str'] = $project_url_str;
+        $params = $request['project_condition_down'];
+        $result = (new Project())->exportPeoject($params);
+        return $result;
+    }
+
+    #企业人员项目联合导出
+    public function exportAllUnion($request){
+        $project_url = $this->getProjectUrlByCPforDown();
+        $project_url_str = implode(',', $project_url);
         $request['project_condition_down']['project_url_str'] = $project_url_str;
         $params = $request['project_condition_down'];
         $result = (new Project())->exportPeoject($params);

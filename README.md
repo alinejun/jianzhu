@@ -2705,6 +2705,35 @@ ps:说明注释:所有返回数量的都是公司的数量
          }
   	}
 }
+
+如果是三个一起联查导出参数示例（仅仅是示例，实际传参格式以实际情况定）
+[
+    {
+        "key":"request[company_condition_down][code]",
+        "value":"414,352,(322|189)",
+        "description":""
+    },
+    {
+        "key":"request[people_condition_down][register_type]",
+        "value":"二级注册建造师,二级注册建造师",
+        "description":""
+    },
+    {
+        "key":"request[people_condition_down][register_major]",
+        "value":"建筑工程,建筑工程",
+        "description":""
+    },
+    {
+        "key":"request[project_condition_down][project_nature]",
+        "value":"改建",
+        "description":""
+    },
+    {
+        "key":"request[project_condition_down][contract_date_start]",
+        "value":"2018-05-01",
+        "description":""
+    }
+]
 ```
    
    **返回参数：**
