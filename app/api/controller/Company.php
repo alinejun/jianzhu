@@ -10,14 +10,11 @@ use app\api\model\Company as CompanyModel;
 class Company extends Controller
 {
 	#获取企业数据
-	public function getCompanyData(){
-		if (!isset($_GET['code']) or empty($_GET)) {
-			return 'require code!';
-		}
-		$get = $_GET['code'];
+	public function getCompanyData($params){
+		$get = $params['code'];
 		#分页相关
-        $page = isset($_GET['page'])?$_GET['page']:1;
-        $page_size = isset($_GET['page_size'])?$_GET['page_size']:10;
+        $page = isset($params['page'])?$params['page']:1;
+        $page_size = isset($params['page_size'])?$params['page_size']:10;
         #process data
 		$ids_arr = explode(',', $get);
 		$ids_arr = $this->transformGet($ids_arr);
@@ -26,7 +23,6 @@ class Company extends Controller
 		#计算页数
         $total_num = count($company_ids_arr);
         $total_page = ceil($total_num/$page_size);
-
 		#分页切片
         $company_ids_arr = array_slice($company_ids_arr,($page-1)*10,$page_size);
         #对查询到公司ID进行处理
@@ -97,6 +93,12 @@ class Company extends Controller
 		$where_condition_arr[0] = $tag_or;
 		$where_condition_arr[1] = $tag_and;
 		return $where_condition_arr;
+	}
+
+	#查询企业详情 
+	public function getCompanyDataDetail($params){
+		$res = $this->getCompanyData($params);
+		return $res;
 	}
 }
 ?>

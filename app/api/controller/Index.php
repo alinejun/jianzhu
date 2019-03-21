@@ -63,7 +63,10 @@ class Index extends ApiBase
                 return ((new PeopleCondition())->getPeopleLists($value));  //人员详情入口
             }
             if ($key == ApiRoute::PROJECT_CONDITION_DETAIL && !empty($value)){
-                return (new Project())->getProjectDataDetail($value);
+                return (new Project())->getProjectDataDetail($value);   //项目详情
+            }
+            if ($key == ApiRoute::COMPANY_CONDITION_DETAIL && !empty($value)) {
+                return (new Company())->getCompanyDataDetail($value);   //企业详情
             }
             if ($key == ApiRoute::PROJECT_CONDITION_DOWN && !empty($value)){
                 return (new Project())->exportPeoject($value); //项目导出
