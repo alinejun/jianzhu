@@ -45,6 +45,7 @@ class Company extends Controller
         }
 		$res['code'] = 1;
 		$res['msg'] = 'success';
+		$res['key'] = 'company';
 		$res['page'] = intval($page);
 		$res['page_size'] = intval($page_size);
 		$res['total_page'] = intval($total_page);
