@@ -99,6 +99,30 @@ class Company extends Model
         return [];
     }
 
+    #获取企业导出数据
+    public static function getCompanyDataNotFormat($company_ids_str){
+    	$sql = "
+			SELECT
+				c.company_name,
+				c.company_legalreprst,
+				c.company_regadd,
+				q.ion_type_name,
+				q.ion_name,
+				q.ion_validity,
+				cc.change_content,
+				cm.miscdct_content
+			FROM
+				jz_company c
+			LEFT JOIN jz_qualification q ON q.company_url = c.company_url
+			LEFT JOIN jz_cpny_change cc ON cc.company_url = c.company_url
+			LEFT JOIN jz_cpny_miscdct cm ON cm.company_url = c.company_url
+			WHERE
+				c.company_url IN (".$company_ids_str.")
+		";
+		$res = Db::query($sql);
+		return $res;
+    }
+
     /**
      * 获取公司详情
      * @param int $where

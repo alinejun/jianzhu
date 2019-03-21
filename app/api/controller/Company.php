@@ -54,6 +54,24 @@ class Company extends Controller
 		return $res;
 	}
 
+	/*
+	*	上面的是企业详情调用（有格式化处理，比如同一个公司有多个资质，那么相关的资质放在一个数组里面）
+	*	下面的是企业详情导出调用 （无格式处理，直接SQL查询出来一对多，多条就多条）
+	*/
+
+	#获取企业导出数据
+	public function getCompanyDataForExport($params){
+		$get = $params['code'];
+        #process data
+		$ids_arr = explode(',', $get);
+		$ids_arr = $this->transformGet($ids_arr);
+		#得到符合资质查询条件的公司id
+		$company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
+		$company_ids_str = implode(array_column($company_ids_arr, 'company_url'), ',');
+		$res = CompanyModel::getCompanyDataNotFormat($company_ids_str);
+		return $res;
+	}
+
 	#获取企业数据条数
 	public function getCompanyDataNumber($params){
 		if (!isset($params['code']) or empty($params)) {
@@ -99,6 +117,15 @@ class Company extends Controller
 	public function getCompanyDataDetail($params){
 		$res = $this->getCompanyData($params);
 		return $res;
+	}
+
+	#导出企业详情
+	public function exportCompany($params){
+		$list = $this->getCompanyDataForExport($params);
+	 	$titles = "企业名称,企业法定代表人,企业注册属地,资质类别,资质名称,证书有效期,变更记录,诚信数据";
+        $keys   = "company_name,company_legalreprst,company_regadd,ion_type_name,ion_name,ion_validity,change_content,miscdct_content";
+        $path = export_excel($titles, $keys, $list, '企业');
+        return $this->apiReturn(['path'=>$path]);
 	}
 }
 ?>
