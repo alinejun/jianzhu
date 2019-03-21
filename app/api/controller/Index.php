@@ -68,6 +68,9 @@ class Index extends ApiBase
             if ($key == ApiRoute::COMPANY_CONDITION_DETAIL && !empty($value)) {
                 return (new Company())->getCompanyDataDetail($value);   //企业详情
             }
+            if ($key == ApiRoute::COMPANY_CONDITION_DOWN && !empty($value)) {
+                return (new Company())->exportCompany($value);  //企业导出
+            }
             if ($key == ApiRoute::PROJECT_CONDITION_DOWN && !empty($value)){
                 return (new Project())->exportPeoject($value); //项目导出
             }
