@@ -129,7 +129,8 @@ class PeopleCondition extends ApiBase{
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
 
         $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
-        $res = (new PeopleRegister())->getPeopleID($where,$field,$page_num,$page_size);
+        $people_data = (new PeopleRegister())->getPeopleID($where,$field,$page_num,$page_size);
+        $res = $people_data['list'];
 
         if (!$res) {
             $refer['code'] = Code::ERROR;
@@ -149,7 +150,9 @@ class PeopleCondition extends ApiBase{
         }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['people_list'] = $res;
+        $refer['data']['data_list'] = $res;
+        $refer['data']['total_num'] = $people_data['count'];
+        $refer['data']['total_page'] = ceil($people_data['count']/$page_size);
         return $this->apiReturn($refer);
     }
 
@@ -184,7 +187,7 @@ class PeopleCondition extends ApiBase{
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
 
         $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
-        $res = (new PeopleRegister())->getPeopleID($where,$field,$page_num,10);
+        $res = (new PeopleRegister())->getPeopleID($where,$field,$page_num,10)['list'];
 
         if (!$res) {
             $refer['code'] = Code::ERROR;
