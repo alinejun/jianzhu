@@ -7,7 +7,7 @@ use app\api\model\Company as CompanyModel;
 /** 
  * 企业-数据controller
  */
-class Company extends Controller
+class Company extends ApiBase
 {
 	#获取企业数据
 	public function getCompanyData($params){
