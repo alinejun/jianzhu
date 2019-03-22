@@ -125,7 +125,7 @@ class PeopleCondition extends ApiBase{
         $people = new People();
         $where['register_type'] =$data['register_type'];
         $where['register_major'] = $data['register_major'];
-        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 0;
+        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 1;
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
 
         $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
