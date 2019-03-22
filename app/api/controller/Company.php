@@ -46,11 +46,11 @@ class Company extends Controller
 		$res['code'] = 1;
 		$res['msg'] = 'success';
 		$res['key'] = 'company';
-		$res['page'] = intval($page);
-		$res['page_size'] = intval($page_size);
-		$res['total_page'] = intval($total_page);
-		$res['total_num'] = intval($total_num);
-		$res['data'] = $company_data_list;
+		$res['data']['data_list'] = $company_data_list;
+		$res['data']['page'] = intval($page);
+		$res['data']['page_size'] = intval($page_size);
+		$res['data']['total_page'] = intval($total_page);
+		$res['data']['total_num'] = intval($total_num);
 		$res = json_encode($res);
 		return $res;
 	}
