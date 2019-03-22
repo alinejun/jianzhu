@@ -15,4 +15,13 @@ class PeopleProject extends ModelBase
     {
         return Db::name('people_project')->where($where)->field($field)->limit($num*$page,$page)->select();
     }
+
+    public static function getDataByPeopleId($people_id,$field)
+    {
+        if(!$people_id){
+            return false;
+        }
+        $res = Db::name('people_project')->where(['people_id'=>$people_id])->field($field)->count();
+        return $res;
+    }
 }

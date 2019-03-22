@@ -15,4 +15,14 @@ class PeopleChange extends ApiBase
     {
         return  Db::name('people_change')->where($where)->field($field)->limit($num*$page,$page)->select();
     }
+
+    public static function getDataByPeopleId($people_id,$field)
+    {
+        if(!$people_id){
+            return false;
+        }
+        $res = Db::name('people_change')->where(['people_id'=>$people_id])->field($field)->select();
+        return array_column($res,'change_record');
+    }
+
 }

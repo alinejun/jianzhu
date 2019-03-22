@@ -139,14 +139,17 @@ class PeopleCondition extends ApiBase{
         }
         foreach ($res as $k=>&$value) {
             $map['id'] = $value['people_id'];
-            $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum');
+            $people_info = $people->getInfoByPeopleid($map,'people_name,people_url,people_sex,people_cardtype,people_cardnum');
             if($people_info){
                 $value = array_merge($value,$people_info);
             }
-            $value['register_type'] = explode(',',$value['register_type']);
+            $value['register_type']  = explode(',',$value['register_type']);
             $value['register_major'] = explode(',',$value['register_major']);
-            $value['register_unit'] = explode(',',$value['register_unit']);
-            $value['register_date'] = explode(',',$value['register_date']);
+            $value['register_unit']  = explode(',',$value['register_unit']);
+            $value['register_date']  = explode(',',$value['register_date']);
+            $value['people_project'] = PeopleProject::getDataByPeopleId( $value['people_id'],'project_name');
+            $value['people_change']  = PeopleChange::getDataByPeopleId( $value['people_id'],'change_record');
+            $value['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($value['people_url'],'miscdct_name');
         }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];

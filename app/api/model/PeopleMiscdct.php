@@ -14,4 +14,14 @@ class PeopleMiscdct extends ApiBase
     {
         return Db::name('people_miscdct')->where($where)->field($field)->limit($num*$page,$page)->select();
     }
+
+    public static function getDataByPeopleId($people_url,$field)
+    {
+        if(!$people_url){
+            return false;
+        }
+        $res = Db::name('people_miscdct')->where(['people_url'=>$people_url])->field($field)->select();
+        return array_column($res,'miscdct_name');
+    }
+
 }
