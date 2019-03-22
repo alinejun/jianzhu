@@ -129,7 +129,7 @@ class PeopleCondition extends ApiBase{
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
 
         $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
-        $people_data = (new PeopleRegister())->getPeopleID($where,$field,$page_num,$page_size);
+        $people_data = (new PeopleRegister())->getPeopleID($where,$field,$page_num-1,$page_size);
         $res = $people_data['list'];
 
         if (!$res) {
@@ -152,7 +152,8 @@ class PeopleCondition extends ApiBase{
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['data']['data_list'] = $res;
         $refer['data']['total_num'] = $people_data['count'];
-        $refer['data']['total_page'] = ceil($people_data['count']/$page_size);
+        $refer['data']['total_page'] = ceil($people_data['count']/$page_size)-1;
+        $refer['key'] = 'people';
         return $this->apiReturn($refer);
     }
 
