@@ -143,13 +143,12 @@ class PeopleCondition extends ApiBase{
             if($people_info){
                 $value = array_merge($value,$people_info);
             }
-            $value['register_type']  = explode(',',$value['register_type']);
             $value['register_major'] = explode(',',$value['register_major']);
             $value['register_unit']  = explode(',',$value['register_unit']);
             $value['register_date']  = explode(',',$value['register_date']);
             $value['people_project'] = PeopleProject::getDataByPeopleId( $value['people_id'],'project_name');
             $value['people_change']  = PeopleChange::getDataByPeopleId( $value['people_id'],'change_record');
-            $value['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($value['people_url'],'miscdct_name');
+            $value['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_num');
         }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
