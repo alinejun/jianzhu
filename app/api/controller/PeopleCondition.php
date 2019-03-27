@@ -13,12 +13,15 @@ use app\api\model\PeopleChange;
 use app\api\model\PeopleMiscdct;
 use app\api\model\PeopleRegister;
 use app\Code;
+use app\common\model\PeopleRegisterReset;
 
 class PeopleCondition extends ApiBase{
 
     protected $people_register;
+    protected $peopleRegisterReset;
     public function __construct()
     {
+        $this->peopleRegisterReset = new PeopleRegisterReset();
         $this->people_register = new PeopleRegister();
         parent::__construct();
     }
@@ -101,23 +104,80 @@ class PeopleCondition extends ApiBase{
 
     public function getCompany($data)
     {
+
         ini_set('max_execution_time',0);
         $where['register_type']  =  $data['register_type'];
         $where['register_major'] =  $data['register_major'];
-        empty($data['pageSize']) and $data['pageSize'] = 10;
-        empty($data['pageNum'])  and $data['pageNum'] = 0;
-        $whereIn = isset($data['company_url_list']) ?  $data['company_url_list'] : '';
-        $is_limit =  isset($data['is_limit']) ? $data['is_limit'] : 0;
-        $list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn,$is_limit);
-        if(!$list){
+        //$list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn,$is_limit);
+        $people_id = $this->newQueryLogic($where);
+        $people_id = [15,16,17];
+        if(!$people_id){
             return false;
         }
-        $company_list = [];
-        foreach ($list['list'] as $k=>&$value){
-            $map['company_url'] = $value['company_url'];
-            $company_list[] = \app\api\model\Company::getComanyInfo($map,'*')[0];
+        $company_list = \app\api\model\Company::getCompanyByPeopleIds($people_id);
+
+        return ['company_list'=>$company_list,'count'=>count($company_list)];
+    }
+
+
+    #处理查询逻辑(新的)
+    public function newQueryLogic($data)
+    {
+
+        $register_type  = $data['register_type'];
+
+        $register_major = $data['register_major'];
+
+        $where = $map = [];
+        foreach ($register_type as $k=>$v){
+
+            if(empty($register_major[$k])){ //收集只查询类型的条件
+                $where[] = "$v";
+            }else{ //收集查询类型并有专业的条件
+                $map1['register_type']  = $v;
+                $map1['register_major'] = $register_major[$k];
+                $map[] = $map1;
+            }
         }
-        return ['company_list'=>$company_list,'count'=>$list['count']];
+        //开始查询
+        if(!empty($where)){
+            $binji = $this->peopleRegisterReset->getListDataIn($where,'id,register_type,register_major,group_concat(people_id)')->toArray();
+
+            $bin_people_arr = array_column($binji,'group_concat(people_id)');
+            foreach ($bin_people_arr as $k=>$v){
+                $bin_people_arr[$k]= explode(',',$v);
+                $bin_people_arr[$k] =array_filter($bin_people_arr[$k]);
+            }
+
+            $jiao_people_arr_data =  call_user_func_array ('array_intersect',$bin_people_arr);
+        }
+
+        //满足类型-专业条件查找
+        $jiao = [] ;
+        foreach ($map as $k=>$value){
+            $jiao[] = $this->peopleRegisterReset->getListData($value,'id,register_type,register_major,people_id')->toArray()[0];
+        }
+        $jiao_people_str = array_column($jiao,'people_id');
+        foreach ($jiao_people_str as $k=>$v){
+            $jiao_people_str[$k] = explode(',',$v);
+        }
+
+        if(count($jiao_people_str)>1){
+            $jiao_arr = call_user_func_array ('array_intersect', $jiao_people_str);
+        }else{
+            $jiao_arr = $jiao_people_str;
+        }
+
+        //对最后的结果取交集
+        if(empty($jiao_arr)){
+            // $bin_people_arr_data = array_unique($bin_people_arr_data);
+            return $jiao_people_arr_data;
+        }elseif(empty($bin_people_arr_data)){
+            return $jiao_arr;
+        }else{
+            $bin_people_arr_data = array_unique($bin_people_arr_data);
+            return array_intersect($bin_people_arr_data,$jiao_arr);
+        }
     }
 
     public function getPeopleLists($data)
