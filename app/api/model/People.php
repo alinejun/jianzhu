@@ -18,4 +18,14 @@ class People extends ApiBase{
         $list = Db::name('people')->where($where)->field($filed)->find();
         return $list;
     }
+
+    #根据人员id获取·
+    public static function getCompanyByPeopleIds($people_ids,$count=0)
+    {
+        if($count){
+            return self::where('id','in',$people_ids)->group('company_url')->count();
+        }else{
+            return self::where('id','in',$people_ids)->group('company_url')->select()->toArray();
+        }
+    }
 }

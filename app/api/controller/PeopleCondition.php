@@ -110,13 +110,15 @@ class PeopleCondition extends ApiBase{
         $where['register_major'] =  $data['register_major'];
         //$list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn,$is_limit);
         $people_id = $this->newQueryLogic($where);
-        $people_id = [15,16,17];
+
         if(!$people_id){
             return false;
         }
-        $company_list = \app\api\model\Company::getCompanyByPeopleIds($people_id);
+        //根据人员id获取对应的公司集合
 
-        return ['company_list'=>$company_list,'count'=>count($company_list)];
+        $count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
+
+        return ['company_list'=>[],'count'=>$count];
     }
 
 
@@ -124,9 +126,9 @@ class PeopleCondition extends ApiBase{
     public function newQueryLogic($data)
     {
 
-        $register_type  = $data['register_type'];
+        $register_type  = explode(',',$data['register_type']);
 
-        $register_major = $data['register_major'];
+        $register_major = explode(',',$data['register_major']);
 
         $where = $map = [];
         foreach ($register_type as $k=>$v){
@@ -139,19 +141,26 @@ class PeopleCondition extends ApiBase{
                 $map[] = $map1;
             }
         }
+
         //开始查询
         if(!empty($where)){
             $binji = $this->peopleRegisterReset->getListDataIn($where,'id,register_type,register_major,group_concat(people_id)')->toArray();
 
             $bin_people_arr = array_column($binji,'group_concat(people_id)');
-            foreach ($bin_people_arr as $k=>$v){
-                $bin_people_arr[$k]= explode(',',$v);
-                $bin_people_arr[$k] =array_filter($bin_people_arr[$k]);
+
+            #条件大于1才取交集
+            if(count($bin_people_arr)>1){
+                foreach ($bin_people_arr as $k=>$v){
+                    $bin_people_arr[$k]= explode(',',$v);
+                    $bin_people_arr[$k] =array_filter($bin_people_arr[$k]);
+                }
+                $jiao_people_arr_data =  call_user_func_array ('array_intersect',$bin_people_arr);
+            }elseif(count($bin_people_arr)==1){
+                $jiao_people_arr_data =  explode(',',$bin_people_arr[0]);
+            }else{
+                $jiao_people_arr_data = [];
             }
-
-            $jiao_people_arr_data =  call_user_func_array ('array_intersect',$bin_people_arr);
         }
-
         //满足类型-专业条件查找
         $jiao = [] ;
         foreach ($map as $k=>$value){
@@ -161,22 +170,24 @@ class PeopleCondition extends ApiBase{
         foreach ($jiao_people_str as $k=>$v){
             $jiao_people_str[$k] = explode(',',$v);
         }
-
         if(count($jiao_people_str)>1){
             $jiao_arr = call_user_func_array ('array_intersect', $jiao_people_str);
+        }elseif(count($jiao_people_str)==1){
+            $jiao_arr = $jiao_people_str[0];
         }else{
-            $jiao_arr = $jiao_people_str;
+            $jiao_arr = [];
         }
-
         //对最后的结果取交集
-        if(empty($jiao_arr)){
-            // $bin_people_arr_data = array_unique($bin_people_arr_data);
+        if(empty($jiao_arr) && !empty($jiao_people_arr_data)){
+            $jiao_people_arr_data = array_unique($jiao_people_arr_data);
             return $jiao_people_arr_data;
-        }elseif(empty($bin_people_arr_data)){
+        }elseif(empty($bin_people_arr_data) && !empty($jiao_arr)){
             return $jiao_arr;
-        }else{
+        }elseif(!empty($bin_people_arr_data) && !empty($jiao_arr)){
             $bin_people_arr_data = array_unique($bin_people_arr_data);
             return array_intersect($bin_people_arr_data,$jiao_arr);
+        }else{
+            return [0];
         }
     }
 
@@ -187,34 +198,37 @@ class PeopleCondition extends ApiBase{
         $where['register_major'] = $data['register_major'];
         $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 1;
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
+        $people_ids = $this->newQueryLogic($where);
+        $people_id = array_slice($people_ids,($page_num-1)*$page_size,$page_size);
 
-        $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
-        $people_data = (new PeopleRegister())->getPeopleID($where,$field,$page_num-1,$page_size);
-        $res = $people_data['list'];
-
-        if (!$res) {
+        if (!$people_id) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
             return $this->apiReturn($refer);
         }
-        foreach ($res as $k=>&$value) {
-            $map['id'] = $value['people_id'];
+        $list = [] ;
+        foreach ($people_id as $k=>&$value) {
+            $list[$k]['id'] = $value;
+            $map['id'] = $value;
             $people_info = $people->getInfoByPeopleid($map,'people_name,people_url,people_sex,people_cardtype,people_cardnum');
             if($people_info){
-                $value = array_merge($value,$people_info);
+                $list[$k]= array_merge($list[$k],$people_info);
             }
-            $value['register_major'] = explode(',',$value['register_major']);
-            $value['register_unit']  = explode(',',$value['register_unit']);
-            $value['register_date']  = explode(',',$value['register_date']);
-            $value['people_project'] = PeopleProject::getDataByPeopleId( $value['people_id'],'project_name');
-            $value['people_change']  = PeopleChange::getDataByPeopleId( $value['people_id'],'change_record');
-            $value['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_num');
+            $people_reigster_info  = PeopleRegister::getRegisterInfoByPeopleId($value);
+            $list[$k]['register_type'] = array_column($people_reigster_info,'register_type');
+            $list[$k]['register_major'] = array_column($people_reigster_info,'register_major');
+            $list[$k]['register_unit']  = array_column($people_reigster_info,'register_unit');
+            $list[$k]['register_date']  = array_column($people_reigster_info,'register_date');
+            $list[$k]['people_project'] = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',0);
+            $list[$k]['people_change']  = PeopleChange::getDataByPeopleId( $value,'change_record');
+            $list[$k]['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content');
         }
+
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['data']['data_list'] = $res;
-        $refer['data']['total_num'] = $people_data['count'];
-        $refer['data']['total_page'] = ceil($people_data['count']/$page_size)-1;
+        $refer['data']['data_list'] = $list;
+        $refer['data']['total_num'] = count($people_ids);
+        $refer['data']['total_page'] = ceil(count($people_ids)/$page_size)-1;
         $refer['key'] = 'people';
         return $this->apiReturn($refer);
     }
@@ -242,47 +256,52 @@ class PeopleCondition extends ApiBase{
 
     public function exportPeople($data)
     {
+
         ini_set('max_execution_time', 0);
         $people = new People();
-        $where['register_type'] =$data['register_type'];
-        $where['register_major'] = $data['register_major'];
-        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 0;
-        $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
+        $where['register_type'] ='二级注册建筑师';//$data['register_type'];
+        $where['register_major'] = '机电工程';//$data['register_major'];
 
-        $field = "people_id,GROUP_CONCAT(register_type SEPARATOR ',') as register_type,GROUP_CONCAT(register_major SEPARATOR ',') as register_major,GROUP_CONCAT(register_unit SEPARATOR ',') as register_unit,GROUP_CONCAT(register_date SEPARATOR ',') as register_date";
-        $res = (new PeopleRegister())->getPeopleID($where,$field,$page_num,10)['list'];
+        $people_ids = $this->newQueryLogic($where);
 
-        if (!$res) {
+        if (!$people_ids) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
             return $this->apiReturn($refer);
         }
         $dataList = [];
         $list = [];
-        foreach ($res as $k=>&$value) {
-            $map['id'] = $value['people_id'];
-            $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum');
+        $temp =$lastData= [];
+        foreach ($people_ids as $k=>$value) {
+            $list[$k]['id'] = $map['id'] = $value;
+            $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum,people_url');
             if($people_info){
-                $value = array_merge($value,$people_info);
+                $list[$k] = array_merge($list[$k],$people_info);
             }
-            $value['register_type'] = explode(',',$value['register_type']);
-            $value['register_major'] = explode(',',$value['register_major']);
-            $value['register_unit'] = explode(',',$value['register_unit']);
-            $value['register_date'] = explode(',',$value['register_date']);
-            foreach (  $value['register_type'] as $k=>$v ){
-                $dataList['people_id'] = $value['people_id'];
-                $dataList['register_type'] = $v;
-                $dataList['register_major'] =  $value['register_major'][$k] ;
-                $dataList['register_unit'] =  $value['register_unit'][$k] ;
-                $dataList['register_date'] =  $value['register_date'][$k] ;
-                $list[count($list)] = array_merge($dataList,$people_info);
+            $people_reigster_info  = PeopleRegister::getRegisterInfoByPeopleId($value);
+            $temp['register_type'] = array_column($people_reigster_info,'register_type');
+            $temp['register_major'] = array_column($people_reigster_info,'register_major');
+            $temp['register_unit']  = array_column($people_reigster_info,'register_unit');
+            $temp['register_date']  = array_column($people_reigster_info,'register_date');
+            $people_info['people_project_num'] = PeopleProject::getDataByPeopleId( $value,'project_name',1);
+            $people_info['people_project'] = implode(';',array_column(PeopleProject::getDataByPeopleId( $value,'project_name',0),'project_name'));
+            $people_info['people_change']  =  implode(';',array_column(PeopleChange::getDataByPeopleId( $value,'change_record'),'people_change'));
+            $people_info['people_miscdct']  =  implode(';',array_column(PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content'),'people_miscdct'));
+            foreach (   $temp['register_type'] as $j=>$v ){
+                $lastData['people_id'] = $value;
+                $lastData['register_type']  = $v;
+                $lastData['register_major'] = $temp['register_major'][$j] ;
+                $lastData['register_unit']  = $temp['register_unit'][$j] ;
+                $lastData['register_date']  =  $temp['register_date'][$j] ;
+                $lastData = array_merge($lastData,$people_info);
+                $dataList[] = $lastData;
             }
         }
         $titles =
-            "人员id,人员姓名,'人员性别','证件类型','证件号码',注册类型,注册专业,注册单位,注册日期";
+            "人员id,人员姓名,人员性别,证件类型,证件号码,注册类型,注册专业,注册单位,注册日期,业绩数量,业绩名称,变更记录,失信记录";
         $keys   =
-            "people_id,people_name,people_sex,people_cardtype,people_cardnum,register_type,register_major,register_unit,register_date";
-        $path = export_excel($titles, $keys, $list, '人员');
+            "people_id,people_name,people_sex,people_cardtype,people_cardnum,register_type,register_major,register_unit,register_date,people_project_num,people_project,people_change,people_miscdct";
+        $path = export_excel($titles, $keys, $dataList, 'people');
         return $this->apiReturn(['path'=>$path]);
     }
 }

@@ -16,12 +16,22 @@ class PeopleProject extends ModelBase
         return Db::name('people_project')->where($where)->field($field)->limit($num*$page,$page)->select();
     }
 
-    public static function getDataByPeopleId($people_id,$field)
+    public static function getDataByPeopleId($people_id,$field,$count=1)
     {
         if(!$people_id){
             return false;
         }
-        $res = Db::name('people_project')->where(['people_id'=>$people_id])->field($field)->count();
-        return $res;
+       if($count){
+           $res = Db::name('people_project')->where(['people_id'=>$people_id])->field($field)->count();
+       }else{
+           $res = Db::name('people_project')->cache(true)->where(['people_id'=>$people_id])->field($field)->select();
+       }
+       if($res){
+           return $res;
+       }else{
+           $res=  $count == 0 ? [] :0;
+           return $res;
+       }
+
     }
 }

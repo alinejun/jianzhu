@@ -88,4 +88,10 @@ class PeopleRegister extends ApiBase{
 
         return ['list'=>$list,'count'=>$count];
     }
+
+    public static function getRegisterInfoByPeopleId($id)
+    {
+        $list = self::where(['people_id'=>$id])->cache(true)->field('register_type,register_major,register_unit,register_date')->select()->toArray();
+        return $list;
+    }
 }

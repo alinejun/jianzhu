@@ -3419,6 +3419,7 @@ ps:说明注释:所有返回数量的都是公司的数量
    **请求参数（示例）：**
    
  ```
+  ```
 {
     "request":{
           "company_condition_down":{
@@ -3426,8 +3427,87 @@ ps:说明注释:所有返回数量的都是公司的数量
          }
     }
 }
-
 ```
    
-   **返回参数：**
-   ### 导出企业相关详情到excel
+  ### 导出企业相关详情到excel
+   
+   
+## 人员详情
+   
+**url**: /people_condition/getPeopleDetail
+   
+**请求方式**：get
+   
+**请求参数：**
+   
+   | 字段名 | 类型 | 说明 |
+   | ------ | ---- | ---- |
+   | peopel_id   | int | 人员id|
+   
+   
+   
+
+  
+    **返回参数：**
+   
+   
+  |      字段名      | 类型   | 说明                       |
+  | :--------------: | ------ | -------------------------- |
+  |       code       | int    | 错误码                     |
+  |       msg        | string | 消息                       |
+  |       people_info       | array  | 人员信息       |
+  |       register       | array  | 注册信息       |
+  |        register_type        | int    | 注册类别                       |
+  |        register_major        | string    | 注册专业                      |
+  |        register_date        | string    | 有效期                      |
+  |        register_unit        | string    | 注册单位                      |
+  |        project        | array    | 项目名称集合                      |
+  |        miscdct        | array    | 诚信集合                      |
+  |        miscdct_name        | sting    | 诚信记录主体                      |
+  |        miscdct_content        | sting    | 决定内容                      |
+  |        miscdct_dept        | sting    | 实施部门                      |
+  |        miscdct_date        | array    | 发布有效期                      |
+  |        change        | array    | 变更记录集合                      |
+  |        change_type        | string    | 变更类别                      |
+  |        change_record        | string    | 变更记录                      |
+  
+   
+   
+   
+    **返回示例：**
+   
+    ```
+   {
+       "code": 1,
+       "msg": "成功",
+       "people_list": {
+           "register": {
+               "register_type": "一级注册建造师",
+               "register_major": "建筑工程",
+               "register_date": "2010年11月19日",
+               "register_unit": "山东寿光第一建筑有限公司"
+           },
+           "project": [
+               "潍坊中学科技图书楼",
+               "寿光静山花园10#-18#楼及幼儿园",
+               "寿光城投·五星大厦工程",
+               "寿光市历史文化中心"
+           ],
+           "miscdct": [
+               {
+                   "miscdct_name": "2",
+                   "miscdct_content": "3asdf",
+                   "miscdct_dept": "请我",
+                   "miscdct_date": "请我"
+               }
+           ],
+           "change": [
+               {
+                   "change_type": "12",
+                   "change_record": "12"
+               }
+           ]
+       },
+       "exe_time": "1.173139"
+   }
+    ```

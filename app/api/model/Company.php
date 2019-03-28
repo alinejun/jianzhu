@@ -135,10 +135,6 @@ class Company extends Model
         return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
     }
 
-    #根据人员id获取·
-    public static function getCompanyByPeopleIds($people_ids)
-    {
-        return self::where('id','in',$people_ids)->group('company_url')->select()->toArray();
-    }
+
 }
 ?>
