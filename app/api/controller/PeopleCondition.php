@@ -134,7 +134,7 @@ class PeopleCondition extends ApiBase{
         foreach ($register_type as $k=>$v){
 
             if(empty($register_major[$k])){ //收集只查询类型的条件
-                $where[] = "$v";
+                $where[] = $v;
             }else{ //收集查询类型并有专业的条件
                 $map1['register_type']  = $v;
                 $map1['register_major'] = $register_major[$k];
@@ -196,7 +196,7 @@ class PeopleCondition extends ApiBase{
         $people = new People();
         $where['register_type'] =$data['register_type'];
         $where['register_major'] = $data['register_major'];
-        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 1;
+        $page_num   = isset( $data['page']) ?  $data['page']  : 1;
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
         $people_ids = $this->newQueryLogic($where);
         $people_id = array_slice($people_ids,($page_num-1)*$page_size,$page_size);

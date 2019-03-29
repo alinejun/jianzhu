@@ -28,13 +28,21 @@ class UnionQuery extends ApiBase{
         $ids_arr = (new Company)->transformGet($ids_arr);
         #得到符合资质查询条件的公司id
         $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
-        $company_url_list = implode(',',array_column($company_ids_arr,'company_url'));
-        empty($company_url_list) or $request['people_condition']['company_url_list'] = $company_url_list;
-        //将获取到的符合资质的company_url传入人员中做为条件
-        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
+        $company_url_list = array_column($company_ids_arr,'company_url');
+        //获取满足人员条件的企业url
+        $people_id = (new PeopleCondition())->newQueryLogic($request);
+        $company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
+        $count = 0 ;
+        if($company_url && $company_url_list){
+            $count = count(array_intersect($company_url,$company_url_list));
+        }elseif(empty($company_url) && !empty($company_url_list)){
+             $count = count($company_url_list);
+        }elseif(!empty($company_url) && empty($company_url_list)){
+            $count = count($company_url);
+        }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['count']= $company_url['count'];
+        $refer['count']= $count;
         return $this->apiReturn($refer);
     }
 
