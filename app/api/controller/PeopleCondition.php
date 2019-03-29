@@ -114,13 +114,27 @@ class PeopleCondition extends ApiBase{
         if(!$people_id){
             return false;
         }
-        //根据人员id获取对应的公司集合
+        //根据人员id获取对应的公司集合总数
 
         $count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
 
         return ['company_list'=>[],'count'=>$count];
     }
 
+    #获取满足人员条件的company_url集合
+    public function getPeopleConditionCompanyUrl($data)
+    {
+        ini_set('max_execution_time',0);
+        $where['register_type']  =  $data['register_type'];
+        $where['register_major'] =  $data['register_major'];
+        $people_id = $this->newQueryLogic($where);
+        $list = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
+        if(!$list){
+            return false;
+        }
+        //根据人员id获取对应的公司集合
+        return ['company_list'=>$list];
+    }
 
     #处理查询逻辑(新的)
     public function newQueryLogic($data)

@@ -20,12 +20,12 @@ class People extends ApiBase{
     }
 
     #根据人员id获取·
-    public static function getCompanyByPeopleIds($people_ids,$count=0)
+    public static function getCompanyByPeopleIds($people_ids,$count=0,$field="*")
     {
         if($count){
             return self::where('id','in',$people_ids)->group('company_url')->count();
         }else{
-            return self::where('id','in',$people_ids)->group('company_url')->select()->toArray();
+            return self::where('id','in',$people_ids)->cache(true)->field($field)->group('company_url')->select()->toArray();
         }
     }
 }
