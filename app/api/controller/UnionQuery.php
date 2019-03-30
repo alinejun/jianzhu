@@ -39,9 +39,9 @@ class UnionQuery extends ApiBase{
         if($company_url && $company_url_list){
             $count = count(array_intersect($company_url,$company_url_list));
         }elseif(empty($company_url) && !empty($company_url_list)){
-             $count = count($company_url_list);
+             $count = 0;
         }elseif(!empty($company_url) && empty($company_url_list)){
-            $count = count($company_url);
+            $count = 0;
         }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
@@ -142,9 +142,9 @@ class UnionQuery extends ApiBase{
         if($company_url && $project_ids_str){
             $count = count(array_intersect($company_url,$project_ids_str));
         }elseif(empty($company_url) && !empty($project_ids_str)){
-            $count = count($project_ids_str);
+            $count = 0;
         }elseif(!empty($company_url) && empty($project_ids_str)){
-            $count = count($company_url);
+            $count = 0;
         }
         $res['code'] = 1;
         $res['msg'] = 'success';
@@ -176,9 +176,9 @@ class UnionQuery extends ApiBase{
         if($people_company_url && $company_url){
             $count = count(array_intersect($people_company_url,$company_url));
         }elseif(empty($people_company_url) && !empty($company_url)){
-            $count = count($company_url);
+            $count = 0;
         }elseif(!empty($people_company_url) && empty($company_url)){
-            $count = count($people_company_url);
+            $count = 0;
         }
         $res['code'] = 1;
         $res['msg'] = 'success';
