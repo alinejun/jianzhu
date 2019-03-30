@@ -83,7 +83,6 @@ class Index extends ApiBase
     public function multipleApi($arr)
     {
         $keys = array_keys($arr);
-
         # 符合条件的公司数量
         if (!array_diff($keys,explode(',',ApiRoute::COMPANY_PEOPLE_CONDITION))) {
             return  $this->union_query->getCompanyUnionPeople($arr);  //企业-人员联查
