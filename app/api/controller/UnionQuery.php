@@ -36,6 +36,7 @@ class UnionQuery extends ApiBase{
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
+
         if($company_url && $company_url_list){
             $count = count(array_intersect($company_url,$company_url_list));
         }elseif(empty($company_url) && !empty($company_url_list)){
@@ -43,6 +44,7 @@ class UnionQuery extends ApiBase{
         }elseif(!empty($company_url) && empty($company_url_list)){
             $count = 0;
         }
+
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['count']= $count;
@@ -139,6 +141,7 @@ class UnionQuery extends ApiBase{
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
+
         if($company_url && $project_ids_str){
             $count = count(array_intersect($company_url,$project_ids_str));
         }elseif(empty($company_url) && !empty($project_ids_str)){
@@ -146,6 +149,7 @@ class UnionQuery extends ApiBase{
         }elseif(!empty($company_url) && empty($project_ids_str)){
             $count = 0;
         }
+
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $count;
@@ -173,6 +177,7 @@ class UnionQuery extends ApiBase{
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
+
         if($people_company_url && $company_url){
             $count = count(array_intersect($people_company_url,$company_url));
         }elseif(empty($people_company_url) && !empty($company_url)){
@@ -180,6 +185,7 @@ class UnionQuery extends ApiBase{
         }elseif(!empty($people_company_url) && empty($company_url)){
             $count = 0;
         }
+
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $count;
