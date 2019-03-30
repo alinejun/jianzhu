@@ -132,11 +132,20 @@ class UnionQuery extends ApiBase{
         $params_project = $request['project_condition'];
         $project_ids_arr = (new Project())->getProjectData($params_project);
         $project_ids_str = implode(',',$project_ids_arr);
-        # 将获取到的符合项目的company_url传入人员中做为条件
-        $request['people_condition']['company_url_list'] = $project_ids_str;
-        # is_limit 为1 则不分页
-        $request['people_condition']['is_limit'] = 1;
-        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
+        //获取满足人员条件的企业url
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
+
+        $company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
+
+        $count = 0 ;
+        //对符合人员，和符合公司的取交集
+        if($company_url && $project_ids_str){
+            $count = count(array_intersect($company_url,$project_ids_str));
+        }elseif(empty($company_url) && !empty($project_ids_str)){
+            $count = count($project_ids_str);
+        }elseif(!empty($company_url) && empty($project_ids_str)){
+            $count = count($company_url);
+        }
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $company_url['count'];
@@ -157,14 +166,23 @@ class UnionQuery extends ApiBase{
         # 企业和项目的 company_url 取交集
         $company_url = array_intersect($company_ids_arr,$project_ids_arr);
         $company_url = implode(',',$company_url);
-        # 将获取到的符合项目的company_url传入人员中做为条件
-        $request['people_condition']['company_url_list'] = $company_url;
-        # is_limit 为1 则不分页
-        $request['people_condition']['is_limit'] = 1;
-        $result = (new PeopleCondition())->getCompany($request['people_condition']);
+        //获取满足人员条件的企业url
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
+
+        $people_company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
+
+        $count = 0 ;
+        //对符合人员，和符合公司的取交集
+        if($people_company_url && $company_url){
+            $count = count(array_intersect($people_company_url,$company_url));
+        }elseif(empty($people_company_url) && !empty($company_url)){
+            $count = count($company_url);
+        }elseif(!empty($people_company_url) && empty($company_url)){
+            $count = count($people_company_url);
+        }
         $res['code'] = 1;
         $res['msg'] = 'success';
-        $res['count']= $result['count'];
+        $res['count']= $count;
         $res = json_encode($res);
         return $res;
     }
