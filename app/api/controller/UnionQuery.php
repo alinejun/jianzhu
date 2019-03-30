@@ -139,13 +139,7 @@ class UnionQuery extends ApiBase{
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
-        if($company_url && $project_ids_str){
-            $count = count(array_intersect($company_url,$project_ids_str));
-        }elseif(empty($company_url) && !empty($project_ids_str)){
-            $count = count($project_ids_str);
-        }elseif(!empty($company_url) && empty($project_ids_str)){
-            $count = count($company_url);
-        }
+        $count = count(array_intersect($company_url,$project_ids_str));
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $count;
