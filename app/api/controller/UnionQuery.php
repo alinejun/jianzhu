@@ -36,13 +36,7 @@ class UnionQuery extends ApiBase{
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
-        if($company_url && $company_url_list){
-            $count = count(array_intersect($company_url,$company_url_list));
-        }elseif(empty($company_url) && !empty($company_url_list)){
-             $count = count($company_url_list);
-        }elseif(!empty($company_url) && empty($company_url_list)){
-            $count = count($company_url);
-        }
+        $count = count(array_intersect($company_url,$company_url_list));
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['count']= $count;
@@ -167,13 +161,7 @@ class UnionQuery extends ApiBase{
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
-        if($people_company_url && $company_url){
-            $count = count(array_intersect($people_company_url,$company_url));
-        }elseif(empty($people_company_url) && !empty($company_url)){
-            $count = count($company_url);
-        }elseif(!empty($people_company_url) && empty($company_url)){
-            $count = count($people_company_url);
-        }
+        $count = count(array_intersect($people_company_url,$company_url));
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $count;
