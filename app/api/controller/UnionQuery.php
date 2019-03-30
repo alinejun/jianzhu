@@ -148,7 +148,7 @@ class UnionQuery extends ApiBase{
         }
         $res['code'] = 1;
         $res['msg'] = 'success';
-        $res['count']= $company_url['count'];
+        $res['count']= $count;
         $res = json_encode($res);
         return $res;
     }
