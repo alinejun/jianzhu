@@ -128,9 +128,8 @@ class UnionQuery extends ApiBase{
         //获取满足人员条件的企业url
         $request['people_condition']['company_url'] = $project_ids_arr;
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
-
+        //获取总数
         $company_url_count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
-
         $res['code'] = 1;
         $res['msg'] = 'success';
         $res['count']= $company_url_count;
@@ -155,7 +154,7 @@ class UnionQuery extends ApiBase{
         $params_project = $request['project_condition'];
         $project_ids_arr = (new Project())->getProjectData($params_project);
         # 企业和项目的 company_url 取交集
-        $company_url = array_intersect($company_ids_arr,$project_ids_arr);
+        $company_url = $company_url_arr = array_intersect($company_ids_arr,$project_ids_arr);
         $company_url = implode(',',$company_url);
         //获取满足人员条件的企业url
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
@@ -165,11 +164,11 @@ class UnionQuery extends ApiBase{
         $count = 0 ;
         //对符合人员，和符合公司的取交集
 
-        if($people_company_url && $company_url){
-            $count = count(array_intersect($people_company_url,$company_url));
-        }elseif(empty($people_company_url) && !empty($company_url)){
+        if($people_company_url && $company_url_arr){
+            $count = count(array_intersect($people_company_url,explode(',',$company_url_arr)));
+        }elseif(empty($people_company_url) && !empty($company_url_arr)){
             $count = 0;
-        }elseif(!empty($people_company_url) && empty($company_url)){
+        }elseif(!empty($people_company_url) && empty($company_url_arr)){
             $count = 0;
         }
 
