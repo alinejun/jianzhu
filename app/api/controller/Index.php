@@ -102,6 +102,9 @@ class Index extends ApiBase
         if (!array_diff($keys, explode(',', ApiRoute::COMPANY_PEOPLE_CONDITION_DETAIL))) {
             return $this->union_query->getCompanyUnionPeopleDetail($arr); //企业-人员 联查详情
         }
+        if (!array_diff($keys, explode(',', ApiRoute::PEOPLE_PROJECT_CONDITION_DETAIL))) {
+            return $this->union_query->getPeopleUnionProjectDetail($arr); //项目-人员 联查详情
+        }
         if (!array_diff($keys,  explode(',',ApiRoute::COMPANY_PROJECT_CONDITION_DETAIL))){
             return $this->union_query->getCompanyUnionProjectDetail($arr);  //企业-项目联查 详情
         }
