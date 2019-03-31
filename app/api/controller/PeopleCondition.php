@@ -255,11 +255,12 @@ class PeopleCondition extends ApiBase{
             $refer['msg'] = Code::$MSG[$refer['code']];
             return $this->apiReturn($refer);
         }
+        $people_url = (new People())->find($people_id)['people_url'];
         $map['people_id'] = $people_id;
         //（受不鸟）人员相关数据暂时限制1000条数据。
         $data['register'] = (new PeopleRegister())->getDataByPeopleId($map, "register_type,register_major,register_date,register_unit");
         $data['project'] = array_column((new PeopleProject())->getData($map, "project_name", 0, 1000),'project_name');
-        $data['miscdct'] = (new PeopleMiscdct())->getData($map, "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
+        $data['miscdct'] = (new PeopleMiscdct())->getData(['people_url'=>$people_url], "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
         $data['change'] = (new PeopleChange())->getData($map, "change_type,change_record", 0, 1000);
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
