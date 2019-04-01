@@ -87,7 +87,6 @@ class Company extends Model
     #根据company_url获取jz_cpny_change表相关数据
     public static function getJzCpnyChange($company_url){
         $sql = "SELECT
-                  change_date,
                   change_content
                 FROM jz_cpny_change
                 WHERE company_url = $company_url ";
@@ -96,7 +95,12 @@ class Company extends Model
     }
     #根据。。。查询表jz_cpny_miscdct
     public static function getJzCpnyMiscdct($company_url){
-        return [];
+     	$sql = "SELECT
+                  miscdct_content
+                FROM jz_cpny_miscdct
+                WHERE company_url = $company_url ";
+        $res = Db::query($sql);
+        return $res;
     }
 
     #获取企业导出数据
