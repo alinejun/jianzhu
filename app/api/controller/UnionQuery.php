@@ -70,7 +70,7 @@ class UnionQuery extends ApiBase{
         $page_size = !empty($request['company_condition_detail']['page_size'])?:10;
 
         $company_url_page = array_slice($company_url_list,($page-1)*$page,$page_size);
-
+        $company_data_list = [] ;
         //获取企业数据
         foreach ($company_url_page as $key=>$value){
             $company_url = $value['company_url'];
