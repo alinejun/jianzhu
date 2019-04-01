@@ -11,6 +11,7 @@ use app\api\controller\Company;
 use app\api\controller\PeopleCondition;
 use app\api\controller\Project;
 use app\api\model\ComPro;
+use app\api\model\People;
 use app\Code;
 use think\Db;
 
@@ -30,24 +31,14 @@ class UnionQuery extends ApiBase{
         $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
         $company_url_list = array_column($company_ids_arr,'company_url');
         //获取满足人员条件的企业url
+        $request['people_condition']['company_url'] = $company_url_list;
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
 
-        $company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
-
-        $count = 0 ;
-        //对符合人员，和符合公司的取交集
-
-        if($company_url && $company_url_list){
-            $count = count(array_intersect($company_url,$company_url_list));
-        }elseif(empty($company_url) && !empty($company_url_list)){
-             $count = 0;
-        }elseif(!empty($company_url) && empty($company_url_list)){
-            $count = 0;
-        }
+        $company_url_count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
 
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['count']= $count;
+        $refer['count']= $company_url_count;
         return $this->apiReturn($refer);
     }
 
@@ -73,7 +64,7 @@ class UnionQuery extends ApiBase{
         $company_data_list = [] ;
         //获取企业数据
         foreach ($company_url_page as $key=>$value){
-            $company_url = $value['company_url'];
+            $company_url = $value;
             #处理企业名称、法定代表人、注册属地 (jz_company表)
             $company = (CompanyModel::getJzCompany($company_url));
             $company = $company[0];
@@ -87,8 +78,14 @@ class UnionQuery extends ApiBase{
             #处理诚信记录主体、决定内容、实施部门、发布有效期（jz_cpny_miscdct表）
             #由于此表现在无数据，且是company_id还是company_url链表 不明 暂附空值----<<<----
             $company_data_list[$key]['cpny_miscdct'] = CompanyModel::getJzCpnyMiscdct($company_url);
-            $company_data_list[$key]['people_ids'] = explode(',',$value['people_ids']);
-            $company_data_list[$key]['people_names'] = explode(',',$value['people_names']);
+            #无语了，又要吧company_url和人员条件放回去查符合的人员。
+
+            $request['people_condition_detail']['company_url'] = $company_url;
+            $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
+            $people_list = [] ;
+            $people_list = People::getPeopleNameByIds($people_id);
+            $company_data_list[$key]['people_ids'] = array_column($people_list,'id');
+            $company_data_list[$key]['people_names'] = array_column($people_list,'people_name');
         }
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];

@@ -57,4 +57,10 @@ class People extends ApiBase{
         }
         return array_unique($bin_people_arr_data);
     }
+
+    public static function getPeopleNameByIds($people_ids)
+    {
+        $people_list = self::where('id','in',$people_ids)->cache(true)->field('id,people_name')->select()->toArray();
+        return $people_list;
+    }
 }
