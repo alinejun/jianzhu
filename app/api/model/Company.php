@@ -87,6 +87,7 @@ class Company extends Model
     #根据company_url获取jz_cpny_change表相关数据
     public static function getJzCpnyChange($company_url){
         $sql = "SELECT
+                  change_date,
                   change_content
                 FROM jz_cpny_change
                 WHERE company_url = $company_url ";
@@ -95,12 +96,7 @@ class Company extends Model
     }
     #根据。。。查询表jz_cpny_miscdct
     public static function getJzCpnyMiscdct($company_url){
-        $sql = "SELECT
-                    miscdct_content  
-                FROM jz_cpny_miscdct
-                WHERE company_url = $company_url ";
-        $res = Db::query($sql);
-        return $res;
+        return [];
     }
 
     #获取企业导出数据
@@ -113,8 +109,8 @@ class Company extends Model
 				q.ion_type_name,
 				q.ion_name,
 				q.ion_validity,
-				IFNULL(cc.change_content,'NULL'),
-				IFNULL(cm.miscdct_content,'NULL')
+				cc.change_content,
+				cm.miscdct_content
 			FROM
 				jz_company c
 			LEFT JOIN jz_qualification q ON q.company_url = c.company_url
@@ -138,7 +134,5 @@ class Company extends Model
     {
         return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
     }
-
-
 }
 ?>

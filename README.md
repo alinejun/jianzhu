@@ -1913,385 +1913,6 @@ ps:说明注释:所有返回数量的都是公司的数量
       }
    ```
 
-## 企业人员联查（首页）
-
-请求参数：
-
-```
-{
-	"request": {
-		"company_condition": {
-			"code": "(660|659)"，
-		},
-		"people_conditionl": {
-			"register_type": "一级注册建筑师,注册监理工程师",
-			"register_major": ","，
-			"page":1,
-			"page_size":10
-		}
-	}
-}
-```
-
-
-
-返回参数(企业数据见企业详情接口)：
-
-| 字段名 | 类型   | 说明               |
-| ------ | ------ | ------------------ |
-| code   | int    | 错误码             |
-| msg    | string | 消息               |
-| count  | int    | 符合条件的企业总数 |
-
-返回参数
-
-```
-{
-	"code": 1,
-	"msg": "成功",
-	"count": 0,
-	"exe_time": "0.785882"
-}
-```
-
-
-
-
-
-## 企业人员联查详情
-
-```
-{
-	"request": {
-		"company_condition_detail": {
-			"code": "(660|659)"，
-		},
-		"people_condition_detail": {
-			"register_type": "一级注册建筑师",
-			"register_major": ""，
-			"page":1,
-			"page_size":10
-		}
-	}
-}
-```
-
-返回参数(企业数据见企业详情接口)：
-
-| 字段名       | 类型   | 说明         |
-| ------------ | ------ | ------------ |
-| code         | int    | 错误码       |
-| msg          | string | 消息         |
-| people_ids   | array  | 人员id集合   |
-| people_names | array  | 人员姓名集合 |
-
-返回示例：
-
-```
-{
-	"code": 1,
-	"msg": "成功",
-	"data": {
-		"data_list": [{
-			"company_name": "河南博维建筑规划设计有限公司",
-			"company_legalreprst": "郭霖江",
-			"company_regadd": "河南省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）甲级",
-				"ion_validity": "2019-03-24"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计风景园林工程专项乙级",
-				"ion_validity": "2020-03-12"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计电力行业送电工程专业乙级",
-				"ion_validity": "2020-03-12"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计电力行业变电工程专业乙级",
-				"ion_validity": "2020-03-12"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["1349220", "1349221", "1349222", "1349223"],
-			"people_names": ["张宗华", "韩博", "赵澍", "金晓梅"]
-		}, {
-			"company_name": "广东天元建筑设计有限公司",
-			"company_legalreprst": "林冬娜",
-			"company_regadd": "广东省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）甲级",
-				"ion_validity": "2023-06-27"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计市政行业道路工程专业丙级",
-				"ion_validity": "2020-02-26"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "建筑装修装饰工程专业承包二级",
-				"ion_validity": "2021-01-06"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["1376656", "1381805", "1381806", "1381807", "1381808", "1381809", "1381810", "3047676"],
-			"people_names": ["欧阳健伟", "温怡", "冯海桃", "梁林", "林兆升", "黄泽明", "谢晋新", "郭敏锋"]
-		}, {
-			"company_name": "深圳市森磊镒铭设计顾问有限公司",
-			"company_legalreprst": "李健",
-			"company_regadd": "广东省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）甲级",
-				"ion_validity": "2019-07-30"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["68664", "68670", "68691", "68762", "68819", "68845", "68980", "475336", "2734366", "2734367"],
-			"people_names": ["叶兴铭", "吴卫", "曾珑", "韩曙", "罗自超", "金建平", "胡赟", "郭春宇", "朱银普", "梁志伟"]
-		}, {
-			"company_name": "成都城市天地工程设计咨询有限责任公司",
-			"company_legalreprst": "王红武",
-			"company_regadd": "四川省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）甲级",
-				"ion_validity": "2019-09-12"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["1350019", "1350020", "1350021"],
-			"people_names": ["朱东君", "陈洁非", "刘浩"]
-		}, {
-			"company_name": "陕西首创天成工程技术有限公司",
-			"company_legalreprst": "袁亮",
-			"company_regadd": "陕西省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计市政行业城镇燃气工程专业甲级",
-				"ion_validity": "2021-03-04"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）乙级",
-				"ion_validity": "2020-02-14"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计化工石化医药行业石油及化工产品储运专业乙级",
-				"ion_validity": "2020-02-14"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计市政行业热力工程专业乙级",
-				"ion_validity": "2020-02-14"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计石油天然气（海洋石油）行业管道输送专业乙级",
-				"ion_validity": "2020-02-14"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计石油天然气（海洋石油）行业油气库专业乙级",
-				"ion_validity": "2020-02-14"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["1347915", "1347916"],
-			"people_names": ["黄峥", "张民"]
-		}, {
-			"company_name": "成都三元建筑勘察设计有限公司",
-			"company_legalreprst": "万鑫",
-			"company_regadd": "四川省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）乙级",
-				"ion_validity": "2020-06-16"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["1347194", "1347195"],
-			"people_names": ["周明波", "连晨旭"]
-		}, {
-			"company_name": "添宝建筑集团有限公司",
-			"company_legalreprst": "冯永康",
-			"company_regadd": "四川省",
-			"qualification": [{
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "建筑工程施工总承包一级",
-				"ion_validity": "2021-12-12"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "公路工程施工总承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "水利水电工程施工总承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "公路交通工程（公路安全设施）专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "公路交通工程（公路机电工程）专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "起重设备安装工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "消防设施工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "地基基础工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "防水防腐保温工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "建筑装修装饰工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "建筑机电安装工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "古建筑工程专业承包一级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "石油化工工程施工总承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "市政公用工程施工总承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "机电工程施工总承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "桥梁工程专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "隧道工程专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "钢结构工程专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "公路路面工程专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "公路路基工程专业承包二级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "特种工程专业承包不分等级",
-				"ion_validity": "2021-01-14"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "电力工程施工总承包三级",
-				"ion_validity": "2020-11-02"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "矿山工程施工总承包三级",
-				"ion_validity": "2020-11-02"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "城市及道路照明工程专业承包三级",
-				"ion_validity": "2020-11-02"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "河湖整治工程专业承包三级",
-				"ion_validity": "2020-11-02"
-			}, {
-				"ion_type_name": "建筑业企业资质",
-				"ion_name": "环保工程专业承包三级",
-				"ion_validity": "2020-11-02"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["2672767", "2672768"],
-			"people_names": ["洪毅", "张林"]
-		}, {
-			"company_name": "阜阳市建筑勘察设计院",
-			"company_legalreprst": "徐大海",
-			"company_regadd": "安徽省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）乙级",
-				"ion_validity": "2020-04-01"
-			}, {
-				"ion_type_name": "勘察资质",
-				"ion_name": "工程勘察岩土工程专业（岩土工程勘察）乙级",
-				"ion_validity": "2020-04-29"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["70570", "475579"],
-			"people_names": ["吴勇", "李宁"]
-		}, {
-			"company_name": "衡水市建筑设计院有限责任公司",
-			"company_legalreprst": "刘向阳",
-			"company_regadd": "河北省",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）甲级",
-				"ion_validity": "2020-05-21"
-			}, {
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计市政行业道路工程专业丙级",
-				"ion_validity": "2020-08-25"
-			}, {
-				"ion_type_name": "勘察资质",
-				"ion_name": "工程勘察专业类岩土工程设计甲级",
-				"ion_validity": "2023-06-12"
-			}, {
-				"ion_type_name": "勘察资质",
-				"ion_name": "工程勘察岩土工程专业乙级",
-				"ion_validity": "2020-05-05"
-			}, {
-				"ion_type_name": "勘察资质",
-				"ion_name": "工程勘察岩土工程专业（岩土工程勘察）乙级",
-				"ion_validity": "2020-05-05"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["1356386", "1356387", "1356388"],
-			"people_names": ["王国庆", "王文波", "倪婕"]
-		}, {
-			"company_name": "天津中机建设工程设计有限公司",
-			"company_legalreprst": "关洁",
-			"company_regadd": "天津市",
-			"qualification": [{
-				"ion_type_name": "设计资质",
-				"ion_name": "工程设计建筑行业（建筑工程）甲级",
-				"ion_validity": "2019-05-12"
-			}],
-			"cpny_change": [],
-			"cpny_miscdct": [],
-			"people_ids": ["68728", "68844", "68932"],
-			"people_names": ["杨业庆", "杨蓓", "赵新莹"]
-		}],
-		"total_num": 5999,
-		"total_page": 599
-	},
-	"key": "company_people_detail",
-	"exe_time": "142.282612"
-}
-```
-
-
 
 ## 企业项目联合查询（符合条件的企业数量）
 
@@ -2434,15 +2055,15 @@ ps:说明注释:所有返回数量的都是公司的数量
       }
    ```
 
-
+   
 ## 项目详情查询
-
+   
    **url**: /index/getData
-
+   
    **请求方式**：post
-
+   
    **请求参数（示例）：**
-
+   
  ```
  注意请求参数参考/project/getProjectDataDetail
  page 默认为1 page_size默认为10 
@@ -2457,17 +2078,17 @@ ps:说明注释:所有返回数量的都是公司的数量
     	     }
   	}
 }
- ```
-
+```
+   
    **返回参数：**
-
-|      字段名      | 类型   | 说明                       |
-| :--------------: | ------ | -------------------------- |
-|       key       | string    | 返回的主要数据属于                    |
-|       code       | int    | 错误码                     |
-|       msg        | string | 消息                       |
-|       data       | array  | 符合条件的项目详情（具体参见示例）       |
-
+   
+   |      字段名      | 类型   | 说明                       |
+   | :--------------: | ------ | -------------------------- |
+   |       key       | string    | 返回的主要数据属于                    |
+   |       code       | int    | 错误码                     |
+   |       msg        | string | 消息                       |
+   |       data       | array  | 符合条件的项目详情（具体参见示例）       |
+  
       p.project_name,		-- 项目名称
       p.project_type,		-- 项目分类
       p.project_nature,	-- 建设性质
@@ -2496,9 +2117,9 @@ ps:说明注释:所有返回数量的都是公司的数量
       pf.finish_unitspv -- 监理单位
       pf.finish_unitcst -- 施工单位
       pf.finish_add_url -- 网站竣工验收备案详情页
-
+   
    **返回示例：**
-
+   
    ```
     {
             "key":"project",
@@ -2722,16 +2343,16 @@ ps:说明注释:所有返回数量的都是公司的数量
             }
         }
    ```
-
-
+   
+     
 ## 企业项目联合查询详情
-
+   
    **url**: /index/getData
-
+   
    **请求方式**：post
-
+   
    **请求参数（示例）：**
-
+   
  ```
  注意请求参数参考/project/getProjectDataDetail
  page 默认为1 page_size默认为10 
@@ -2750,17 +2371,17 @@ ps:说明注释:所有返回数量的都是公司的数量
   	}
 }
    
- ```
+```
  **返回参数 和 返回示例 参考（上一个）项目详情查询**
 
  ## 企业人员项目三个联合查询详情
-
+   
    **url**: /index/getData
-
+   
    **请求方式**：post
-
+   
    **请求参数（示例）：**
-
+   
  ```
  注意请求参数参考/project/getProjectDataDetail
  page 默认为1 page_size默认为10 
@@ -2779,7 +2400,7 @@ ps:说明注释:所有返回数量的都是公司的数量
     }
 }
    
- ```
+```
  **返回参数 和 返回示例 参考（上一个）项目详情查询**
 
 
@@ -3066,13 +2687,13 @@ ps:说明注释:所有返回数量的都是公司的数量
 ```
 
 ## 项目详情导出 (企业项目联查、企业项目人员联查 返回的excel都一样，只是参数需要调整)
-
+   
    **url**: /index/getData
-
+   
    **请求方式**：post
-
+   
    **请求参数（示例）：**
-
+   
  ```
 {
   	"request":{
@@ -3113,18 +2734,18 @@ ps:说明注释:所有返回数量的都是公司的数量
         "description":""
     }
 ]
- ```
-
+```
+   
    **返回参数：**
    ### 导出项目相关详情到excel
 
 
 ## 企业查询详情
-
+   
    **url**: /index/getData
-
+   
    **请求方式**：post
-
+   
    **请求参数（示例）：**
  ```
  page 默认为1 page_size默认为10 
@@ -3140,7 +2761,7 @@ ps:说明注释:所有返回数量的都是公司的数量
 
   **返回示例：**
 
- ```
+```
 {
     "code":1,
     "msg":"success",
@@ -3224,7 +2845,7 @@ ps:说明注释:所有返回数量的都是公司的数量
 
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3294,10 +2915,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3377,10 +2998,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3425,10 +3046,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3488,10 +3109,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3556,10 +3177,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3604,10 +3225,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3662,10 +3283,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3725,10 +3346,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         },
         {
@@ -3778,10 +3399,10 @@ ps:说明注释:所有返回数量的都是公司的数量
                 }
             ],
             "cpny_change":[
-    
+
             ],
             "cpny_miscdct":[
-    
+
             ]
         }
     ]
@@ -3797,8 +3418,7 @@ ps:说明注释:所有返回数量的都是公司的数量
    
    **请求参数（示例）：**
    
-```
-  ```
+ ```
 {
     "request":{
           "company_condition_down":{
@@ -3806,88 +3426,8 @@ ps:说明注释:所有返回数量的都是公司的数量
          }
     }
 }
-  ```
 
-  ### 导出企业相关详情到excel
-
-
-## 人员详情
-
-**url**: /people_condition/getPeopleDetail
-
-**请求方式**：get
-
-**请求参数：**
-
-| 字段名 | 类型 | 说明 |
-| ------ | ---- | ---- |
-| peopel_id   | int | 人员id|
-
+```
    
-
-
-
-    **返回参数：**
-
-   
-
-|      字段名      | 类型   | 说明                       |
-| :--------------: | ------ | -------------------------- |
-|       code       | int    | 错误码                     |
-|       msg        | string | 消息                       |
-|       people_info       | array  | 人员信息       |
-|       register       | array  | 注册信息       |
-|        register_type        | int    | 注册类别                       |
-|        register_major        | string    | 注册专业                      |
-|        register_date        | string    | 有效期                      |
-|        register_unit        | string    | 注册单位                      |
-|        project        | array    | 项目名称集合                      |
-|        miscdct        | array    | 诚信集合                      |
-|        miscdct_name        | sting    | 诚信记录主体                      |
-|        miscdct_content        | sting    | 决定内容                      |
-|        miscdct_dept        | sting    | 实施部门                      |
-|        miscdct_date        | array    | 发布有效期                      |
-|        change        | array    | 变更记录集合                      |
-|        change_type        | string    | 变更类别                      |
-|        change_record        | string    | 变更记录                      |
-
-   
-
-
-    **返回示例：**
-       
-    ```
-   {
-       "code": 1,
-       "msg": "成功",
-       "people_list": {
-           "register": {
-               "register_type": "一级注册建造师",
-               "register_major": "建筑工程",
-               "register_date": "2010年11月19日",
-               "register_unit": "山东寿光第一建筑有限公司"
-           },
-           "project": [
-               "潍坊中学科技图书楼",
-               "寿光静山花园10#-18#楼及幼儿园",
-               "寿光城投·五星大厦工程",
-               "寿光市历史文化中心"
-           ],
-           "miscdct": [
-               {
-                   "miscdct_name": "2",
-                   "miscdct_content": "3asdf",
-                   "miscdct_dept": "请我",
-                   "miscdct_date": "请我"
-               }
-           ],
-           "change": [
-               {
-                   "change_type": "12",
-                   "change_record": "12"
-               }
-           ]
-       },
-       "exe_time": "1.173139"
-   }
-    ```
+   **返回参数：**
+   ### 导出企业相关详情到excel

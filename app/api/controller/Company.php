@@ -40,6 +40,7 @@ class Company extends ApiBase
             #处理变更日期、变更内容（jz_cpny_change表）
             $company_data_list[$key]['cpny_change'] = CompanyModel::getJzCpnyChange($company_url);
             #处理诚信记录主体、决定内容、实施部门、发布有效期（jz_cpny_miscdct表）
+            #由于此表现在无数据，且是company_id还是company_url链表 不明 暂附空值----<<<----
             $company_data_list[$key]['cpny_miscdct'] = CompanyModel::getJzCpnyMiscdct($company_url);
         }
 		$res['code'] = 1;

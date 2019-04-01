@@ -80,18 +80,11 @@ class PeopleRegister extends ApiBase{
         $count = count($register_type);
         $where = array_unique($map);
         $sql = "SELECT $filed FROM jz_people_register WHERE ". implode(' OR ',$where) . "group by people_id  having count(people_id)>=$count";
-        $count = count($this->query($sql));
         if($page_size){
             $sql .= " limit ". $page*$page_size . ", $page_size";
         }
+        //echo  ($sql);exit;
         $list = $this->query($sql);
-
-        return ['list'=>$list,'count'=>$count];
-    }
-
-    public static function getRegisterInfoByPeopleId($id)
-    {
-        $list = self::where(['people_id'=>$id])->cache(true)->field('register_type,register_major,register_unit,register_date')->select()->toArray();
         return $list;
     }
 }
