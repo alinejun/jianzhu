@@ -14,6 +14,7 @@ use app\api\model\PeopleMiscdct;
 use app\api\model\PeopleRegister;
 use app\Code;
 use app\common\model\PeopleRegisterReset;
+use think\Db;
 
 class PeopleCondition extends ApiBase{
 
@@ -102,28 +103,47 @@ class PeopleCondition extends ApiBase{
         return $this->apiReturn($refer);
     }
 
+    #获取people_id 用于查询company_url
     public function getCompany($data)
     {
 
         ini_set('max_execution_time',0);
         $where['register_type']  =  $data['register_type'];
         $where['register_major'] =  $data['register_major'];
-        //$list = $this->people_register->getPeopleMultiple($where,'*',$data['pageSize'],$data['pageNum'],$whereIn,$is_limit);
         $people_id = $this->newQueryLogic($where);
 
         if(!$people_id){
             return false;
         }
-        //根据人员id获取对应的公司集合
+        //根据人员id获取对应的公司集合总数
 
         $count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
-
         return ['company_list'=>[],'count'=>$count];
     }
 
+    #获取满足人员条件的company_url集合
+    public function getPeopleConditionCompanyUrl($data)
+    {
+        ini_set('max_execution_time',0);
+        $where['register_type']  =  $data['register_type'];
+        $where['register_major'] =  $data['register_major'];
+        $people_id = $this->newQueryLogic($where,1);
+        $list = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
+        if(!$list){
+            return false;
+        }
+        //根据人员id获取对应的公司集合
+        return ['company_list'=>$list];
+    }
 
     #处理查询逻辑(新的)
-    public function newQueryLogic($data)
+
+    /**
+     * @param $data 查询条件
+     * @param int $type 1：查询company_url，0:查询people_id
+     * @return array|mixed
+     */
+    public function newQueryLogic($data,$type=0)
     {
 
         $register_type  = explode(',',$data['register_type']);
@@ -134,7 +154,7 @@ class PeopleCondition extends ApiBase{
         foreach ($register_type as $k=>$v){
 
             if(empty($register_major[$k])){ //收集只查询类型的条件
-                $where[] = "$v";
+                $where[] = $v;
             }else{ //收集查询类型并有专业的条件
                 $map1['register_type']  = $v;
                 $map1['register_major'] = $register_major[$k];
@@ -144,43 +164,52 @@ class PeopleCondition extends ApiBase{
 
         //开始查询
         if(!empty($where)){
-            $binji = $this->peopleRegisterReset->getListDataIn($where,'id,register_type,register_major,group_concat(people_id)')->toArray();
+            foreach ($where as $value){
 
-            $bin_people_arr = array_column($binji,'group_concat(people_id)');
-
-            #条件大于1才取交集
-            if(count($bin_people_arr)>1){
-                foreach ($bin_people_arr as $k=>$v){
-                    $bin_people_arr[$k]= explode(',',$v);
-                    $bin_people_arr[$k] =array_filter($bin_people_arr[$k]);
+                if(!isset($data['company_url'])){
+                    $data['company_url'] = [];
                 }
-                $jiao_people_arr_data =  call_user_func_array ('array_intersect',$bin_people_arr);
-            }elseif(count($bin_people_arr)==1){
-                $jiao_people_arr_data =  explode(',',$bin_people_arr[0]);
+                $binji[] = $this->peopleRegisterReset->getListDataIn($value,$data['company_url'],$type,'company_url,people_id')->toArray();
+            }
+
+            foreach ($binji as $k=>$v){
+               $jiao_people_str[$k] =array_column($v,'people_id');
+            }
+            if(count($jiao_people_str)>1){
+                $bin_people_arr_data = call_user_func_array ('array_intersect', $jiao_people_str);
+            }elseif(count($jiao_people_str)==1){
+                $bin_people_arr_data = $jiao_people_str[0];
             }else{
-                $jiao_people_arr_data = [];
+                $bin_people_arr_data = [];
             }
         }
+
         //满足类型-专业条件查找
-        $jiao = [] ;
-        foreach ($map as $k=>$value){
-            $jiao[] = $this->peopleRegisterReset->getListData($value,'id,register_type,register_major,people_id')->toArray()[0];
-        }
-        $jiao_people_str = array_column($jiao,'people_id');
-        foreach ($jiao_people_str as $k=>$v){
-            $jiao_people_str[$k] = explode(',',$v);
-        }
-        if(count($jiao_people_str)>1){
-            $jiao_arr = call_user_func_array ('array_intersect', $jiao_people_str);
-        }elseif(count($jiao_people_str)==1){
-            $jiao_arr = $jiao_people_str[0];
-        }else{
+        if(!empty($map)){
+            $jiao = [] ;
+            foreach ($map as $k=>$value){
+                if(!isset($data['company_url'])){
+                    $data['company_url'] = [];
+                }
+                $jiao[] = $this->peopleRegisterReset->getListData($value,$data['company_url'],'id,register_type,register_major,people_id,company_url')->toArray();
+            }
             $jiao_arr = [];
+            foreach ($jiao as $k=>$v){
+                $jiao_arr[$k] = array_column($v,'people_id');
+            }
+            if(count($jiao)>1){
+                $jiao_arr = call_user_func_array ('array_intersect', $jiao_arr);
+            }elseif(count($jiao)==1){
+                $jiao_arr = $jiao_arr[0];
+            }else{
+                $jiao_arr = [];
+            }
         }
         //对最后的结果取交集
-        if(empty($jiao_arr) && !empty($jiao_people_arr_data)){
-            $jiao_people_arr_data = array_unique($jiao_people_arr_data);
-            return $jiao_people_arr_data;
+        if(empty($jiao_arr) && !empty($bin_people_arr_data)){
+
+            $bin_people_arr_data = array_unique($bin_people_arr_data);
+            return $bin_people_arr_data;
         }elseif(empty($bin_people_arr_data) && !empty($jiao_arr)){
             return $jiao_arr;
         }elseif(!empty($bin_people_arr_data) && !empty($jiao_arr)){
@@ -196,10 +225,10 @@ class PeopleCondition extends ApiBase{
         $people = new People();
         $where['register_type'] =$data['register_type'];
         $where['register_major'] = $data['register_major'];
-        $page_num   = isset( $data['page_num']) ?  $data['page_num']  : 1;
+        $page_num   = isset( $data['page']) ?  $data['page']  : 1;
         $page_size  = isset($data['page_size']) ?  $data['page_size'] : 10;
-        $people_ids = $this->newQueryLogic($where);
-        $people_id = array_slice($people_ids,($page_num-1)*$page_size,$page_size);
+        $people_ids = $this->newQueryLogic($where,1);
+        $people_id = array_slice(array_unique($people_ids),($page_num-1)*$page_size,$page_size);
 
         if (!$people_id) {
             $refer['code'] = Code::ERROR;
@@ -228,7 +257,7 @@ class PeopleCondition extends ApiBase{
         $refer['msg'] = Code::$MSG[$refer['code']];
         $refer['data']['data_list'] = $list;
         $refer['data']['total_num'] = count($people_ids);
-        $refer['data']['total_page'] = ceil(count($people_ids)/$page_size)-1;
+        $refer['data']['total_page'] = ceil(count($people_ids)/$page_size);
         $refer['key'] = 'people';
         return $this->apiReturn($refer);
     }
@@ -241,11 +270,12 @@ class PeopleCondition extends ApiBase{
             $refer['msg'] = Code::$MSG[$refer['code']];
             return $this->apiReturn($refer);
         }
+        $people_url = (new People())->find($people_id)['people_url'];
         $map['people_id'] = $people_id;
         //（受不鸟）人员相关数据暂时限制1000条数据。
         $data['register'] = (new PeopleRegister())->getDataByPeopleId($map, "register_type,register_major,register_date,register_unit");
         $data['project'] = array_column((new PeopleProject())->getData($map, "project_name", 0, 1000),'project_name');
-        $data['miscdct'] = (new PeopleMiscdct())->getData($map, "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
+        $data['miscdct'] = (new PeopleMiscdct())->getData(['people_url'=>$people_url], "miscdct_name,miscdct_content,miscdct_dept,miscdct_date", 0, 1000);
         $data['change'] = (new PeopleChange())->getData($map, "change_type,change_record", 0, 1000);
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];

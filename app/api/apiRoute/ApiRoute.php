@@ -23,6 +23,8 @@ class ApiRoute {
         //详情查询
         PEOPLE_CONDITION_DETAIL                             = 'people_condition_detail',    //人员详情
         PROJECT_CONDITION_DETAIL                            = 'project_condition_detail',    //项目详情查询
+        COMPANY_PEOPLE_CONDITION_DETAIL                    = 'company_condition_detail,people_condition_detail',  //企业人员联查详情
+        PEOPLE_PROJECT_CONDITION_DETAIL                    = 'people_condition_detail,project_condition_detail',  //企业人员联查详情
         COMPANY_PROJECT_CONDITION_DETAIL                    = 'company_condition_detail,project_condition_detail',  //企业项目联查详情
         COMPANY_PEOPLE_PROJECT_CONDITION_DETAIL             = 'company_condition_detail,people_condition_detail,project_condition_detail',  //企业人员项目三个联查详情
         COMPANY_CONDITION_DETAIL                            = 'company_condition_detail',   //企业详情查询
