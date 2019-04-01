@@ -152,7 +152,6 @@ class PeopleCondition extends ApiBase{
 
         $where = $map = [];
         foreach ($register_type as $k=>$v){
-
             if(empty($register_major[$k])){ //收集只查询类型的条件
                 $where[] = $v;
             }else{ //收集查询类型并有专业的条件
@@ -165,7 +164,6 @@ class PeopleCondition extends ApiBase{
         //开始查询
         if(!empty($where)){
             foreach ($where as $value){
-
                 if(!isset($data['company_url'])){
                     $data['company_url'] = [];
                 }
@@ -207,7 +205,6 @@ class PeopleCondition extends ApiBase{
         }
         //对最后的结果取交集
         if(empty($jiao_arr) && !empty($bin_people_arr_data)){
-
             $bin_people_arr_data = array_unique($bin_people_arr_data);
             return $bin_people_arr_data;
         }elseif(empty($bin_people_arr_data) && !empty($jiao_arr)){

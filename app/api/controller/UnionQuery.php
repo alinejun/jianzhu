@@ -12,6 +12,7 @@ use app\api\controller\PeopleCondition;
 use app\api\controller\Project;
 use app\api\model\ComPro;
 use app\api\model\People;
+use app\api\model\PeopleProject;
 use app\Code;
 use think\Db;
 
@@ -136,7 +137,20 @@ class UnionQuery extends ApiBase{
 
     # 人员项目联合详情查询
     public function getPeopleUnionProjectDetail($request){
-        echo '待确定字段';exit;
+        //获取到满足人员条件的people_ids
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
+        //获取这些人员的project_url
+        $project_urls = PeopleProject::getProjectUrlByPeopleIds($people_id);
+        dump($project_urls);exit;
+        ####################################
+        #   诗奥这里需要你处理一下项目数据   #
+        ####################################
+
+        $res['code'] = 1;
+        $res['msg'] = 'success';
+        $res['data_list']= [];
+        $res = json_encode($res);
+        return $res;
     }
 
 
