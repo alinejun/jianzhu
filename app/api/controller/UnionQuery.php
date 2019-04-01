@@ -11,6 +11,7 @@ use app\api\controller\Company;
 use app\api\controller\PeopleCondition;
 use app\api\controller\Project;
 use app\api\model\ComPro;
+use app\api\model\People;
 use app\Code;
 use think\Db;
 
@@ -28,14 +29,73 @@ class UnionQuery extends ApiBase{
         $ids_arr = (new Company)->transformGet($ids_arr);
         #得到符合资质查询条件的公司id
         $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
-        $company_url_list = implode(',',array_column($company_ids_arr,'company_url'));
-        empty($company_url_list) or $request['people_condition']['company_url_list'] = $company_url_list;
-        //将获取到的符合资质的company_url传入人员中做为条件
-        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
+        $company_url_list = array_column($company_ids_arr,'company_url');
+        //获取满足人员条件的企业url
+        $request['people_condition']['company_url'] = $company_url_list;
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
+
+        $company_url_count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
+
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] = Code::$MSG[$refer['code']];
-        $refer['count']= $company_url['count'];
+        $refer['count']= $company_url_count;
         return $this->apiReturn($refer);
+    }
+
+    #企业人员联查详情
+    public function getCompanyUnionPeopleDetail($request)
+    {
+
+        $ids_arr = explode(',', $request['company_condition_detail']['code']);
+        $ids_arr = (new Company)->transformGet($ids_arr);
+        #得到符合资质查询条件的公司id
+        $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
+        $company_url_list = array_column($company_ids_arr,'company_url');
+        //获取满足人员条件的企业url
+        //把满足企业条件的company_url 传入人员条件中
+        $request['people_condition_detail']['company_url'] = $company_url_list;
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
+        $company_url_list =\app\api\model\People::getCompanyByPeopleIds($people_id,0,'*,group_concat(id) as people_ids,group_concat(people_name) as people_names',0);
+
+        $page = !empty($request['company_condition_detail']['page'])?:1;
+        $page_size = !empty($request['company_condition_detail']['page_size'])?:10;
+
+        $company_url_page = array_slice($company_url_list,($page-1)*$page,$page_size);
+        $company_data_list = [] ;
+        //获取企业数据
+        foreach ($company_url_page as $key=>$value){
+            $company_url = $value;
+            #处理企业名称、法定代表人、注册属地 (jz_company表)
+            $company = (CompanyModel::getJzCompany($company_url));
+            $company = $company[0];
+            $company_data_list[$key]['company_name'] = $company['company_name'];
+            $company_data_list[$key]['company_legalreprst'] = $company['company_legalreprst'];
+            $company_data_list[$key]['company_regadd'] = $company['company_regadd'];
+            #处理企业资质类别、资质名称、证书有效期（jz_qualification表）
+            $company_data_list[$key]['qualification'] = CompanyModel::getJzQualification($company_url);
+            #处理变更日期、变更内容（jz_cpny_change表）
+            $company_data_list[$key]['cpny_change'] = CompanyModel::getJzCpnyChange($company_url);
+            #处理诚信记录主体、决定内容、实施部门、发布有效期（jz_cpny_miscdct表）
+            #由于此表现在无数据，且是company_id还是company_url链表 不明 暂附空值----<<<----
+            $company_data_list[$key]['cpny_miscdct'] = CompanyModel::getJzCpnyMiscdct($company_url);
+            #无语了，又要吧company_url和人员条件放回去查符合的人员。
+
+            $request['people_condition_detail']['company_url'] = $company_url;
+            $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
+            $people_list = [] ;
+            $people_list = People::getPeopleNameByIds($people_id);
+            $company_data_list[$key]['people_ids'] = array_column($people_list,'id');
+            $company_data_list[$key]['people_names'] = array_column($people_list,'people_name');
+        }
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] = Code::$MSG[$refer['code']];
+        $refer['data']['data_list'] = $company_data_list;
+        $refer['data']['total_num'] = count($company_url_list);
+        $refer['data']['total_page'] = ceil(count($company_url_list)/$page_size);
+        $refer['key'] = 'company_people_detail';
+        return $this->apiReturn($refer);
+
+
     }
 
     # 企业项目联合查询
