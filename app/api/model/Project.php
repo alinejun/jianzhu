@@ -57,7 +57,7 @@ class Project extends model{
     public static function transformWhere($where){
         $where_finish=[];
         # 针对联查得出的project_url_str做一个in
-        if (isset($where['project_url_str'])){$where_finish[] = "p.project_url in ( ".$where['project_url_str']." )";}
+        if (isset($where['project_url_str']) && !empty($where['project_url_str'])){$where_finish[] = "p.project_url in ( ".$where['project_url_str']." )";}
         if (isset($where['bid_money'])){$where_finish[] = "pb.bid_money>=".$where['bid_money'];}
         if (isset($where['contract_money'])){$where_finish[] = "pc.contract_money>=".$where['contract_money'];}
         if (isset($where['finish_money'])){$where_finish[] = "pf.finish_money>=".$where['finish_money'];}
