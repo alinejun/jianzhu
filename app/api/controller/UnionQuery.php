@@ -139,12 +139,12 @@ class UnionQuery extends ApiBase{
     public function getPeopleUnionProjectDetail($request){
         //获取到满足人员条件的people_ids
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
-        //获取这些人员的project_url
-        $project_urls = PeopleProject::getProjectUrlByPeopleIds($people_id);
-        dump($project_urls);exit;
-        ####################################
-        #   诗奥这里需要你处理一下项目数据   #
-        ####################################
+        //获取符合人员条件所在的公司的company_url
+        $company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
+        dump($company_url);exit;
+        ############################################################################################################
+        #   诗奥这里需要你处理一下项目数据(查找符合人员条件的人员所在公司的符合项目条件的项目)                     #
+        ############################################################################################################
 
         $res['code'] = 1;
         $res['msg'] = 'success';

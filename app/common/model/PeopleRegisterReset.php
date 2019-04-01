@@ -7,7 +7,7 @@
  */
 namespace app\common\model;
 class PeopleRegisterReset extends ModelBase{
-    protected $table = 'jz_people_register';
+    protected $table = 'jz_people_register_new';
 
     public function getListData($where=[],$company_url=[],$filed="*",$order="id desc",$page=0,$pageSize=0)
     {
