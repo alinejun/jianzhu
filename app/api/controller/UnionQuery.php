@@ -122,23 +122,18 @@ class UnionQuery extends ApiBase{
         # 项目符合的company_url
         $params_project = $request['project_condition'];
         $project_ids_arr = (new Project())->getProjectData($params_project);
-        //获取满足人员条件的企业url
-        $request['people_condition']['company_url'] = $project_ids_arr;
-        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
-        //获取总数
-        $company_url_count = \app\api\model\People::getCompanyByPeopleIds($people_id,1);
+        $project_ids_str = implode(',',$project_ids_arr);
+        # 将获取到的符合项目的company_url传入人员中做为条件
+        $request['people_condition']['company_url_list'] = $project_ids_str;
+        # is_limit 为1 则不分页
+        $request['people_condition']['is_limit'] = 1;
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition']);
         $res['code'] = 1;
         $res['msg'] = 'success';
-        $res['count']= $company_url_count;
+        $res['count']= $company_url['count'];
         $res = json_encode($res);
         return $res;
     }
-
-    # 人员项目联合详情查询
-    public function getPeopleUnionProjectDetail($request){
-        echo '待确定字段';exit;
-    }
-
 
     # 项目人员企业三个一起联合查询
     public function getAllUnion($request){
@@ -151,27 +146,16 @@ class UnionQuery extends ApiBase{
         $params_project = $request['project_condition'];
         $project_ids_arr = (new Project())->getProjectData($params_project);
         # 企业和项目的 company_url 取交集
-        $company_url = $company_url_arr = array_intersect($company_ids_arr,$project_ids_arr);
+        $company_url = array_intersect($company_ids_arr,$project_ids_arr);
         $company_url = implode(',',$company_url);
-        //获取满足人员条件的企业url
-        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
-
-        $people_company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
-
-        $count = 0 ;
-        //对符合人员，和符合公司的取交集
-
-        if($people_company_url && $company_url_arr){
-            $count = count(array_intersect($people_company_url,explode(',',$company_url_arr)));
-        }elseif(empty($people_company_url) && !empty($company_url_arr)){
-            $count = 0;
-        }elseif(!empty($people_company_url) && empty($company_url_arr)){
-            $count = 0;
-        }
-
+        # 将获取到的符合项目的company_url传入人员中做为条件
+        $request['people_condition']['company_url_list'] = $company_url;
+        # is_limit 为1 则不分页
+        $request['people_condition']['is_limit'] = 1;
+        $result = (new PeopleCondition())->getCompany($request['people_condition']);
         $res['code'] = 1;
         $res['msg'] = 'success';
-        $res['count']= $count;
+        $res['count']= $result['count'];
         $res = json_encode($res);
         return $res;
     }
@@ -186,9 +170,9 @@ class UnionQuery extends ApiBase{
         #得到符合资质查询条件的公司id
         $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
         $company_url_list = implode(',', array_column($company_ids_arr, 'company_url'));
-        empty($company_url_list) or $request['people_condition_detail']['company_url'] = $company_url_list;
+        empty($company_url_list) or $request['people_condition_detail']['company_url_list'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
-        $company_url = (new PeopleCondition())->getPeopleConditionCompanyUrl($request['people_condition_detail']);
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition_detail']);
         $company_list = array_column($company_url['company_list'],'company_url');
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');
@@ -201,9 +185,9 @@ class UnionQuery extends ApiBase{
         #得到符合资质查询条件的公司id
         $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
         $company_url_list = implode(',', array_column($company_ids_arr, 'company_url'));
-        empty($company_url_list) or $request['people_condition_down']['company_url'] = $company_url_list;
+        empty($company_url_list) or $request['people_condition_down']['company_url_list'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
-        $company_url = (new PeopleCondition())->getPeopleConditionCompanyUrl($request['people_condition_down']);
+        $company_url = (new PeopleCondition())->getCompany($request['people_condition_down']);
         $company_list = array_column($company_url['company_list'],'company_url');
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');

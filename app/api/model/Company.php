@@ -134,7 +134,5 @@ class Company extends Model
     {
         return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
     }
-
-
 }
 ?>

@@ -18,7 +18,6 @@ class People extends ApiBase{
         $list = Db::name('people')->where($where)->field($filed)->find();
         return $list;
     }
-
     #根据人员id获取 company_url
 
     /**
