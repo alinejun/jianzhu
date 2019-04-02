@@ -8,6 +8,8 @@
 namespace app\api\model;
 class PeopleRegister extends ApiBase{
 
+    protected $table = 'jz_people_register_new';
+
     public function getTypeByCertnum($where,$filed="*")
     {
         $type_name = self::where($where)->field($filed)->select();
@@ -91,6 +93,7 @@ class PeopleRegister extends ApiBase{
 
     public static function getRegisterInfoByPeopleId($id)
     {
+        echo self::where(['people_id'=>$id])->cache(true)->field('register_type,register_major,register_unit,register_date')->buildSql();exit;
         $list = self::where(['people_id'=>$id])->cache(true)->field('register_type,register_major,register_unit,register_date')->select()->toArray();
         return $list;
     }
