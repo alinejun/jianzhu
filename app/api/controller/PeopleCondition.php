@@ -247,7 +247,7 @@ class PeopleCondition extends ApiBase{
             $list[$k]['register_date']  = array_column($people_reigster_info,'register_date');
             $list[$k]['people_project'] = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',0);
             $list[$k]['people_change']  = PeopleChange::getDataByPeopleId( $value,'change_record');
-            $list[$k]['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content');
+            $list[$k]['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($people_info[0]['people_url'],'miscdct_content');
         }
 
         $refer['code'] = Code::SUCCESS;
