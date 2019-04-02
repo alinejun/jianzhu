@@ -15,7 +15,7 @@ class People extends ApiBase{
      */
     public function getInfoByPeopleid($where=1,$filed="*")
     {
-        $list = Db::name('people')->where($where)->field($filed)->find();
+        $list = Db::name('people')->where($where)->field($filed)->select();
         return $list;
     }
 
