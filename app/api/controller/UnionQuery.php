@@ -278,6 +278,22 @@ class UnionQuery extends ApiBase{
         return $result;
     }
 
+    #人员项目联查 导出
+    public function exportPeopleUnionProject($request){
+        # 先查人员符合的公司company_url
+        //获取到满足人员条件的people_ids
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_down']);
+        //获取符合人员条件所在的公司的company_url
+        $company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
+        #通过company_url获取project_url
+        $project_url = (new PeopleProject())->getProjectUrlByCompanyUrl($company_url);
+        $project_url_str = implode(',', $project_url);
+        $request['project_condition_down']['project_url_str'] = $project_url_str;
+        $params = $request['project_condition_down'];
+        $result = (new Project())->exportPeoject($params);
+        return $result;
+    }
+
     #企业人员项目联合导出
     public function exportAllUnion($request){
         $project_url = $this->getProjectUrlByCPforDown();
