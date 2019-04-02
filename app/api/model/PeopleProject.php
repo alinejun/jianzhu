@@ -34,6 +34,18 @@ class PeopleProject extends ModelBase
        }
 
     }
+
+    public static function getProjectUrlByCompanyUrl($company_url){
+      if (!$company_url || empty($company_url)){
+        return false;
+      }
+      $company_url = array_values(array_unique($company_url));
+      $company_url = implode(',', $company_url);
+      $sql = "select project_url from jz_com_pro where company_url in (".$company_url.") limit 5000";
+      $res = Db::query($sql);
+      $project_url = array_values(array_unique(array_column($res, 'project_url')));
+      return $project_url;
+    }
     
 
 }
