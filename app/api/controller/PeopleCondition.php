@@ -127,6 +127,9 @@ class PeopleCondition extends ApiBase{
         ini_set('max_execution_time',0);
         $where['register_type']  =  $data['register_type'];
         $where['register_major'] =  $data['register_major'];
+        if(isset($data['company_url'])){
+  	  $where['company_url'] = $data['company_url'];
+          }
         $people_id = $this->newQueryLogic($where,1);
         $list = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
         if(!$list){
