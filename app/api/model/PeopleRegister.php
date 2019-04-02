@@ -19,7 +19,7 @@ class PeopleRegister extends ApiBase{
     public function getMajorByType($where,$filed="*")
     {
 
-        $list = self::where($where)->field($filed)->group('register_major')->select();
+        $list = self::where($where)->field($filed)->cache(true,600)->group('register_major')->select();
         return $list;
     }
 
