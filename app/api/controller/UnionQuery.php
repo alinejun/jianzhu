@@ -134,25 +134,6 @@ class UnionQuery extends ApiBase{
         return $res;
     }
 
-    # 人员项目联合详情查询
-    public function getPeopleUnionProjectDetail($request){
-        //获取到满足人员条件的people_ids
-        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
-        //获取符合人员条件所在的公司的company_url
-        $company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
-        dump($company_url);exit;
-        ############################################################################################################
-        #   诗奥这里需要你处理一下项目数据(查找符合人员条件的人员所在公司的符合项目条件的项目)                     #
-        ############################################################################################################
-
-        $res['code'] = 1;
-        $res['msg'] = 'success';
-        $res['data_list']= [];
-        $res = json_encode($res);
-        return $res;
-    }
-
-
     # 项目人员企业三个一起联合查询
     public function getAllUnion($request){
         # 先查企业的符合的公司company_url
@@ -245,6 +226,21 @@ class UnionQuery extends ApiBase{
         $result = (new Project())->getProjectDataDetail($params);
         return $result;
 
+    }
+
+    
+    # 人员项目联合详情查询
+    public function getPeopleUnionProjectDetail($request){
+        //获取到满足人员条件的people_ids
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
+        //获取符合人员条件所在的公司的company_url
+        $company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
+        $project_url = (new PeopleProject())->getProjectUrlByCompanyUrl($company_url);
+        $project_url_str = implode(',', $project_url);
+        $request['project_condition_detail']['project_url_str'] = $project_url_str;
+        $params = $request['project_condition_detail'];
+        $result = (new Project())->getProjectDataDetail($params);
+        return $result;
     }
 
     # 企业人员项目三个联查详情
