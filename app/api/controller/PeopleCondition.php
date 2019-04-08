@@ -289,11 +289,11 @@ class PeopleCondition extends ApiBase{
 
         ini_set('max_execution_time', 0);
         $people = new People();
-        $where['register_type'] ='二级注册建筑师';//$data['register_type'];
-        $where['register_major'] = '机电工程';//$data['register_major'];
+        $where['register_type'] =/*'二级注册建筑师';//*/$data['register_type'];
+        $where['register_major'] = /*'';//*/$data['register_major'];
 
         $people_ids = $this->newQueryLogic($where);
-
+        //dump(count($people_ids));exit;
         if (!$people_ids) {
             $refer['code'] = Code::ERROR;
             $refer['msg'] = Code::$MSG[$refer['code']];
@@ -302,7 +302,8 @@ class PeopleCondition extends ApiBase{
         $dataList = [];
         $list = [];
         $temp =$lastData= [];
-        foreach ($people_ids as $k=>$value) {
+        $people_ids1 = array_splice($people_ids,0,300);
+        foreach ($people_ids1 as $k=>$value) {
             $list[$k]['id'] = $map['id'] = $value;
             $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum,people_url');
             if($people_info){
