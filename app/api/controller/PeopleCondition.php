@@ -319,7 +319,7 @@ class PeopleCondition extends ApiBase{
             $people_info['people_project'] = implode(';',array_column($people_project_info,'project_name'));
             $people_info['people_url'] = implode(';',array_column($people_project_info,'people_url'));
             $people_info['people_change']  =  implode(';',array_column(PeopleChange::getDataByPeopleId( $value,'change_record'),'people_change'));
-            $people_info['people_miscdct']  =  implode(';',array_column(PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content'),'people_miscdct'));
+            $people_info['people_miscdct']  =  implode(';',PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content'));
             foreach (   $temp['register_type'] as $j=>$v ){
                 $lastData['people_id'] = $value;
                 $lastData['register_type']  = $v;
