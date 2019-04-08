@@ -317,9 +317,14 @@ class PeopleCondition extends ApiBase{
             $people_project_info = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',0);
             $people_info['people_project_num'] = count($people_project_info);
             $people_info['people_project'] = implode(';',array_column($people_project_info,'project_name'));
-            $people_info['people_url'] = implode(';',array_column($people_project_info,'people_url'));
+            $people_info['project_url'] = implode(';',array_column($people_project_info,'project_url'));
             $people_info['people_change']  =  implode(';',array_column(PeopleChange::getDataByPeopleId( $value,'change_record'),'people_change'));
-            $people_info['people_miscdct']  =  implode(';',PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content'));
+            if($people_info['people_url']){
+                $people_info['people_miscdct']  =  implode(';',PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content'));
+            }else{
+                $people_info['people_miscdct']  =  '';
+            }
+
             foreach (   $temp['register_type'] as $j=>$v ){
                 $lastData['people_id'] = $value;
                 $lastData['register_type']  = $v;
