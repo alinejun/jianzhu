@@ -336,9 +336,9 @@ class PeopleCondition extends ApiBase{
             }
         }
         $titles =
-            "人员id,人员姓名,人员性别,证件类型,证件号码,注册类型,注册专业,注册单位,注册日期,业绩数量,业绩名称,变更记录,失信记录";
+            "人员id,人员姓名,人员性别,证件类型,证件号码,注册类型,注册专业,注册单位,注册日期,业绩数量,业绩名称,'project_url',变更记录,失信记录";
         $keys   =
-            "people_id,people_name,people_sex,people_cardtype,people_cardnum,register_type,register_major,register_unit,register_date,people_project_num,people_project,people_change,people_miscdct";
+            "people_id,people_name,people_sex,people_cardtype,people_cardnum,register_type,register_major,register_unit,register_date,people_project_num,people_project,project_url,people_change,people_miscdct";
         $path = export_excel($titles, $keys, $dataList, 'people');
         return $this->apiReturn(['path'=>$path]);
     }
