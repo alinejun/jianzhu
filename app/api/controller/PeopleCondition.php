@@ -302,8 +302,8 @@ class PeopleCondition extends ApiBase{
         $dataList = [];
         $list = [];
         $temp =$lastData= [];
-        $people_ids1 = array_splice($people_ids,0,300);
-        foreach ($people_ids1 as $k=>$value) {
+       // $people_ids1 = array_splice($people_ids,0,300);
+        foreach ($people_ids as $k=>$value) {
             $list[$k]['id'] = $map['id'] = $value;
             $people_info = $people->getInfoByPeopleid($map,'people_name,people_sex,people_cardtype,people_cardnum,people_url');
             if($people_info){
@@ -314,8 +314,10 @@ class PeopleCondition extends ApiBase{
             $temp['register_major'] = array_column($people_reigster_info,'register_major');
             $temp['register_unit']  = array_column($people_reigster_info,'register_unit');
             $temp['register_date']  = array_column($people_reigster_info,'register_date');
-            $people_info['people_project_num'] = PeopleProject::getDataByPeopleId( $value,'project_name',1);
-            $people_info['people_project'] = implode(';',array_column(PeopleProject::getDataByPeopleId( $value,'project_name',0),'project_name'));
+            $people_project_info = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',0);
+            $people_info['people_project_num'] = count($people_project_info);
+            $people_info['people_project'] = implode(';',array_column($people_project_info,'project_name'));
+            $people_info['people_url'] = implode(';',array_column($people_project_info,'people_url'));
             $people_info['people_change']  =  implode(';',array_column(PeopleChange::getDataByPeopleId( $value,'change_record'),'people_change'));
             $people_info['people_miscdct']  =  implode(';',array_column(PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content'),'people_miscdct'));
             foreach (   $temp['register_type'] as $j=>$v ){
