@@ -286,8 +286,10 @@ class PeopleCondition extends ApiBase{
 
     public function exportPeople($data)
     {
-        ini_set('memory_limit', '2048M');
+        ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 0);
+        #关闭日期自动转换。坑！
+        config(  'datetime_format' , false);
         $people = new People();
         $where['register_type'] =/*'二级注册建筑师';//*/$data['register_type'];
         $where['register_major'] = /*'';//*/$data['register_major'];

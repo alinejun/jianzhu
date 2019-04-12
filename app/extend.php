@@ -46,7 +46,7 @@ function export_excel($titles = '', $keys = '', $data = [], $file_name = '导出
         {
             
             $num = array_search($kk, $keys_arr);
-            
+            false !== $num and false !== $objPHPExcel->setActiveSheetIndex($s)->setCellValue(string_from_column_index($num) . ($y + $k + 1), $vv );
             false !== $num && $objPHPExcel->setActiveSheetIndex($s)->setCellValue(string_from_column_index($num) . ($y + $k + 1), $vv );
         }
     }
@@ -54,7 +54,6 @@ function export_excel($titles = '', $keys = '', $data = [], $file_name = '导出
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
     $url = $_SERVER['DOCUMENT_ROOT'].'/upload/file/';
     $file_name .= date("YmdHis").'.xls';
-   // $filename = (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($file_name,'gbk','UTF-8') : $file_name;
     $objWriter->save($url.$file_name);
     return $file_name;
 }

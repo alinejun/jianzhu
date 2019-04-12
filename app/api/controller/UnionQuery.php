@@ -303,4 +303,62 @@ class UnionQuery extends ApiBase{
         return $result;
     }
 
+    #企业人员导出
+    public function exportCompanyUnionPeople($request)
+    {
+        $ids_arr = explode(',', $request['company_condition_down']['code']);
+        $ids_arr = (new Company)->transformGet($ids_arr);
+        #得到符合资质查询条件的公司id
+        $company_ids_arr = CompanyModel::getCompanyIds($ids_arr);
+        $company_url_list = array_column($company_ids_arr,'company_url');
+        //获取满足人员条件的企业url
+        //把满足企业条件的company_url 传入人员条件中
+        $request['people_condition_down']['company_url'] = $company_url_list;
+        //dump($request['people_condition_down']);exit;
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_down']);
+        $company_url_list =\app\api\model\People::getCompanyByPeopleIds($people_id,0,'*,group_concat(id) as people_ids,group_concat(people_name) as people_names',0);
+
+        $page = !empty($request['company_condition_down']['page'])?:1;
+        $page_size = !empty($request['company_condition_down']['page_size'])?:10;
+
+        $company_data_list = [] ;
+        //获取企业数据
+        foreach ($company_url_list as $key=>$value){
+            $company_url = $value;
+            #处理企业名称、法定代表人、注册属地 (jz_company表)
+            $company = (CompanyModel::getJzCompany($company_url));
+            $company = $company[0];
+            $company_data_list[$key]['company_name'] = $company['company_name'];
+            $company_data_list[$key]['company_legalreprst'] = $company['company_legalreprst'];
+            $company_data_list[$key]['company_regadd'] = $company['company_regadd'];
+            #处理企业资质类别、资质名称、证书有效期（jz_qualification表）
+            $company_data_arr= '';
+            $qualification = CompanyModel::getJzQualification($company_url);
+            foreach ($qualification as $k=>$v){
+                $company_data_arr[] = "$v[ion_type_name]/$v[ion_name]/$v[ion_validity]";
+            }
+            $company_data_list[$key]['qualification']  = implode("\r\n",$company_data_arr);
+            #处理变更日期、变更内容（jz_cpny_change表）
+            $company_data_list[$key]['cpny_change'] = implode("\r\n",CompanyModel::getJzCpnyChange($company_url));
+            #处理诚信记录主体、决定内容、实施部门、发布有效期（jz_cpny_miscdct表）
+            $company_data_list[$key]['cpny_miscdct'] = implode("\r\n",CompanyModel::getJzCpnyMiscdct($company_url));
+            #无语了，又要吧company_url和人员条件放回去查符合的人员。
+
+            $request['people_condition_down']['company_url'] = $company_url;
+            $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_down']);
+            $people_list = [] ;
+            $people_list = People::getPeopleNameByIds($people_id);
+            $company_data_list[$key]['people_ids'] = implode("'\r\n",array_column($people_list,'id'));
+            $company_data_list[$key]['people_names'] =implode("\r\n",array_column($people_list,'people_name'));
+        }
+        $titles =
+            "公司名称,法人,注册时间,证书,变更记录,诚信记录,
+            人员id,人员姓名";
+        $keys   =
+            "company_name,company_legalreprst,company_regadd,qualification,cpny_change,cpny_miscdct,
+            people_ids,people_names";
+        $path = export_excel($titles, $keys, $company_data_list, '项目');
+        return $this->apiReturn(['path'=>$path]);
+
+    }
 }
