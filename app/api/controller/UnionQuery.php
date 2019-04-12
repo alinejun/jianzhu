@@ -58,9 +58,8 @@ class UnionQuery extends ApiBase{
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
         $company_url_list =\app\api\model\People::getCompanyByPeopleIds($people_id,0,'*,group_concat(id) as people_ids,group_concat(people_name) as people_names',0);
 
-        $page = !empty($request['company_condition_detail']['page'])?:1;
-        $page_size = !empty($request['company_condition_detail']['page_size'])?:10;
-
+        $page = $request['company_condition_detail']['page'] ?: 1;
+        $page_size = $request['company_condition_detail']['page_size'] ?: 10;
         $company_url_page = array_slice($company_url_list,($page-1)*$page,$page_size);
         $company_data_list = [] ;
         //获取企业数据
