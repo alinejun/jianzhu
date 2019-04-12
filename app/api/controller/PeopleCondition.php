@@ -317,7 +317,7 @@ class PeopleCondition extends ApiBase{
             $temp['register_unit']  = array_column($people_reigster_info,'register_unit');
             $temp['register_date']  = array_column($people_reigster_info,'register_date');
             $people_project_info = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',0);
-            $people_info['people_project_num'] = count($people_project_info);
+            $people_info['people_project_num'] = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',1);
             $people_info['people_project'] = implode(';',array_column($people_project_info,'project_name'));
             $people_info['project_url'] = implode(';',array_column($people_project_info,'project_url'));
             $people_info['people_change']  =  implode(';',array_column(PeopleChange::getDataByPeopleId( $value,'change_record'),'people_change'));
