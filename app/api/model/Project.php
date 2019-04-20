@@ -176,10 +176,10 @@ class Project extends model{
     /**
      * @return mixed|void
      */
-    public function getData($where=1,$field="*",$page=10,$num=0)
+/*    public function getData($where=1,$field="*",$page=10,$num=0)
     {
         return $this->where($where)->field($field)->limit($num * $page, $page)->select();
-    }
+    }*/
     #查询项目详情数据
     public static function getProjectDataDetail($params_arr){
         # init
@@ -265,5 +265,11 @@ class Project extends model{
             $res['total_page'] = ceil($res['total_num']/$page_size);
         }
         return $res;
+    }
+
+    //获取项目数据
+    public function getProject($where=1,$field="*",$page=10,$num=0)
+    {
+        return $this->where($where)->field($field)->limit($num * $page, $page)->select()->toArray();
     }
 }
