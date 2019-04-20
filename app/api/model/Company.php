@@ -139,6 +139,17 @@ class Company extends Model
         return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
     }
 
-
+    /**
+     * @param string $keywords
+     */
+    public static function getNameByKeywords($keywords='',$filed="*",$pageSize=10,$pageNum=0)
+    {
+        if($keywords){
+            $where['company_name'] = ['like',"%$keywords%"];
+        }else{
+            $where=1;
+        }
+        return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
+    }
 }
 ?>
