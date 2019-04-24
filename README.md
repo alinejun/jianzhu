@@ -3977,3 +3977,212 @@ ps:说明注释:所有返回数量的都是公司的数量
 }
 ```
 
+
+## 获取项目列表V2
+
+
+
+**url**: /project_second/getProjectByCompanyurl
+
+**请求方式**：get
+
+#### 例子
+    > http://127.0.0.1/jianzhu/public/index.php/project_second/getProjectByCompanyurl?company_url=001607220057360441
+
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+| size | int | 否       | 默认10条 |
+| page | int | 否       | 默认第1页 |
+
+**返回参数：**
+
+```
+{
+  "code": 1,
+  "msg": "成功",
+  "data": [
+    {
+      "project_url": "1101081809180102",
+      "project_name": "22#住宅楼等10项（海淀区“海淀北部地区整体开发”翠湖科技园HD00-0303-6009、6010地块R2二类居住用地项目）",
+      "project_area": "北京市-市辖区-海淀区",
+      "project_unit": "北京锐达置业有限公司",
+      "project_type": "房屋建筑工程",
+      "project_nature": "None",
+      "project_use": "None",
+      "project_allmoney": "11699.97（万元）",
+      "project_acreage": "48989（平方米）",
+      "project_level": "None"
+    },
+    {
+      "project_url": "3201141711080201",
+      "project_name": "南京地铁三号线土建工程D3-TA11标（长乐路站-大明路站）",
+      "project_area": "江苏省-南京市-雨花台区",
+      "project_unit": "南京地下铁道有限责任公司",
+      "project_type": "市政工程",
+      "project_nature": "其他",
+      "project_use": "其他",
+      "project_allmoney": "-",
+      "project_acreage": "23145.5（平方米）",
+      "project_level": "None"
+    },
+    {
+      "project_url": "3201141711080202",
+      "project_name": "南京地铁十号线土建工程D10-TA01标（安德门站、安德门～小行区间）",
+      "project_area": "江苏省-南京市-雨花台区",
+      "project_unit": "南京地下铁道有限责任公司",
+      "project_type": "市政工程",
+      "project_nature": "其他",
+      "project_use": "其他",
+      "project_allmoney": "-",
+      "project_acreage": "20735（平方米）",
+      "project_level": "None"
+    },
+    {
+      "project_url": "3201131711150201",
+      "project_name": "南京地铁四号线一期工程土建施工（D4-TA10）标",
+      "project_area": "江苏省-南京市-栖霞区",
+      "project_unit": "南京地铁集团有限公司",
+      "project_type": "市政工程",
+      "project_nature": "其他",
+      "project_use": "其他",
+      "project_allmoney": "-",
+      "project_acreage": "14098.9（平方米）",
+      "project_level": "None"
+    },
+    {
+      "project_url": "1101081809180107",
+      "project_name": "21#住宅楼等8项（海淀区“海淀北部地区整体开发”翠湖科技园HD00-0303-6009、6010地块R2二类居住用地项目）",
+      "project_area": "北京市-市辖区-海淀区",
+      "project_unit": "北京锐达置业有限公司",
+      "project_type": "房屋建筑工程",
+      "project_nature": "None",
+      "project_use": "None",
+      "project_allmoney": "7957.32（万元）",
+      "project_acreage": "32780（平方米）",
+      "project_level": "None"
+    },
+    {
+      "project_url": "2102841812250001",
+      "project_name": "渤海大道一期隧道工程（普湾新区段）",
+      "project_area": "辽宁省-大连市",
+      "project_unit": "普湾新区渤海大道工程项目管理办公室",
+      "project_type": "市政工程",
+      "project_nature": "新建",
+      "project_use": "桥隧",
+      "project_allmoney": "43893.76（万元）",
+      "project_acreage": "-",
+      "project_level": "地市级"
+    },
+    {
+      "project_url": "1101081809180106",
+      "project_name": "18#住宅楼等9项（海淀区“海淀北部地区整体开发”翠湖科技园HD00-0303-6009、6010地块R2二类居住用地项目）",
+      "project_area": "北京市-市辖区-海淀区",
+      "project_unit": "北京锐达置业有限公司",
+      "project_type": "房屋建筑工程",
+      "project_nature": "None",
+      "project_use": "None",
+      "project_allmoney": "19410.06（万元）",
+      "project_acreage": "73523（平方米）",
+      "project_level": "None"
+    },
+    {
+      "project_url": "2101021902010001",
+      "project_name": "沈阳市地铁二号线一期 工程土建施工第十合同段",
+      "project_area": "辽宁省-沈阳市-和平区",
+      "project_unit": "沈阳地铁集团有限公司",
+      "project_type": "市政工程",
+      "project_nature": "新建",
+      "project_use": "公共交通",
+      "project_allmoney": "8764（万元）",
+      "project_acreage": "-",
+      "project_level": "省级"
+    },
+    {
+      "project_url": "2102831901180001",
+      "project_name": "庄河市干沟大桥工程[三标段]",
+      "project_area": "辽宁省-大连市-庄河市",
+      "project_unit": "庄河市城乡规划建设局",
+      "project_type": "市政工程",
+      "project_nature": "扩建",
+      "project_use": "桥隧",
+      "project_allmoney": "69742（万元）",
+      "project_acreage": "-",
+      "project_level": "地市级"
+    },
+    {
+      "project_url": "5101041608029901",
+      "project_name": "成都市绕城高速公路蜀源立交工程（三标段）",
+      "project_area": "四川省-成都市-锦江区",
+      "project_unit": "郫县国有资产投资经营公司",
+      "project_type": "其他",
+      "project_nature": "None",
+      "project_use": "None",
+      "project_allmoney": "4182.92（万元）",
+      "project_acreage": "-",
+      "project_level": "省级"
+    }
+  ],
+  "page": 1,
+  "page_total": 2,
+  "num_total": 17,
+  "exe_time": "0.441025"
+}
+```
+
+
+
+## 获取项目详情V2
+
+
+
+**url**: /project_second/getProjectDetail
+
+**请求方式**：get
+
+#### 例子
+    > http://127.0.0.1/jianzhu/public/index.php/project_second/getProjectDetail?company_url=001607220057360441&project_url=1101081809180102
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+| project_url | string | 是       | 项目url |
+
+**返回参数：**
+
+```
+{
+  "code": 1,
+  "msg": "成功",
+  "data": {
+    "bid": [
+      
+    ],
+    "censor": [
+      
+    ],
+    "contract": [
+      {
+        "contract_type": "施工总包",
+        "contract_money": "11699.97",
+        "contract_signtime": "2018-09-18",
+        "contract_scale": "48989",
+        "company_out_name": "北京锐达置业有限公司",
+        "contract_unitname": "中国铁建大桥工程局集团有限公司"
+      }
+    ],
+    "permit": [
+      
+    ],
+    "finish": [
+      
+    ]
+  },
+  "exe_time": "74.958287"
+}
+```

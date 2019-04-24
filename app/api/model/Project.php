@@ -267,9 +267,72 @@ class Project extends model{
         return $res;
     }
 
-    //获取项目数据
-    public function getProject($where=1,$field="*",$page=10,$num=0)
+    //获取项目数据V2.0
+    public function getProjectV2($where=1,$field="*",$page=10,$num=1)
     {
-        return $this->where($where)->field($field)->limit($num * $page, $page)->select()->toArray();
+        // 基础数据
+        $projectInfo = $this->where($where)->field($field)->limit(($num-1) * $page, $page)->select()->toArray();
+        // 页数
+        $pageTotal = $this->where($where)->count();
+        $data['projectInfo'] = isset($projectInfo)?$projectInfo:'';
+        $data['totalNum'] = isset($pageTotal)?$pageTotal:'';
+        if (is_numeric($data['totalNum'])){
+            $data['totalpage'] = ceil($data['totalNum']/$page);
+        }else{
+            $data['totalpage'] = 1;
+        }
+        return $data;
+    }
+
+    // 获取项目详细数据V2.0
+    public function getProjectDetailV2($project_url,$company_url){
+        $detail = [];
+        // 获取招投标
+//        var_dump('bid'.date('Y-m-d H:i:s'));
+        $detail['bid'] = [];
+        $sql_bid = "select bid_type,bid_way,bid_unitname,bid_date,bid_money,bid_area,bid_unitagency,bid_pname,bid_pnum
+                        from jz_project_bid
+                        where project_url = ".$project_url." and company_url = ".$company_url." 
+        ";
+        $res_bid = Db::query($sql_bid);
+        $detail['bid'] = $res_bid;
+        // 获取施工图审查
+//        var_dump('censor'.date('Y-m-d H:i:s'));
+        $detail['censor'] = [];
+        $sql_censor = "select censor_unitrcs,censor_unitdsn
+                          from jz_project_censor
+                          where project_url = ".$project_url." and ( company_dsnurl = ".$company_url." or company_rcsurl = ".$company_url." ) 
+        ";
+        $res_censor = Db::query($sql_censor);
+        $detail['censor'] = $res_censor;
+        // 获取合同备案
+//        var_dump('contract'.date('Y-m-d H:i:s'));
+        $detail['contract'] = [];
+        $sql_contract = "select contract_type,contract_money,contract_signtime,contract_scale,company_out_name,contract_unitname,contract_type
+                            from jz_project_contract
+                            where project_url = ".$project_url." and company_inpurl = ".$company_url." 
+        ";
+        $res_contract = Db::query($sql_contract);
+        $detail['contract'] = $res_contract;
+        // 获取施工许可
+//        var_dump('permit'.date('Y-m-d H:i:s'));
+        $detail['permit'] = [];
+        $sql_permit = "select permit_money,permit_area,permit_certdate,permit_unitrcs,permit_unitdsn,permit_unitspv,permit_unitcst,permit_manager,permit_managerid,permit_monitor,permit_monitorid
+                            from jz_project_permit
+                            where project_url = ".$project_url." and ( company_csturl = ".$company_url." or company_rcsurl = ".$company_url." or company_dsnurl = ".$company_url." or company_spvurl = ".$company_url." ) 
+        ";
+        $res_permit = Db::query($sql_permit);
+        $detail['permit'] = $res_permit;
+        // 获取竣工验收备案
+//        var_dump('finish'.date('Y-m-d H:i:s'));
+        $detail['finish'] = [];
+        $sql_finish = "select finish_money,finish_area,finish_realbegin,finish_realfinish,finish_unitdsn,finish_unitspv,finish_unitcst
+                            from jz_project_finish
+                            where project_url = ".$project_url." and ( company_csturl = ".$company_url." or company_dsnurl = ".$company_url." or company_spvurl = ".$company_url." ) 
+        ";
+        $res_finish = Db::query($sql_finish);
+        $detail['finish'] = $res_finish;
+
+        return $detail;
     }
 }
