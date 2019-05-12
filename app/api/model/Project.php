@@ -285,53 +285,69 @@ class Project extends model{
     }
 
     // 获取项目详细数据V2.0
-    public function getProjectDetailV2($project_url,$company_url){
+    public function getProjectDetailV2($project_url,$company_url,$detail_type){
+        // init
         $detail = [];
+
         // 获取招投标
-//        var_dump('bid'.date('Y-m-d H:i:s'));
-        $detail['bid'] = [];
-        $sql_bid = "select bid_type,bid_way,bid_unitname,bid_date,bid_money,bid_area,bid_unitagency,bid_pname,bid_pnum
+        if ($detail_type == 1){
+            $detail['bid'] = [];
+            $sql_bid = "select bid_type,bid_way,bid_unitname,bid_date,bid_money,bid_area,bid_unitagency,bid_pname,bid_pnum
                         from jz_project_bid
                         where project_url = ".$project_url." and company_url = ".$company_url." 
         ";
-        $res_bid = Db::query($sql_bid);
-        $detail['bid'] = $res_bid;
+            $res_bid = Db::query($sql_bid);
+            $detail['bid'] = $res_bid;
+        }
+
         // 获取施工图审查
-//        var_dump('censor'.date('Y-m-d H:i:s'));
-        $detail['censor'] = [];
-        $sql_censor = "select censor_unitrcs,censor_unitdsn
+        elseif ($detail_type == 2){
+            $detail['censor'] = [];
+            $sql_censor = "select censor_unitrcs,censor_unitdsn
                           from jz_project_censor
                           where project_url = ".$project_url." and ( company_dsnurl = ".$company_url." or company_rcsurl = ".$company_url." ) 
         ";
-        $res_censor = Db::query($sql_censor);
-        $detail['censor'] = $res_censor;
+            $res_censor = Db::query($sql_censor);
+            $detail['censor'] = $res_censor;
+        }
+
         // 获取合同备案
-//        var_dump('contract'.date('Y-m-d H:i:s'));
-        $detail['contract'] = [];
-        $sql_contract = "select contract_type,contract_money,contract_signtime,contract_scale,company_out_name,contract_unitname,contract_type
+        elseif ($detail_type == 3){
+            $detail['contract'] = [];
+            $sql_contract = "select contract_type,contract_money,contract_signtime,contract_scale,company_out_name,contract_unitname,contract_type
                             from jz_project_contract
                             where project_url = ".$project_url." and company_inpurl = ".$company_url." 
         ";
-        $res_contract = Db::query($sql_contract);
-        $detail['contract'] = $res_contract;
+            $res_contract = Db::query($sql_contract);
+            $detail['contract'] = $res_contract;
+        }
+
         // 获取施工许可
-//        var_dump('permit'.date('Y-m-d H:i:s'));
-        $detail['permit'] = [];
-        $sql_permit = "select permit_money,permit_area,permit_certdate,permit_unitrcs,permit_unitdsn,permit_unitspv,permit_unitcst,permit_manager,permit_managerid,permit_monitor,permit_monitorid
+        elseif ($detail_type == 4){
+            $detail['permit'] = [];
+            $sql_permit = "select permit_money,permit_area,permit_certdate,permit_unitrcs,permit_unitdsn,permit_unitspv,permit_unitcst,permit_manager,permit_managerid,permit_monitor,permit_monitorid
                             from jz_project_permit
                             where project_url = ".$project_url." and ( company_csturl = ".$company_url." or company_rcsurl = ".$company_url." or company_dsnurl = ".$company_url." or company_spvurl = ".$company_url." ) 
         ";
-        $res_permit = Db::query($sql_permit);
-        $detail['permit'] = $res_permit;
+            $res_permit = Db::query($sql_permit);
+            $detail['permit'] = $res_permit;
+        }
+
         // 获取竣工验收备案
-//        var_dump('finish'.date('Y-m-d H:i:s'));
-        $detail['finish'] = [];
-        $sql_finish = "select finish_money,finish_area,finish_realbegin,finish_realfinish,finish_unitdsn,finish_unitspv,finish_unitcst
+        elseif ($detail_type == 5){
+            $detail['finish'] = [];
+            $sql_finish = "select finish_money,finish_area,finish_realbegin,finish_realfinish,finish_unitdsn,finish_unitspv,finish_unitcst
                             from jz_project_finish
                             where project_url = ".$project_url." and ( company_csturl = ".$company_url." or company_dsnurl = ".$company_url." or company_spvurl = ".$company_url." ) 
         ";
-        $res_finish = Db::query($sql_finish);
-        $detail['finish'] = $res_finish;
+            $res_finish = Db::query($sql_finish);
+            $detail['finish'] = $res_finish;
+        }
+
+        // default
+        else{
+            $detail['error'] = "this is error type, pls try again !";
+        }
 
         return $detail;
     }

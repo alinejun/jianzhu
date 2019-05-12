@@ -4144,7 +4144,7 @@ ps:说明注释:所有返回数量的都是公司的数量
 **请求方式**：get
 
 #### 例子
-    > http://127.0.0.1/jianzhu/public/index.php/project_second/getProjectDetail?company_url=001607220057360441&project_url=1101081809180102
+    > http://127.0.0.1/jianzhu/public/index.php/project_second/getProjectDetail?company_url=001607220057360441&project_url=1101081809180102&detail_type=1
 
 **请求参数：**
 
@@ -4152,7 +4152,10 @@ ps:说明注释:所有返回数量的都是公司的数量
 | -------- | ------ | -------- | ------ |
 | company_url | string | 是       | 公司url |
 | project_url | string | 是       | 项目url |
+| detail_type | int     |是      |详情类型|
 
+#### detail_type
+    >  招投标-1, 施工图审查-2, 合同备案-3, 施工许可-4, 竣工验收备案-5
 **返回参数：**
 
 ```

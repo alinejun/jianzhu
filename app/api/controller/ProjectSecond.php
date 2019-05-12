@@ -64,7 +64,9 @@ class ProjectSecond extends ApiBase{
     public function getProjectDetail(){
         $company_url = input('param.company_url')?:1;
         $project_url = input('param.project_url')?:1;
-        $project_detail = $this->project_model->getProjectDetailV2($project_url,$company_url);
+        // 招投标-1, 施工图审查-2, 合同备案-3, 施工许可-4, 竣工验收备案-5
+        $detail_type = input('param.detail_type')?:'error';
+        $project_detail = $this->project_model->getProjectDetailV2($project_url,$company_url,$detail_type);
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] =  Code::$MSG[$refer['code']];
         $refer['data'] = $project_detail;
