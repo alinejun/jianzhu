@@ -271,9 +271,16 @@ class Project extends model{
     public function getProjectV2($where=1,$field="*",$page=10,$num=1)
     {
         // 基础数据
-        $projectInfo = $this->where($where)->field($field)->limit(($num-1) * $page, $page)->select()->toArray();
+        $sql = "select ".$field." from jz_com_pro cp join jz_project p on cp.project_url=p.project_url where cp.company_url = ".$where['company_url']." limit ".($num-1) * $page.",".$page;
+        $projectInfo = Db::query($sql);
         // 页数
-        $pageTotal = $this->where($where)->count();
+        $sql_count = "select count(*) as totalNum  from jz_com_pro cp join jz_project p on cp.project_url=p.project_url where cp.company_url = ".$where['company_url'];
+        $pageTotal = Db::query($sql_count);
+        if (!empty($pageTotal)){
+            $pageTotal = $pageTotal[0]['totalNum'];
+        }else{
+            $pageTotal = 0;
+        }
         $data['projectInfo'] = isset($projectInfo)?$projectInfo:'';
         $data['totalNum'] = isset($pageTotal)?$pageTotal:'';
         if (is_numeric($data['totalNum'])){

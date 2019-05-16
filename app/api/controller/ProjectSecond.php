@@ -46,7 +46,7 @@ class ProjectSecond extends ApiBase{
         $pageSize = input('param.size')?:10;
         $pageNum = input('param.page')?:1;
         //基础+详情
-        $field = "project_url,project_name,project_area,project_unit,project_type,project_nature,project_use,project_allmoney,project_acreage,project_level";
+        $field = "p.project_url,p.project_name,p.project_area,p.project_unit,p.project_type,p.project_nature,p.project_use,p.project_allmoney,p.project_acreage,p.project_level";
         $project_list = $this->project_model->getProjectV2($where,$field,$pageSize,$pageNum);
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] =  Code::$MSG[$refer['code']];
