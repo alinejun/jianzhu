@@ -330,10 +330,11 @@ class Project extends model{
         }
 
         // 获取施工许可
+        // 由于数据问题，project_permit 表 切换到 project_permit_new
         elseif ($detail_type == 4){
             $detail['permit'] = [];
             $sql_permit = "select permit_money,permit_area,permit_certdate,permit_unitrcs,permit_unitdsn,permit_unitspv,permit_unitcst,permit_manager,permit_managerid,permit_monitor,permit_monitorid
-                            from jz_project_permit
+                            from jz_project_permit_new
                             where project_url = ".$project_url." and ( company_csturl = ".$company_url." or company_rcsurl = ".$company_url." or company_dsnurl = ".$company_url." or company_spvurl = ".$company_url." ) 
         ";
             $res_permit = Db::query($sql_permit);
