@@ -359,4 +359,37 @@ class Project extends model{
 
         return $detail;
     }
+
+    // 查询数据给单查项目名称时候的导出
+    public function getDataForExportV2($company_url){
+        $sql = "SELECT
+            p.project_name,
+            p.project_url,
+            p.project_area,
+            p.project_unit,
+            p.project_type,
+            p.project_nature,
+            p.project_use,
+            p.project_allmoney,
+            p.project_acreage,
+            p.project_level,
+            pb.bid_type,
+            pb.bid_way,
+            pb.bid_unitname,
+            pb.bid_date,
+            pb.bid_money,
+            pb.bid_area,
+            pb.bid_unitagency,
+            pb.bid_pname,
+            pb.bid_pnum
+        FROM
+            jz_com_pro cp
+        JOIN jz_project p ON cp.project_url = p.project_url
+        JOIN jz_project_bid pb on pb.project_url = p.project_url
+        WHERE
+            cp.company_url = 001607220057386087;
+        ";
+        $res = Db::query($sql);
+        return $res;
+    }
 }

@@ -15,6 +15,7 @@ use app\api\apiRoute\ApiRoute;
 use app\api\error\CodeBase;
 use app\common\controller\ControllerBase;
 use app\api\controller\UnionQuery;
+use app\api\controller\ProjectSecond;
 /**
  * 首页控制器
  */

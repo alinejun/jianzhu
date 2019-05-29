@@ -73,4 +73,32 @@ class ProjectSecond extends ApiBase{
         return $this->apiReturn($refer);
     }
 
+    /*
+    * 导出特定企业的项目 以及 详情
+    */
+    public function exportProjectV2(){
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 0);
+        config(  'datetime_format' , false);
+        $company_url = input('param.company_url')?:1;
+        $list = $this->getDataForExport($company_url);
+        $titles =
+            "项目名称,项目分类,建设性质,工程用途,总投资,总面积,
+            招标类型,招标方式,中标单位名称,中标日期,中标金额(万元),面积（平方米）,招标代理单位名称,网站招投标详情页面,
+            合同类别,合同金额（万元）,合同签订日期,建设规模,承包单位,网站合同备案详情页面,
+            实际造价（万元）,实际面积（平方米）,实际开工日期,实际竣工验收日期,设计单位,监理单位,施工单位,网站竣工验收备案详情页面";
+        $keys   =
+            "project_name,project_type,project_nature,project_use,project_allmoney,project_acreage,
+            bid_type,bid_way,bid_unitname,bid_date,bid_money,bid_area,bid_unitagency,bid_url,
+            contract_type,contract_money,contract_signtime,contract_scale,contract_unitname,contract_add_url,
+            finish_money,finish_area,finish_realbegin,finish_realfinish,finish_unitdsn,finish_unitspv,finish_unitcst,finish_add_url";
+        // $path = export_excel_v1($titles, $keys, $list, '企业所做项目');
+        return $this->apiReturn(['path'=>$path]);
+    }
+
+    public function getDataForExport($company_url){
+        return $this->project_model->getDataForExportV2($company_url);
+    }
+
+
 }

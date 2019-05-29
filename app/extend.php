@@ -58,6 +58,52 @@ function export_excel($titles = '', $keys = '', $data = [], $file_name = '导出
     return $file_name;
 }
 
+
+/**
+ * 导出excel信息
+ * @param string  $titles    导出的表格标题
+ * @param string  $keys      需要导出的键名
+ * @param array   $data      需要导出的数据
+ * @param string  $file_name 导出的文件名称
+ */
+function export_excel_v1($titles = '', $keys = '', $data = [], $file_name = '导出文件' )
+{
+    
+    $objPHPExcel = get_excel_obj($file_name);
+        
+    $y = 1;
+    $s = 0;
+
+    $titles_arr = str2arr($titles);
+
+    foreach ($titles_arr as $k => $v) {
+        
+        $objPHPExcel->setActiveSheetIndex($s)->setCellValue(string_from_column_index($k). $y, $v);
+    }
+
+    $keys_arr = str2arr($keys);
+
+    foreach ($data as $k => $v)
+    {
+
+        is_object($v) && $v = $v->toArray();
+        
+        foreach ($v as $kk => $vv)
+        {
+            
+            $num = array_search($kk, $keys_arr);
+            false !== $num and false !== $objPHPExcel->setActiveSheetIndex($s)->setCellValue(string_from_column_index($num) . ($y + $k + 1), $vv );
+            false !== $num && $objPHPExcel->setActiveSheetIndex($s)->setCellValue(string_from_column_index($num) . ($y + $k + 1), $vv );
+        }
+    }
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $url = $_SERVER['DOCUMENT_ROOT'].'/upload/file/';
+    $file_name .= date("YmdHis").'.xls';
+    $objWriter->save($url.$file_name);
+    return $file_name;
+}
+
 /**
  * 获取excel
  */
