@@ -363,31 +363,24 @@ class Project extends model{
     // 查询数据给单查项目名称时候的导出
     public function getDataForExportV2($company_url){
         $sql = "SELECT
-            p.project_name,
-            p.project_url,
-            p.project_area,
-            p.project_unit,
-            p.project_type,
-            p.project_nature,
-            p.project_use,
-            p.project_allmoney,
-            p.project_acreage,
-            p.project_level,
-            pb.bid_type,
-            pb.bid_way,
-            pb.bid_unitname,
-            pb.bid_date,
-            pb.bid_money,
-            pb.bid_area,
-            pb.bid_unitagency,
-            pb.bid_pname,
-            pb.bid_pnum
+            p.project_name,p.project_area,p.project_unit,p.project_type,p.project_nature,p.project_use,
+            p.project_allmoney,p.project_acreage,p.project_level,
+            pb.bid_type,pb.bid_way,pb.bid_unitname,pb.bid_date,pb.bid_money,pb.bid_area,pb.bid_unitagency,
+            pb.bid_pname,pb.bid_pnum,
+            ppn.permit_money,ppn.permit_area,ppn.permit_certdate,ppn.permit_unitrcs,ppn.permit_unitdsn,ppn.permit_unitspv,ppn.permit_unitcst,
+            ppn.permit_manager,ppn.permit_managerid,ppn.permit_monitor,ppn.permit_monitorid,
+            pc.contract_type,pc.contract_money,pc.contract_signtime,pc.contract_scale,pc.company_out_name,pc.contract_unitname,
+            pf.finish_money,pf.finish_area,pf.finish_realbegin,pf.finish_realfinish,pf.finish_unitdsn,pf.finish_unitspv,pf.finish_unitcst
+            
         FROM
             jz_com_pro cp
         JOIN jz_project p ON cp.project_url = p.project_url
-        JOIN jz_project_bid pb on pb.project_url = p.project_url
+        LEFT JOIN jz_project_bid pb ON pb.project_url = p.project_url and pb.company_url = {$company_url}
+        LEFT JOIN jz_project_permit_new ppn ON p.project_url = ppn.project_url and ( ppn.company_csturl = ".$company_url." or ppn.company_rcsurl = ".$company_url." or ppn.company_dsnurl = ".$company_url." or ppn.company_spvurl = ".$company_url." ) 
+        LEFT JOIN jz_project_contract pc ON p.project_url = pc.project_url and pc.company_inpurl = ".$company_url." 
+        LEFT JOIN jz_project_finish pf ON p.project_url = pf.project_url and ( pf.company_csturl = ".$company_url." or pf.company_dsnurl = ".$company_url." or pf.company_spvurl = ".$company_url." )
         WHERE
-            cp.company_url = 001607220057386087;
+            cp.company_url = {$company_url};
         ";
         $res = Db::query($sql);
         return $res;
