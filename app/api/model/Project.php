@@ -211,7 +211,7 @@ class Project extends model{
             #只选择了合同备案
             $join[] = " join jz_project_contract pc on p.project_url = pc.project_url ";
             $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl ";
-            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pc.company_url = pf.company_dsnurl or pc.company_url = pf.company_spvurl or pc.company_url = pf.company_csturl)) ";
+            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pc.company_inpurl = pf.company_dsnurl or pc.company_inpurl = pf.company_spvurl or pc.company_inpurl = pf.company_csturl)) ";
         }elseif ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 1){
             # 子表只选了竣工验收
             $join[] = " join jz_project_finish pf on p.project_url = pf.project_url ";
