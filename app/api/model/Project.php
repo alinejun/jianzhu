@@ -46,7 +46,7 @@ class Project extends model{
         $field_str = implode(',',$field);
         $where_str = implode(' and ',$where);
         #sql
-        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 2000";
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 50000";
         #do-sql
         $res = Db::query($sql);
         #process

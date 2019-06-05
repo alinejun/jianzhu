@@ -38,6 +38,17 @@ class Index extends ApiBase
         echo '建筑信息查询平台';exit;
     }
 
+    /*
+     *  查询的统一入口
+     *
+     *  @method post
+     *
+     *  @params
+     *  $requsetData['request']['company_condition_detail']['code'] = "561";
+     *  $requsetData['request']['project_condition_detail']['bid_money'] = "10000";
+     *
+     *  @return mixed
+     * */
     public function getData()
     {
         $requsetData = input('post.');
