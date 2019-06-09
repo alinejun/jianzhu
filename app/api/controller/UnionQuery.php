@@ -332,7 +332,7 @@ class UnionQuery extends ApiBase{
             $company_data_list[$key]['company_legalreprst'] = $company['company_legalreprst'];
             $company_data_list[$key]['company_regadd'] = $company['company_regadd'];
             #处理企业资质类别、资质名称、证书有效期（jz_qualification表）
-            $company_data_arr= '';
+//            $company_data_arr= '';
             $qualification = CompanyModel::getJzQualification($company_url);
             foreach ($qualification as $k=>$v){
                 $company_data_arr[] = "$v[ion_type_name]/$v[ion_name]/$v[ion_validity]";
