@@ -46,6 +46,13 @@ class UnionQuery extends ApiBase{
     #企业人员联查详情
     public function getCompanyUnionPeopleDetail($request)
     {
+        // 清洗多余参数 page and page_size
+        if (isset($request['people_condition_detail']['page'])){
+            unset($request['people_condition_detail']['page']);
+        }
+        if (isset($request['people_condition_detail']['page_size'])){
+            unset($request['people_condition_detail']['page_size']);
+        }
 
         $ids_arr = explode(',', $request['company_condition_detail']['code']);
         $ids_arr = (new Company)->transformGet($ids_arr);
@@ -58,8 +65,8 @@ class UnionQuery extends ApiBase{
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
         $company_url_list =\app\api\model\People::getCompanyByPeopleIds($people_id,0,'*,group_concat(id) as people_ids,group_concat(people_name) as people_names',0);
 
-        $page = isset($request['company_condition_detail']['page']) ?: 1;
-        $page_size = isset($request['company_condition_detail']['page_size']) ?: 10;
+        $page = isset($request['company_condition_detail']['page']) ? intval($request['company_condition_detail']['page']) : 1;
+        $page_size = isset($request['company_condition_detail']['page_size']) ? intval($request['company_condition_detail']['page_size']) : 10;
         $company_url_page = array_slice($company_url_list,($page-1)*$page,$page_size);
         $company_data_list = [] ;
         //获取企业数据
