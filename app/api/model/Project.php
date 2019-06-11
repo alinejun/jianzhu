@@ -102,19 +102,16 @@ class Project extends model{
         #process 从$this->processRes方法提出来重构
         $result = [];
         $count_res = count($res);
-        if ($count_filter_tables == 0){
-            #没有选择项目子表的筛选项，只选择了基础筛选字段
-            if ($count_res > 0){
-                for ($i = 0;$i < $count_res;$i++){
-                    $result[] = $res[$i]['project_url'];
-                }
-                # 去连表里面查对应的 公司
-                $result_str = implode(',',$result);
-                $sql_com_pro = "select distinct(company_url) from jz_com_pro where project_url in (".$result_str.")";
-                $res_com = Db::query($sql_com_pro);
-                foreach ($res_com as $key=>$value){
-                    $result[] = $value['company_url'];
-                }
+        if ($count_res > 0){
+            for ($i = 0;$i < $count_res;$i++){
+                $result[] = $res[$i]['project_url'];
+            }
+            # 去连表里面查对应的 公司
+            $result_str = implode(',',$result);
+            $sql_com_pro = "select distinct(company_url) from jz_com_pro where project_url in (".$result_str.")";
+            $res_com = Db::query($sql_com_pro);
+            foreach ($res_com as $key=>$value){
+                $result[] = $value['company_url'];
             }
         }
         #去重
