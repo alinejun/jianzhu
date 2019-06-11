@@ -55,6 +55,75 @@ class Project extends model{
         $result = Project::processRes($res,$params_arr,$count_filter_tables);
         return $result;
     }
+    /*
+     * 由于鑫哥要求，换了一种方式去查符合项目条件的企业company_url
+     *
+     * 之前-方法入口为getProjectData
+     * 查询时 如果只选了基础字段，那么就查出project_url然后 com_pro 去查company_url
+     * 查询时 选择了其他子项的字项字段，则根据子项查询出对应的company_url
+     *
+     * 现在-方法入口为getProjectDataV1
+     * 查询是 不管选了什么都查询出 project_url 然后去com_pro查询 company_url,并返即可
+     *
+     * */
+    public static function getProjectDataV1($params_arr){
+        #init
+        $field = [];
+        $join = [];
+        $where = [];
+        #init data
+        $field[] = 'p.project_url';
+        $where[] = " 1=1 ";
+        $count_filter_tables = 0;
+        if ($params_arr['bid'] == 1){
+            $join[] = ' join jz_project_bid pb on pb.project_url = p.project_url ';
+            $count_filter_tables++;
+        }
+        if ($params_arr['contract'] == 1){
+            $join[] = ' join jz_project_contract pc on pc.project_url = p.project_url ';
+            $count_filter_tables++;
+        }
+        if ($params_arr['finish'] == 1){
+            $join[] = ' join jz_project_finish pf on pf.project_url = p.project_url ';
+            $count_filter_tables++;
+        }
+        #transform where
+        $where = Project::transformWhere($params_arr);
+        #transform
+        $join_str = implode(' ',$join);
+        $field_str = implode(',',$field);
+        $where_str = implode(' and ',$where);
+        #sql
+//        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 50000";
+        // 由于测试需求，把limit条件暂时去掉，正式上线之后改回来
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str;
+        #do-sql
+        $res = Db::query($sql);
+        #process 从$this->processRes方法提出来重构
+        $result = [];
+        $count_res = count($res);
+        if ($count_filter_tables == 0){
+            #没有选择项目子表的筛选项，只选择了基础筛选字段
+            if ($count_res > 0){
+                for ($i = 0;$i < $count_res;$i++){
+                    $result[] = $res[$i]['project_url'];
+                }
+                # 去连表里面查对应的 公司
+                $result_str = implode(',',$result);
+                $sql_com_pro = "select distinct(company_url) from jz_com_pro where project_url in (".$result_str.")";
+                $res_com = Db::query($sql_com_pro);
+                foreach ($res_com as $key=>$value){
+                    $result[] = $value['company_url'];
+                }
+            }
+        }
+        #去重
+        $result = array_unique($result);
+        #重新排序
+        $result = array_values($result);
+        return $result;
+    }
+
     #转换where条件
     public static function transformWhere($where){
         $where_finish=[];
