@@ -94,12 +94,11 @@ class Project extends model{
         $field_str = implode(',',$field);
         $where_str = implode(' and ',$where);
         #sql
-//        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 50000";
         // 由于测试需求，把limit条件暂时去掉，正式上线之后改回来
         $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str;
         #do-sql
         $res = Db::query($sql);
-        #process 从$this->processRes方法提出来重构
+        #process 从 $this->processRes 方法提出来重构
         $result = [];
         $count_res = count($res);
         if ($count_res > 0){
