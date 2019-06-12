@@ -184,5 +184,21 @@ class ProjectSecond extends ApiBase{
         return $value;
     }
 
+    /*
+     * 根据company_url，查询企业对应的资质类别和名称
+     *
+     * @params
+     *  $company_url 企业URL
+     *
+     * @return mixed 企业对应资质类别和名称
+     * */
+    public function getCompanyInfoByUrl(){
+        $company_url = input('param.company_url')?:1;
+        $companyInfo = Company::getCompanyInfoByUrl($company_url);
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] =  Code::$MSG[$refer['code']];
+        $refer['data'] = $companyInfo;
+        return $this->apiReturn($refer);
+    }
 
 }

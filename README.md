@@ -4216,3 +4216,66 @@ ps:说明注释:所有返回数量的都是公司的数量
   "exe_time": "2.389395"
 }
 ```
+
+## 根据公司的company_url，查询公司的资质类别和名称等相关信息
+
+**url**: project_second/getCompanyInfoByUrl?company_url=001607220057194394
+
+**请求方式**：get
+
+#### 例子
+    > http://47.92.205.189/project_second/getCompanyInfoByUrl?company_url=001607220057194394
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+**返回参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_name | string |   ...     | 公司名称 |
+| company_legalreprst | string |   ...     | 企业法定代表人 |
+| company_regadd | string |   ...     | 企业注册属地	 |
+| ion_type_name | string |   ...     | 资质类别 |
+| ion_name | string |   ...     | 资质名称 |
+| ion_institution | string |   ...     | 证书有效期 |
+
+```
+{
+  "code": 1,
+  "msg": "成功",
+  "data": {
+    "basic": {
+      "company_name": "南昌市水利规划设计院",
+      "company_legalreprst": "涂明",
+      "company_regadd": "江西省"
+    },
+    "qualification": [
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业水库枢纽专业乙级",
+        "ion_institution": "2020-04-16"
+      },
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业灌溉排涝专业乙级",
+        "ion_institution": "2020-04-16"
+      },
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业河道整治专业乙级",
+        "ion_institution": "2020-04-16"
+      },
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业城市防洪专业乙级",
+        "ion_institution": "2020-04-16"
+      }
+    ]
+  },
+  "exe_time": "1.247071"
+}
+```
+

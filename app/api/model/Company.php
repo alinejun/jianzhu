@@ -151,5 +151,51 @@ class Company extends Model
         }
         return self::where($where)->field($filed)->limit($pageSize*$pageNum,$pageSize)->select()->toArray();
     }
+
+    /*
+    * 根据company_url，查询企业对应的资质类别和名称
+    *
+    * @params
+    *  $company_url 企业URL
+    *
+    * @return mixed 企业对应信息(资质类别和名称)
+    * */
+    public static function getCompanyInfoByUrl($company_url){
+        $result = array();
+
+        $sql_basic = "
+                SELECT
+                  company_name,
+                  company_legalreprst,
+                  company_regadd
+                FROM jz_company
+                WHERE company_url = {$company_url} 
+                ";
+        $res_basic = Db::query($sql_basic);
+
+        if ($res_basic){
+            list($res_basic) = $res_basic;
+        }
+
+        $sql_ion = "
+                SELECT
+                  ion_type_name,
+                  ion_name,
+                  ion_validity
+                  ion_institution
+                FROM jz_qualification
+                WHERE company_url = {$company_url} 
+                ";
+        $res_ion = Db::query($sql_ion);
+
+        if ($res_basic && $res_ion){
+            $result['basic'] = $res_basic;
+            $result['qualification'] = $res_ion;
+        }else{
+            $result['basic'] = $result['qualification'] = null;
+        }
+
+        return $result;
+    }
 }
 ?>
