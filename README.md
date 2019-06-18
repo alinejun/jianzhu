@@ -4279,3 +4279,382 @@ ps:说明注释:所有返回数量的都是公司的数量
 }
 ```
 
+
+## 根据公司的company_url，查询公司对应人员的相关信息
+
+**url**: project_second/getPeopleInfoByUrl?company_url=001607220057290231&page=1&page_size=10
+
+**请求方式**：get
+
+#### 例子
+    > http://47.92.205.189/project_second/getPeopleInfoByUrl?company_url=001607220057290231&page=1&page_size=10
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+| page | int | 是       | 当前页数 |
+| page_size | int | 是       |每页数量 |
+**返回参数：**
+
+此接口返回的参数和  人员 单查返回的相同。 只是request的参数不一样。
+
+```
+{
+  "code": 1,
+  "msg": "成功",
+  "data": [
+    {
+      "id": 2580312,
+      "people_name": "王绍文",
+      "people_url": "001610081901052215",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5101031968******28",
+      "register_type": [
+        "二级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "机电工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2022年01月16日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580313,
+      "people_name": "谢滨",
+      "people_url": "001610081856425908",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5101021969******66",
+      "register_type": [
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2017年01月02日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580314,
+      "people_name": "叶晓青",
+      "people_url": "001610081856437885",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5111211970******73",
+      "register_type": [
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年06月12日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580315,
+      "people_name": "赵静",
+      "people_url": "001610081857496136",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5102221975******25",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580316,
+      "people_name": "李静",
+      "people_url": "001610081858601193",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5101041971******67",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2021年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580317,
+      "people_name": "黄文虎",
+      "people_url": "001610081856431323",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5107211964******77",
+      "register_type": [
+        "一级注册建造师",
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "机电工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年06月23日",
+        "2011年06月23日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        {
+          "project_name": "白云铝及铝加工基地B地块棚户区改造工程（二期）",
+          "project_url": "5201131701100103"
+        }
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580318,
+      "people_name": "蒋万明",
+      "people_url": "001610081856422984",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "2201041969******13",
+      "register_type": [
+        "一级注册建造师",
+        "一级注册建造师",
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "公路工程",
+        "市政公用工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年06月12日",
+        "2015年02月28日",
+        "2011年06月12日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        {
+          "project_name": "陆翔路-祁连山路贯通工程",
+          "project_url": "3101131707130201"
+        }
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580319,
+      "people_name": "龚庆中",
+      "people_url": "001610081856437164",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "4302021973******17",
+      "register_type": [
+        "一级注册建造师",
+        "一级注册建造师",
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "公路工程",
+        "市政公用工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年10月22日",
+        "2017年02月23日",
+        "2018年02月04日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        {
+          "project_name": "开阳县科技大道（贵遵复线开阳县城西站）道路工程",
+          "project_url": "5201211604070201"
+        }
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580320,
+      "people_name": "袁兆安",
+      "people_url": "001610081857527997",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5130317******03",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2021年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580321,
+      "people_name": "单建国",
+      "people_url": "001610081903291915",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "2101121968******50",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "安装"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2021年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    }
+  ],
+  "page": 1,
+  "page_size": 10,
+  "total_page": 111,
+  "total_num": 1101,
+  "exe_time": "7.529430"
+}
+```
+
+

@@ -8,6 +8,7 @@
 
 namespace app\api\controller;
 use app\api\model\Company;
+use app\api\model\People;
 use app\Code;
 
 class ProjectSecond extends ApiBase{
@@ -198,6 +199,31 @@ class ProjectSecond extends ApiBase{
         $refer['code'] = Code::SUCCESS;
         $refer['msg'] =  Code::$MSG[$refer['code']];
         $refer['data'] = $companyInfo;
+        return $this->apiReturn($refer);
+    }
+
+    /*
+     * 根据company_url，查询企业对应的人员相关信息
+     *
+     * @params
+     *  $company_url 企业URL
+     *
+     * @return mixed 企业对应人员信息
+     * */
+    public function getPeopleInfoByUrl(){
+        $page = input('param.page');
+        $page_size = input('param.page_size');
+        $page = isset($page) ? (int)$page : 1;
+        $page_size  = isset($page_size) ? (int)$page_size : 10;
+        $company_url = input('param.company_url')?:1;
+        $peopleInfo = People::getPeopleInfoByUrl($company_url, $page, $page_size);
+        $refer['code'] = Code::SUCCESS;
+        $refer['msg'] =  Code::$MSG[$refer['code']];
+        $refer['data'] = $peopleInfo['list'];
+        $refer['page'] = $peopleInfo['page'];
+        $refer['page_size'] = $peopleInfo['page_size'];
+        $refer['total_page'] = $peopleInfo['total_page'];
+        $refer['total_num'] = $peopleInfo['total_num'];
         return $this->apiReturn($refer);
     }
 
