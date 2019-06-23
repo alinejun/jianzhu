@@ -224,7 +224,7 @@ class UnionQuery extends ApiBase{
         $company_ids_arr = array_column($company_ids_arr,'company_url');
         $company_ids_str = implode(',',$company_ids_arr);
         # 查com_pro表通过公司URL查询到project_url, 为了效率 limit 5000
-        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.") 50000";
+        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.")";
         $res = Db::query($sql);
         $project_url_str = implode(',',array_column($res,'project_url'));
         $request['project_condition_detail']['project_url_str'] = $project_url_str;
