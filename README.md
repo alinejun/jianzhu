@@ -4658,3 +4658,304 @@ ps:说明注释:所有返回数量的都是公司的数量
 ```
 
 
+
+
+## 企业+项目 = 查出企业详情
+#### 为的是验证数据 以及 更好的分析项目对应的企业详情
+
+**url**: company/getCompanyDetailByCompanyUnionProject
+
+**请求方式**：post
+
+#### 例子
+    > http://47.92.205.189/company/getCompanyDetailByCompanyUnionProject
+
+**请求参数：**
+#### 例子 - 就是用的的 企业 + 项目 联查传的条件参数 一样即可，但是要注意切换的时候，page不一样
+{
+   "request":{
+        "company_condition_detail":{
+               "code":"659",
+               "page":1,
+               "page_size":10
+            },
+        "project_condition_detail":{
+        		"bid_money":"1000"
+        }
+   }
+}
+**返回参数：**
+
+此接口返回的参数和 企业单查返回结果相同。
+
+```
+{
+    "code":1,
+    "msg":"success",
+    "key":"companyByCompanyUnionProject",
+    "data":{
+        "data_list":[
+            {
+                "company_name":"福建省水利水电勘测设计研究院",
+                "company_legalreprst":"郭武",
+                "company_regadd":"福建省",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业水力发电（含抽水蓄能、潮汐）专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业道路工程专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业风力发电专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计水利行业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业（建筑工程）甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项乙级",
+                        "ion_validity":"2019-10-23"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业（燃气工程、轨道交通工程除外）乙级",
+                        "ion_validity":"2019-10-23"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业乙级",
+                        "ion_validity":"2019-10-23"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察综合资质甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程钻探劳务",
+                        "ion_validity":"2020-02-15"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            },
+            {
+                "company_name":"上海勘测设计研究院有限公司",
+                "company_legalreprst":"石小强",
+                "company_regadd":"上海市",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业水力发电（含抽水蓄能、潮汐）专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计水利行业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业（建筑工程）甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（固体废物处理处置工程）甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业风力发电专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业送电工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业给水工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（污染修复工程）乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业排水工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业变电工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（水污染防治工程）乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业环境卫生工程专业丙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业新能源发电专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业道路工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业桥梁工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察岩土工程专业甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程测量专业甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程钻探劳务",
+                        "ion_validity":"2023-11-29"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察水文地质勘察专业乙级",
+                        "ion_validity":"2023-11-29"
+                    },
+                    {
+                        "ion_type_name":"建筑业企业资质",
+                        "ion_name":"环保工程专业承包三级",
+                        "ion_validity":"2020-11-25"
+                    },
+                    {
+                        "ion_type_name":"建筑业企业资质",
+                        "ion_name":"电力工程施工总承包三级",
+                        "ion_validity":"2020-11-25"
+                    },
+                    {
+                        "ion_type_name":"建筑业企业资质",
+                        "ion_name":"水利水电工程施工总承包二级",
+                        "ion_validity":"2020-11-25"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            },
+            {
+                "company_name":"内蒙古自治区水利水电勘测设计院",
+                "company_legalreprst":"于铁柱",
+                "company_regadd":"内蒙古自治区",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业风力发电专业甲级",
+                        "ion_validity":"2019-12-19"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计水利行业甲级",
+                        "ion_validity":"2019-12-19"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业水力发电（含抽水蓄能、潮汐）专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业给水工程专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业排水工程专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计农林行业农业综合开发生态工程专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察综合资质甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程钻探劳务",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察凿井劳务",
+                        "ion_validity":"2020-03-10"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            }
+        ],
+        "page":1,
+        "page_size":10,
+        "total_page":1,
+        "total_num":3
+    }
+}
+```
+
+
