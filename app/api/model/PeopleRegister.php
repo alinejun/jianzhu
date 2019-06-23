@@ -6,6 +6,8 @@
  * Time: 21:32
  */
 namespace app\api\model;
+use think\Db;
+
 class PeopleRegister extends ApiBase{
 
     protected $table = 'jz_people_register_new';
@@ -25,7 +27,8 @@ class PeopleRegister extends ApiBase{
 
     public function getDataByPeopleId($where=[],$field="*")
     {
-        $list = self::where($where)->field($field)->find();
+        $sql = " SELECT `register_type`,`register_major`,`register_date`,`register_unit` FROM `jz_people_register_new` WHERE  `people_id` ={$where['people_id']} ";
+        $list = Db::query($sql);
         return $list;
     }
 
