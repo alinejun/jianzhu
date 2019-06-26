@@ -189,7 +189,7 @@ class UnionQuery extends ApiBase{
         empty($company_url_list) or $request['people_condition_detail']['company_url'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
         $company_url = (new PeopleCondition())->getPeopleConditionCompanyUrl($request['people_condition_detail']);
-        $company_list = array_column($company_url['company_list'],'company_url');
+        $company_list = $company_url['company_list'];
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');
     }
