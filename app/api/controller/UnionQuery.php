@@ -156,13 +156,13 @@ class UnionQuery extends ApiBase{
         //获取满足人员条件的企业url
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
 
-        $people_company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
+        $people_company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
 
         if($people_company_url && $company_url_arr){
-            $count = count(array_intersect($people_company_url,explode(',',$company_url_arr)));
+            $count = $count = count(array_intersect($people_company_url,$company_url_arr));
         }elseif(empty($people_company_url) && !empty($company_url_arr)){
             $count = 0;
         }elseif(!empty($people_company_url) && empty($company_url_arr)){
