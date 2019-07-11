@@ -14,7 +14,7 @@ if (version_compare(PHP_VERSION, '5.6.0', '<')) {
     
     die('OneBase Require PHP > 5.6.0 !');
 }*/
-ini_set('memory_limit', '2048M');
+ini_set('memory_limit', '4096M');
 ini_set('max_execution_time',0);
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../app/');
