@@ -119,7 +119,7 @@ class Project extends ApiBase
 		# 招投标条件字段
 		$bid_arr = ['bid_way','bid_money','bid_date_start','bid_date_end'];
 		# 合同备案条件字段
-		$contract_arr = ['contract_type','contract_money','contract_scale','contract_date_start','contract_date_end'];
+		$contract_arr = ['contract_type','contract_money','contract_scale','contract_date_start','contract_date_end','keywords_contract_scale'];
 		# 竣工验收备案条件字段
 		$finish_arr = ['finish_money','finish_area','finish_realbegin_start','finish_realbegin_end','finish_realfinish_start','finish_realfinish_end'];
 		$params['bid'] = 0;
