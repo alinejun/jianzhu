@@ -137,6 +137,9 @@ class Project extends model{
             };
             $where = array_map($toQuotation,$where);
         }
+
+        if (isset($where['keywords_project_name'])){$where_finish[] = "p.project_name like "."\"%".trim($where['keywords_project_name'],"'")."%\"";}
+        if (isset($where['keywords_contract_scale'])){$where_finish[] = "pc.contract_scale like "."\"%".trim($where['keywords_contract_scale'],"'")."%\"";}
         if (isset($where['project_type'])){$where_finish[] = "p.project_type=".$where['project_type'];}
         if (isset($where['project_nature'])){$where_finish[] = "p.project_nature=".$where['project_nature'];}
         if (isset($where['project_use'])){$where_finish[] = "p.project_use=".$where['project_use'];}
