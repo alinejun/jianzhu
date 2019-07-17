@@ -140,6 +140,13 @@ class Project extends model{
 
         if (isset($where['keywords_project_name'])){$where_finish[] = "p.project_name like "."\"%".trim($where['keywords_project_name'],"'")."%\"";}
         if (isset($where['keywords_contract_scale'])){$where_finish[] = "pc.contract_scale like "."\"%".trim($where['keywords_contract_scale'],"'")."%\"";}
+        # 如果 keywords 两个都存在，那么就需要把他们用 or 来拼接
+        if (isset($where['keywords_contract_scale']) && isset($where['keywords_project_name'])){
+            array_pop($where_finish);
+            array_pop($where_finish);
+            $where_finish[] = "( p.project_name like "."\"%".trim($where['keywords_project_name'],"'")."%\" or pc.contract_scale like "."\"%".trim($where['keywords_contract_scale'],"'")."%\" )";
+        }
+        
         if (isset($where['project_type'])){$where_finish[] = "p.project_type=".$where['project_type'];}
         if (isset($where['project_nature'])){$where_finish[] = "p.project_nature=".$where['project_nature'];}
         if (isset($where['project_use'])){$where_finish[] = "p.project_use=".$where['project_use'];}
