@@ -105,6 +105,16 @@ class Project extends ApiBase
 		}
 		#判断并处理参数
 		$params_arr = $this->transfromGet($params);
+		/*
+		 * 查项目相关数量的时候 兼容到 keywords_contract_scale
+		 * 如果有，则contract = 1
+		 * 不使用transfromGet 方法里面进行处理的原因是，此方法是公用方法会影响到详情
+		 * */
+        $params_keys = array_keys($params);
+        if (in_array("keywords_contract_scale",$params_keys)){
+            $params_arr['contract'] = 1;
+        }
+
 		#根据参数情况和值，查询出符合条件的数据
         // 注释这段是方法改成了 V1 新版,如果不合适,可以随时切回.
 //        $res = ProjectModel::getProjectData($params_arr);
@@ -119,7 +129,7 @@ class Project extends ApiBase
 		# 招投标条件字段
 		$bid_arr = ['bid_way','bid_money','bid_date_start','bid_date_end'];
 		# 合同备案条件字段
-		$contract_arr = ['contract_type','contract_money','contract_scale','contract_date_start','contract_date_end','keywords_contract_scale'];
+		$contract_arr = ['contract_type','contract_money','contract_scale','contract_date_start','contract_date_end'];
 		# 竣工验收备案条件字段
 		$finish_arr = ['finish_money','finish_area','finish_realbegin_start','finish_realbegin_end','finish_realfinish_start','finish_realfinish_end'];
 		$params['bid'] = 0;
