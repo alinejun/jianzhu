@@ -5058,4 +5058,38 @@ ps:说明注释:所有返回数量的都是公司的数量
 }
 ```
 
+## 人员+企业+项目 = 查出企业详情
+
+**url**: company/getCompanyDetailByAllUnion
+
+**请求方式**：post
+
+#### 例子
+    > http://47.92.205.189/company/getCompanyDetailByAllUnion
+
+**请求参数：**
+#### 例子 - 就是用的的 人员 + 企业 + 项目 联查传的条件参数 一样即可，但是要注意切换的时候，page不一样
+{
+   "request":{
+        "company_condition_detail":{
+               "code":898
+        },
+        "people_condition_detail":{
+               "register_type":"注册造价工程师"
+               "register_major":"土建"
+            },
+        "project_condition_detail":{
+        		"bid_money":"10000",
+        		"bid_date_start":"2019-01-01",
+        		"bid_date_end":"2019-02-01",
+        		"page":1,
+                "page_size":10
+        }
+   }
+}
+**返回参数：**
+
+此接口返回的参数和 企业单查返回结果相同。(可以参考企业单查详情返回，也可参考上面 人员/企业+项目 = 查企业详细)
+
+
 
