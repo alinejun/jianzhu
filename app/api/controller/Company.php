@@ -128,6 +128,11 @@ class Company extends ApiBase
         return $this->apiReturn(['path'=>$path]);
 	}
 
+	/**********************************************************************************
+	 * 以下三个方法分别是 企业+项目、人员+项目、人员+企业+项目 查询出企业详情
+	 * 由于起初设计问题，以及若将三个合并会有过多判断逻辑，目前只好分开成三个 function，有冗余
+	 * 要注意，如果要更改需确认是否要三个一起改。
+	 **********************************************************************************/
 	/*
 	 * 企业+项目 = 联查出企业详情
 	 * 作用1 验证数据
@@ -192,6 +197,69 @@ class Company extends ApiBase
         $res = json_encode($res);
         return $res;
 	}
+
+    /*
+     * 人员+项目 = 联查出企业详情
+     *
+     * @params 人员+项目联查的筛选条件
+     *
+     * @return mixed
+     * */
+    public function getCompanyDetailByPeoPleUnionProject(){
+        $requsetData = input('post.');
+        if (empty($requsetData)){
+            $res['code'] = 0;
+            $res['msg'] = 'failure, use method post, and please use the correct params.';
+            $res['key'] = 'companyByPeopleUnionProject';
+            $res['data'] = '';
+            $res = json_encode($res);
+            return $res;
+        }
+        $arr = $this->getArr($requsetData['request']);
+        #init
+        $request['people_condition_detail'] = $arr['people_condition_detail'];
+        # 项目符合的company_url
+        $params_project = $arr['project_condition_detail'];
+        $project_ids_arr = (new Project())->getProjectData($params_project);
+        //获取满足人员条件的企业url
+        $request['people_condition_detail']['company_url'] = $project_ids_arr;
+        $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
+        //获取交company_url
+        $company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
+        $count = count($company_url);
+        $page = isset($arr['project_condition_detail']['page']) ? ($arr['project_condition_detail']['page']) : 1;
+        $page_size = isset($arr['project_condition_detail']['page_size']) ? ($arr['project_condition_detail']['page_size']) : 10;
+        $total_num = $count;
+        $total_page = ceil($total_num/$page_size);
+        $company_url_arr = array_slice(array_unique($company_url),($page-1)*$page_size,$page_size);
+        #对查询到公司ID进行处理
+        $company_data_list = [];
+        foreach ($company_url_arr as $key=>$value){
+            $company_url = $value;
+            #处理企业名称、法定代表人、注册属地 (jz_company表)
+            $company = (CompanyModel::getJzCompany($company_url));
+            $company = $company[0];
+            $company_data_list[$key]['company_name'] = $company['company_name'];
+            $company_data_list[$key]['company_legalreprst'] = $company['company_legalreprst'];
+            $company_data_list[$key]['company_regadd'] = $company['company_regadd'];
+            #处理企业资质类别、资质名称、证书有效期（jz_qualification表）
+            $company_data_list[$key]['qualification'] = CompanyModel::getJzQualification($company_url);
+            #处理变更日期、变更内容（jz_cpny_change表）
+            $company_data_list[$key]['cpny_change'] = CompanyModel::getJzCpnyChange($company_url);
+            #处理诚信记录主体、决定内容、实施部门、发布有效期（jz_cpny_miscdct表）
+            $company_data_list[$key]['cpny_miscdct'] = CompanyModel::getJzCpnyMiscdct($company_url);
+        }
+        $res['code'] = 1;
+        $res['msg'] = 'success';
+        $res['key'] = 'companyByPeopleUnionProject';
+        $res['data']['data_list'] = $company_data_list;
+        $res['data']['page'] = intval($page);
+        $res['data']['page_size'] = intval($page_size);
+        $res['data']['total_page'] = intval($total_page);
+        $res['data']['total_num'] = intval($total_num);
+        $res = json_encode($res);
+        return $res;
+    }
 
     public function getArr($arr)
     {

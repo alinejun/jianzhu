@@ -4959,3 +4959,103 @@ ps:说明注释:所有返回数量的都是公司的数量
 ```
 
 
+
+## 人员+项目 = 查出企业详情
+
+**url**: company/getCompanyDetailByPeoPleUnionProject
+
+**请求方式**：post
+
+#### 例子
+    > http://47.92.205.189/company/getCompanyDetailByPeoPleUnionProject
+
+**请求参数：**
+#### 例子 - 就是用的的 人员 + 项目 联查传的条件参数 一样即可，但是要注意切换的时候，page不一样
+{
+   "request":{
+        "people_condition_detail":{
+               "register_type":"一级注册建筑师"
+               "register_major":""
+            },
+        "project_condition_detail":{
+        		"bid_money":"10000",
+        		"finish_realbegin_start":"2019-01-01",
+        		"finish_realbegin_end":"2019-02-28",
+        		"page":1,
+                "page_size":10
+        }
+   }
+}
+**返回参数：**
+
+此接口返回的参数和 企业单查返回结果相同。(可以参考企业单查详情返回，也可参考上一个企业+项目 = 查企业详细)
+请求示例参数返回的数据如下
+
+```
+{
+    "code":1,
+    "msg":"success",
+    "key":"companyByPeopleUnionProject",
+    "data":{
+        "data_list":[
+            {
+                "company_name":"东营筑城建筑设计有限公司",
+                "company_legalreprst":"程乐祥",
+                "company_regadd":"山东省",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业（建筑工程）甲级",
+                        "ion_validity":"2023-11-13"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计石油天然气（海洋石油）行业油田地面专业乙级",
+                        "ion_validity":"2020-04-09"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            },
+            {
+                "company_name":"北京市建筑设计研究院有限公司",
+                "company_legalreprst":"徐全胜",
+                "company_regadd":"北京市",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（物理污染防治工程）甲级",
+                        "ion_validity":"2020-03-30"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业甲级",
+                        "ion_validity":"2020-03-30"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项甲级",
+                        "ion_validity":"2020-03-30"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            }
+        ],
+        "page":1,
+        "page_size":10,
+        "total_page":1,
+        "total_num":2
+    }
+}
+```
+
+
