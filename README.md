@@ -4189,3 +4189,907 @@ ps:说明注释:所有返回数量的都是公司的数量
   "exe_time": "74.958287"
 }
 ```
+
+## 导出指定公司的全部项目相关V2
+
+**url**: /project_second/exportProjectV2?company_url=001607220057290231
+
+**请求方式**：get
+
+#### 例子
+    > http://47.92.205.189/project_second/exportProjectV2?company_url=001607220057290231
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+**返回参数：**
+
+```
+{
+  "code": 0,
+  "msg": "操作成功",
+  "data": {
+    "path": "企业所做项目20190601213459.xls"
+  },
+  "exe_time": "2.389395"
+}
+```
+
+## 根据公司的company_url，查询公司的资质类别和名称等相关信息
+
+**url**: project_second/getCompanyInfoByUrl?company_url=001607220057194394
+
+**请求方式**：get
+
+#### 例子
+    > http://47.92.205.189/project_second/getCompanyInfoByUrl?company_url=001607220057194394
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+**返回参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_name | string |   ...     | 公司名称 |
+| company_legalreprst | string |   ...     | 企业法定代表人 |
+| company_regadd | string |   ...     | 企业注册属地	 |
+| ion_type_name | string |   ...     | 资质类别 |
+| ion_name | string |   ...     | 资质名称 |
+| ion_institution | string |   ...     | 证书有效期 |
+
+```
+{
+  "code": 1,
+  "msg": "成功",
+  "data": {
+    "basic": {
+      "company_name": "南昌市水利规划设计院",
+      "company_legalreprst": "涂明",
+      "company_regadd": "江西省"
+    },
+    "qualification": [
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业水库枢纽专业乙级",
+        "ion_institution": "2020-04-16"
+      },
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业灌溉排涝专业乙级",
+        "ion_institution": "2020-04-16"
+      },
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业河道整治专业乙级",
+        "ion_institution": "2020-04-16"
+      },
+      {
+        "ion_type_name": "设计资质",
+        "ion_name": "工程设计水利行业城市防洪专业乙级",
+        "ion_institution": "2020-04-16"
+      }
+    ]
+  },
+  "exe_time": "1.247071"
+}
+```
+
+
+## 根据公司的company_url，查询公司对应人员的相关信息
+
+**url**: project_second/getPeopleInfoByUrl?company_url=001607220057290231&page=1&page_size=10
+
+**请求方式**：get
+
+#### 例子
+    > http://47.92.205.189/project_second/getPeopleInfoByUrl?company_url=001607220057290231&page=1&page_size=10
+
+**请求参数：**
+
+| 字段名   | 类型   | 是否必须 | 说明   |
+| -------- | ------ | -------- | ------ |
+| company_url | string | 是       | 公司url |
+| page | int | 是       | 当前页数 |
+| page_size | int | 是       |每页数量 |
+**返回参数：**
+
+此接口返回的参数和  人员 单查返回的相同。 只是request的参数不一样。
+
+```
+{
+  "code": 1,
+  "msg": "成功",
+  "data": [
+    {
+      "id": 2580312,
+      "people_name": "王绍文",
+      "people_url": "001610081901052215",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5101031968******28",
+      "register_type": [
+        "二级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "机电工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2022年01月16日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580313,
+      "people_name": "谢滨",
+      "people_url": "001610081856425908",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5101021969******66",
+      "register_type": [
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2017年01月02日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580314,
+      "people_name": "叶晓青",
+      "people_url": "001610081856437885",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5111211970******73",
+      "register_type": [
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年06月12日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580315,
+      "people_name": "赵静",
+      "people_url": "001610081857496136",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5102221975******25",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2022年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580316,
+      "people_name": "李静",
+      "people_url": "001610081858601193",
+      "people_sex": "女",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5101041971******67",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2021年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580317,
+      "people_name": "黄文虎",
+      "people_url": "001610081856431323",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5107211964******77",
+      "register_type": [
+        "一级注册建造师",
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "机电工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年06月23日",
+        "2011年06月23日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        {
+          "project_name": "白云铝及铝加工基地B地块棚户区改造工程（二期）",
+          "project_url": "5201131701100103"
+        }
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580318,
+      "people_name": "蒋万明",
+      "people_url": "001610081856422984",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "2201041969******13",
+      "register_type": [
+        "一级注册建造师",
+        "一级注册建造师",
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "公路工程",
+        "市政公用工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年06月12日",
+        "2015年02月28日",
+        "2011年06月12日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        {
+          "project_name": "陆翔路-祁连山路贯通工程",
+          "project_url": "3101131707130201"
+        }
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580319,
+      "people_name": "龚庆中",
+      "people_url": "001610081856437164",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "4302021973******17",
+      "register_type": [
+        "一级注册建造师",
+        "一级注册建造师",
+        "一级注册建造师",
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "建筑工程",
+        "公路工程",
+        "市政公用工程",
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司",
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2011年10月22日",
+        "2017年02月23日",
+        "2018年02月04日",
+        "2022年12月31日"
+      ],
+      "people_project": [
+        {
+          "project_name": "开阳县科技大道（贵遵复线开阳县城西站）道路工程",
+          "project_url": "5201211604070201"
+        }
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580320,
+      "people_name": "袁兆安",
+      "people_url": "001610081857527997",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "5130317******03",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "土建"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2021年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    },
+    {
+      "id": 2580321,
+      "people_name": "单建国",
+      "people_url": "001610081903291915",
+      "people_sex": "男",
+      "people_cardtype": "居民身份证",
+      "people_cardnum": "2101121968******50",
+      "register_type": [
+        "注册造价工程师"
+      ],
+      "register_major": [
+        "安装"
+      ],
+      "register_unit": [
+        "中国五冶集团有限公司"
+      ],
+      "register_date": [
+        "2021年12月31日"
+      ],
+      "people_project": [
+        
+      ],
+      "people_change": [
+        
+      ],
+      "people_miscdct": [
+        
+      ]
+    }
+  ],
+  "page": 1,
+  "page_size": 10,
+  "total_page": 111,
+  "total_num": 1101,
+  "exe_time": "7.529430"
+}
+```
+
+
+
+
+## 企业+项目 = 查出企业详情
+#### 为的是验证数据 以及 更好的分析项目对应的企业详情
+
+**url**: company/getCompanyDetailByCompanyUnionProject
+
+**请求方式**：post
+
+#### 例子
+    > http://47.92.205.189/company/getCompanyDetailByCompanyUnionProject
+
+**请求参数：**
+#### 例子 - 就是用的的 企业 + 项目 联查传的条件参数 一样即可，但是要注意切换的时候，page不一样
+{
+   "request":{
+        "company_condition_detail":{
+               "code":"659",
+               "page":1,
+               "page_size":10
+            },
+        "project_condition_detail":{
+        		"bid_money":"1000"
+        }
+   }
+}
+**返回参数：**
+
+此接口返回的参数和 企业单查返回结果相同。
+
+```
+{
+    "code":1,
+    "msg":"success",
+    "key":"companyByCompanyUnionProject",
+    "data":{
+        "data_list":[
+            {
+                "company_name":"福建省水利水电勘测设计研究院",
+                "company_legalreprst":"郭武",
+                "company_regadd":"福建省",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业水力发电（含抽水蓄能、潮汐）专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业道路工程专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业风力发电专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计水利行业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业（建筑工程）甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项乙级",
+                        "ion_validity":"2019-10-23"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业（燃气工程、轨道交通工程除外）乙级",
+                        "ion_validity":"2019-10-23"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业乙级",
+                        "ion_validity":"2019-10-23"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察综合资质甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程钻探劳务",
+                        "ion_validity":"2020-02-15"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            },
+            {
+                "company_name":"上海勘测设计研究院有限公司",
+                "company_legalreprst":"石小强",
+                "company_regadd":"上海市",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业水力发电（含抽水蓄能、潮汐）专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计水利行业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业（建筑工程）甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（固体废物处理处置工程）甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业风力发电专业甲级",
+                        "ion_validity":"2020-03-17"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业送电工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业给水工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（污染修复工程）乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业排水工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业变电工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（水污染防治工程）乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业环境卫生工程专业丙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业新能源发电专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业道路工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业桥梁工程专业乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项乙级",
+                        "ion_validity":"2020-01-26"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察岩土工程专业甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程测量专业甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程钻探劳务",
+                        "ion_validity":"2023-11-29"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察水文地质勘察专业乙级",
+                        "ion_validity":"2023-11-29"
+                    },
+                    {
+                        "ion_type_name":"建筑业企业资质",
+                        "ion_name":"环保工程专业承包三级",
+                        "ion_validity":"2020-11-25"
+                    },
+                    {
+                        "ion_type_name":"建筑业企业资质",
+                        "ion_name":"电力工程施工总承包三级",
+                        "ion_validity":"2020-11-25"
+                    },
+                    {
+                        "ion_type_name":"建筑业企业资质",
+                        "ion_name":"水利水电工程施工总承包二级",
+                        "ion_validity":"2020-11-25"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            },
+            {
+                "company_name":"内蒙古自治区水利水电勘测设计院",
+                "company_legalreprst":"于铁柱",
+                "company_regadd":"内蒙古自治区",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业风力发电专业甲级",
+                        "ion_validity":"2019-12-19"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计水利行业甲级",
+                        "ion_validity":"2019-12-19"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计电力行业水力发电（含抽水蓄能、潮汐）专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业给水工程专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计市政行业排水工程专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计农林行业农业综合开发生态工程专业乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项乙级",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察综合资质甲级",
+                        "ion_validity":"2020-06-17"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察工程钻探劳务",
+                        "ion_validity":"2020-03-10"
+                    },
+                    {
+                        "ion_type_name":"勘察资质",
+                        "ion_name":"工程勘察凿井劳务",
+                        "ion_validity":"2020-03-10"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            }
+        ],
+        "page":1,
+        "page_size":10,
+        "total_page":1,
+        "total_num":3
+    }
+}
+```
+
+
+
+## 人员+项目 = 查出企业详情
+
+**url**: company/getCompanyDetailByPeoPleUnionProject
+
+**请求方式**：post
+
+#### 例子
+    > http://47.92.205.189/company/getCompanyDetailByPeoPleUnionProject
+
+**请求参数：**
+#### 例子 - 就是用的的 人员 + 项目 联查传的条件参数 一样即可，但是要注意切换的时候，page不一样
+{
+   "request":{
+        "people_condition_detail":{
+               "register_type":"一级注册建筑师"
+               "register_major":""
+            },
+        "project_condition_detail":{
+        		"bid_money":"10000",
+        		"finish_realbegin_start":"2019-01-01",
+        		"finish_realbegin_end":"2019-02-28",
+        		"page":1,
+                "page_size":10
+        }
+   }
+}
+**返回参数：**
+
+此接口返回的参数和 企业单查返回结果相同。(可以参考企业单查详情返回，也可参考上一个企业+项目 = 查企业详细)
+请求示例参数返回的数据如下
+
+```
+{
+    "code":1,
+    "msg":"success",
+    "key":"companyByPeopleUnionProject",
+    "data":{
+        "data_list":[
+            {
+                "company_name":"东营筑城建筑设计有限公司",
+                "company_legalreprst":"程乐祥",
+                "company_regadd":"山东省",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业（建筑工程）甲级",
+                        "ion_validity":"2023-11-13"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计石油天然气（海洋石油）行业油田地面专业乙级",
+                        "ion_validity":"2020-04-09"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            },
+            {
+                "company_name":"北京市建筑设计研究院有限公司",
+                "company_legalreprst":"徐全胜",
+                "company_regadd":"北京市",
+                "qualification":[
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计环境工程专项（物理污染防治工程）甲级",
+                        "ion_validity":"2020-03-30"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计建筑行业甲级",
+                        "ion_validity":"2020-03-30"
+                    },
+                    {
+                        "ion_type_name":"设计资质",
+                        "ion_name":"工程设计风景园林工程专项甲级",
+                        "ion_validity":"2020-03-30"
+                    }
+                ],
+                "cpny_change":[
+
+                ],
+                "cpny_miscdct":[
+
+                ]
+            }
+        ],
+        "page":1,
+        "page_size":10,
+        "total_page":1,
+        "total_num":2
+    }
+}
+```
+
+## 人员+企业+项目 = 查出企业详情
+
+**url**: company/getCompanyDetailByAllUnion
+
+**请求方式**：post
+
+#### 例子
+    > http://47.92.205.189/company/getCompanyDetailByAllUnion
+
+**请求参数：**
+#### 例子 - 就是用的的 人员 + 企业 + 项目 联查传的条件参数 一样即可，但是要注意切换的时候，page不一样
+{
+   "request":{
+        "company_condition_detail":{
+               "code":898
+        },
+        "people_condition_detail":{
+               "register_type":"注册造价工程师"
+               "register_major":"土建"
+            },
+        "project_condition_detail":{
+        		"bid_money":"10000",
+        		"bid_date_start":"2019-01-01",
+        		"bid_date_end":"2019-02-01",
+        		"page":1,
+                "page_size":10
+        }
+   }
+}
+**返回参数：**
+
+此接口返回的参数和 企业单查返回结果相同。(可以参考企业单查详情返回，也可参考上面 人员/企业+项目 = 查企业详细)
+
+
+

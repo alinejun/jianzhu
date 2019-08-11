@@ -46,13 +46,80 @@ class Project extends model{
         $field_str = implode(',',$field);
         $where_str = implode(' and ',$where);
         #sql
-        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 2000";
+//        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str." limit 50000";
+        // 由于测试需求，把limit条件暂时去掉，正式上线之后改回来
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str;
         #do-sql
         $res = Db::query($sql);
         #process
         $result = Project::processRes($res,$params_arr,$count_filter_tables);
         return $result;
     }
+    /*
+     * 由于鑫哥要求，换了一种方式去查符合项目条件的企业company_url
+     *
+     * 之前-方法入口为getProjectData
+     * 查询时 如果只选了基础字段，那么就查出project_url然后 com_pro 去查company_url
+     * 查询时 选择了其他子项的字项字段，则根据子项查询出对应的company_url
+     *
+     * 现在-方法入口为getProjectDataV1
+     * 查询是 不管选了什么都查询出 project_url 然后去com_pro查询 company_url,并返即可
+     *
+     * */
+    public static function getProjectDataV1($params_arr){
+        #init
+        $field = [];
+        $join = [];
+        $where = [];
+        #init data
+        $field[] = 'p.project_url';
+        $where[] = " 1=1 ";
+        $count_filter_tables = 0;
+        if ($params_arr['bid'] == 1){
+            $join[] = ' join jz_project_bid pb on pb.project_url = p.project_url ';
+            $count_filter_tables++;
+        }
+        if ($params_arr['contract'] == 1){
+            $join[] = ' join jz_project_contract pc on pc.project_url = p.project_url ';
+            $count_filter_tables++;
+        }
+        if ($params_arr['finish'] == 1){
+            $join[] = ' join jz_project_finish pf on pf.project_url = p.project_url ';
+            $count_filter_tables++;
+        }
+        #transform where
+        $where = Project::transformWhere($params_arr);
+        #transform
+        $join_str = implode(' ',$join);
+        $field_str = implode(',',$field);
+        $where_str = implode(' and ',$where);
+        #sql
+        // 由于测试需求，把limit条件暂时去掉，正式上线之后改回来
+        $sql = "select ".$field_str." from jz_project p ".$join_str." where ".$where_str;
+        #do-sql
+        $res = Db::query($sql);
+        #process 从 $this->processRes 方法提出来重构
+        $result = [];
+        $count_res = count($res);
+        if ($count_res > 0){
+            for ($i = 0;$i < $count_res;$i++){
+                $result[] = $res[$i]['project_url'];
+            }
+            # 去连表里面查对应的 公司
+            $result_str = implode(',',$result);
+            $sql_com_pro = "select distinct(company_url) from jz_com_pro where project_url in (".$result_str.")";
+            $res_com = Db::query($sql_com_pro);
+            foreach ($res_com as $key=>$value){
+                $result[] = $value['company_url'];
+            }
+        }
+        #去重
+        $result = array_unique($result);
+        #重新排序
+        $result = array_values($result);
+        return $result;
+    }
+
     #转换where条件
     public static function transformWhere($where){
         $where_finish=[];
@@ -70,6 +137,16 @@ class Project extends model{
             };
             $where = array_map($toQuotation,$where);
         }
+
+        if (isset($where['keywords_project_name'])){$where_finish[] = "p.project_name like "."\"%".trim($where['keywords_project_name'],"'")."%\"";}
+        if (isset($where['keywords_contract_scale'])){$where_finish[] = "pc.contract_scale like "."\"%".trim($where['keywords_contract_scale'],"'")."%\"";}
+        # 如果 keywords 两个都存在，那么就需要把他们用 or 来拼接
+        if (isset($where['keywords_contract_scale']) && isset($where['keywords_project_name'])){
+            array_pop($where_finish);
+            array_pop($where_finish);
+            $where_finish[] = "( p.project_name like "."\"%".trim($where['keywords_project_name'],"'")."%\" or pc.contract_scale like "."\"%".trim($where['keywords_contract_scale'],"'")."%\" )";
+        }
+        
         if (isset($where['project_type'])){$where_finish[] = "p.project_type=".$where['project_type'];}
         if (isset($where['project_nature'])){$where_finish[] = "p.project_nature=".$where['project_nature'];}
         if (isset($where['project_use'])){$where_finish[] = "p.project_use=".$where['project_use'];}
@@ -211,7 +288,7 @@ class Project extends model{
             #只选择了合同备案
             $join[] = " join jz_project_contract pc on p.project_url = pc.project_url ";
             $join[] = " left join jz_project_bid pb on p.project_url = pb.project_url and pb.company_url = pc.company_inpurl ";
-            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pc.company_url = pf.company_dsnurl or pc.company_url = pf.company_spvurl or pc.company_url = pf.company_csturl)) ";
+            $join[] = " left join jz_project_finish pf on (p.project_url = pf.project_url and (pc.company_inpurl = pf.company_dsnurl or pc.company_inpurl = pf.company_spvurl or pc.company_inpurl = pf.company_csturl)) ";
         }elseif ($params_arr['bid'] == 0 && $params_arr['contract'] == 0 && $params_arr['finish'] == 1){
             # 子表只选了竣工验收
             $join[] = " join jz_project_finish pf on p.project_url = pf.project_url ";
@@ -358,5 +435,31 @@ class Project extends model{
         }
 
         return $detail;
+    }
+
+    // 查询数据给单查项目名称时候的导出
+    public function getDataForExportV2($company_url){
+        $sql = "SELECT
+            p.project_url,p.project_name,p.project_area,p.project_unit,p.project_type,p.project_nature,p.project_use,
+            p.project_allmoney,p.project_acreage,p.project_level,
+            pb.bid_type,pb.bid_way,pb.bid_unitname,pb.bid_date,pb.bid_money,pb.bid_area,pb.bid_unitagency,
+            pb.bid_pname,pb.bid_pnum,
+            ppn.permit_money,ppn.permit_area,ppn.permit_certdate,ppn.permit_unitrcs,ppn.permit_unitdsn,ppn.permit_unitspv,ppn.permit_unitcst,
+            ppn.permit_manager,ppn.permit_managerid,ppn.permit_monitor,ppn.permit_monitorid,
+            pc.contract_type,pc.contract_money,pc.contract_signtime,pc.contract_scale,pc.company_out_name,pc.contract_unitname,
+            pf.finish_money,pf.finish_area,pf.finish_realbegin,pf.finish_realfinish,pf.finish_unitdsn,pf.finish_unitspv,pf.finish_unitcst
+            
+        FROM
+            jz_com_pro cp
+        JOIN jz_project p ON cp.project_url = p.project_url
+        LEFT JOIN jz_project_bid pb ON pb.project_url = p.project_url and pb.company_url = {$company_url}
+        LEFT JOIN jz_project_permit_new ppn ON p.project_url = ppn.project_url and ( ppn.company_csturl = ".$company_url." or ppn.company_rcsurl = ".$company_url." or ppn.company_dsnurl = ".$company_url." or ppn.company_spvurl = ".$company_url." ) 
+        LEFT JOIN jz_project_contract pc ON p.project_url = pc.project_url and pc.company_inpurl = ".$company_url." 
+        LEFT JOIN jz_project_finish pf ON p.project_url = pf.project_url and ( pf.company_csturl = ".$company_url." or pf.company_dsnurl = ".$company_url." or pf.company_spvurl = ".$company_url." )
+        WHERE
+            cp.company_url = {$company_url};
+        ";
+        $res = Db::query($sql);
+        return $res;
     }
 }

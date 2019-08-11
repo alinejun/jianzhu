@@ -46,6 +46,13 @@ class UnionQuery extends ApiBase{
     #企业人员联查详情
     public function getCompanyUnionPeopleDetail($request)
     {
+        // 清洗多余参数 page and page_size
+        if (isset($request['people_condition_detail']['page'])){
+            unset($request['people_condition_detail']['page']);
+        }
+        if (isset($request['people_condition_detail']['page_size'])){
+            unset($request['people_condition_detail']['page_size']);
+        }
 
         $ids_arr = explode(',', $request['company_condition_detail']['code']);
         $ids_arr = (new Company)->transformGet($ids_arr);
@@ -58,8 +65,8 @@ class UnionQuery extends ApiBase{
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition_detail']);
         $company_url_list =\app\api\model\People::getCompanyByPeopleIds($people_id,0,'*,group_concat(id) as people_ids,group_concat(people_name) as people_names',0);
 
-        $page = $request['company_condition_detail']['page'] ?: 1;
-        $page_size = $request['company_condition_detail']['page_size'] ?: 10;
+        $page = isset($request['company_condition_detail']['page']) ? intval($request['company_condition_detail']['page']) : 1;
+        $page_size = isset($request['company_condition_detail']['page_size']) ? intval($request['company_condition_detail']['page_size']) : 10;
         $company_url_page = array_slice($company_url_list,($page-1)*$page,$page_size);
         $company_data_list = [] ;
         //获取企业数据
@@ -149,13 +156,13 @@ class UnionQuery extends ApiBase{
         //获取满足人员条件的企业url
         $people_id = (new PeopleCondition())->newQueryLogic($request['people_condition']);
 
-        $people_company_url = array_column(\app\api\model\People::getCompanyByPeopleIds($people_id,0),'company_url');
+        $people_company_url = \app\api\model\People::getCompanyByPeopleIds($people_id,0);
 
         $count = 0 ;
         //对符合人员，和符合公司的取交集
 
         if($people_company_url && $company_url_arr){
-            $count = count(array_intersect($people_company_url,explode(',',$company_url_arr)));
+            $count = $count = count(array_intersect($people_company_url,$company_url_arr));
         }elseif(empty($people_company_url) && !empty($company_url_arr)){
             $count = 0;
         }elseif(!empty($people_company_url) && empty($company_url_arr)){
@@ -182,7 +189,7 @@ class UnionQuery extends ApiBase{
         empty($company_url_list) or $request['people_condition_detail']['company_url'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
         $company_url = (new PeopleCondition())->getPeopleConditionCompanyUrl($request['people_condition_detail']);
-        $company_list = array_column($company_url['company_list'],'company_url');
+        $company_list = $company_url['company_list'];
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');
     }
@@ -197,7 +204,7 @@ class UnionQuery extends ApiBase{
         empty($company_url_list) or $request['people_condition_down']['company_url'] = $company_url_list;
         #将获取到的符合资质的company_url传入人员中做为条件
         $company_url = (new PeopleCondition())->getPeopleConditionCompanyUrl($request['people_condition_down']);
-        $company_list = array_column($company_url['company_list'],'company_url');
+        $company_list =$company_url['company_list'];
         $project_url = $this->com_pro->getProByCom($company_list);
         return array_column($project_url,'project_url');
     }
@@ -217,7 +224,7 @@ class UnionQuery extends ApiBase{
         $company_ids_arr = array_column($company_ids_arr,'company_url');
         $company_ids_str = implode(',',$company_ids_arr);
         # 查com_pro表通过公司URL查询到project_url, 为了效率 limit 5000
-        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.") limit 5000";
+        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.")";
         $res = Db::query($sql);
         $project_url_str = implode(',',array_column($res,'project_url'));
         $request['project_condition_detail']['project_url_str'] = $project_url_str;
@@ -268,7 +275,7 @@ class UnionQuery extends ApiBase{
         $company_ids_arr = array_column($company_ids_arr,'company_url');
         $company_ids_str = implode(',',$company_ids_arr);
         # 查com_pro表通过公司URL查询到project_url, 为了效率 limit 5000
-        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.") limit 5000";
+        $sql = "SELECT distinct(project_url) FROM jz_com_pro where company_url in (".$company_ids_str.")";
         $res = Db::query($sql);
         $project_url_str = implode(',',array_column($res,'project_url'));
         $request['project_condition_down']['project_url_str'] = $project_url_str;
@@ -332,7 +339,7 @@ class UnionQuery extends ApiBase{
             $company_data_list[$key]['company_legalreprst'] = $company['company_legalreprst'];
             $company_data_list[$key]['company_regadd'] = $company['company_regadd'];
             #处理企业资质类别、资质名称、证书有效期（jz_qualification表）
-            $company_data_arr= '';
+//            $company_data_arr= '';
             $qualification = CompanyModel::getJzQualification($company_url);
             foreach ($qualification as $k=>$v){
                 $company_data_arr[] = "$v[ion_type_name]/$v[ion_name]/$v[ion_validity]";

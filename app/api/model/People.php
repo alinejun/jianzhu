@@ -63,4 +63,48 @@ class People extends ApiBase{
         $people_list = self::where('id','in',$people_ids)->cache(true)->field('id,people_name')->select()->toArray();
         return $people_list;
     }
+
+    /*
+     * 根据company_url，查询企业对应的人员相关信息
+     *
+     * @params
+     *  $company_url 企业URL
+     *
+     * @return mixed 企业对应人员信息
+     * */
+    public static function getPeopleInfoByUrl($company_url, $page, $page_size){
+        $result = [];
+        $people = new People();
+        $list = [] ;
+        //通过company_url 获取 people_id
+        $sql = "select id from jz_people where company_url = {$company_url}";
+        $people_ids = Db::query($sql);
+        $people_ids = array_column($people_ids,'id');
+        $people_id = array_slice(array_unique($people_ids),($page-1)*$page_size,$page_size);
+        if ($people_id) {
+            $people_id = array_values($people_id);
+            foreach ($people_id as $k=>&$value) {
+                $list[$k]['id'] = $value;
+                $map['id'] = $value;
+                $people_info = $people->getInfoByPeopleid($map,'people_name,people_url,people_sex,people_cardtype,people_cardnum');
+                if($people_info){
+                    $list[$k]= array_merge($list[$k],$people_info);
+                }
+                $people_reigster_info  = PeopleRegister::getRegisterInfoByPeopleId($value);
+                $list[$k]['register_type'] = array_column($people_reigster_info,'register_type');
+                $list[$k]['register_major'] = array_column($people_reigster_info,'register_major');
+                $list[$k]['register_unit']  = array_column($people_reigster_info,'register_unit');
+                $list[$k]['register_date']  = array_column($people_reigster_info,'register_date');
+                $list[$k]['people_project'] = PeopleProject::getDataByPeopleId( $value,'project_name,project_url',0);
+                $list[$k]['people_change']  = PeopleChange::getDataByPeopleId( $value,'change_record');
+                $list[$k]['people_miscdct']  = PeopleMiscdct::getDataByPeopleId($people_info['people_url'],'miscdct_content');
+            }
+        }
+        $result['list'] = $list;
+        $result['page'] = $page;
+        $result['page_size'] = $page_size;
+        $result['total_page'] = ceil(count($people_ids)/$page_size);
+        $result['total_num'] = count($people_ids);
+        return $result;
+    }
 }

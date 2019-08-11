@@ -105,8 +105,20 @@ class Project extends ApiBase
 		}
 		#判断并处理参数
 		$params_arr = $this->transfromGet($params);
+		/*
+		 * 查项目相关数量的时候 兼容到 keywords_contract_scale
+		 * 如果有，则contract = 1
+		 * 不使用transfromGet 方法里面进行处理的原因是，此方法是公用方法会影响到详情
+		 * */
+        $params_keys = array_keys($params);
+        if (in_array("keywords_contract_scale",$params_keys)){
+            $params_arr['contract'] = 1;
+        }
+
 		#根据参数情况和值，查询出符合条件的数据
-        $res = ProjectModel::getProjectData($params_arr);
+        // 注释这段是方法改成了 V1 新版,如果不合适,可以随时切回.
+//        $res = ProjectModel::getProjectData($params_arr);
+        $res = ProjectModel::getProjectDataV1($params_arr);
         $res = $this->delByValue($res,'None');
         return $res;
 	}
